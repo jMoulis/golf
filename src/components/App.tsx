@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { app } from './firebase';
+import { app } from '../firebase';
 import {
   collection,
   addDoc,
@@ -7,7 +7,10 @@ import {
   query,
   onSnapshot,
 } from 'firebase/firestore';
-import { Game } from './components/Game';
+import { Game } from './Game';
+import { Route, Routes } from 'react-router-dom';
+import { Homepage } from './Homepage';
+import { Training } from './Training';
 
 function App() {
   const [value, setValue] = useState('');
@@ -29,7 +32,6 @@ function App() {
   }, []);
 
   const handleSubmit = async () => {
-    console.log(app);
     const db = getFirestore(app);
     try {
       const docRef = await addDoc(collection(db, 'test'), {
@@ -41,40 +43,14 @@ function App() {
     }
   };
 
-  // const game = {
-  //   course: {
-  //     id: '23',
-  //     holes: [
-  //       {
-  //         label: 1,
-  //         par: 5,
-  //         hcp: '',
-  //         shots: [
-  //           {
-  //             shotType: 'tee',
-  //             distance: '150',
-  //           },
-  //           {
-  //             shotType: 'rough-left',
-  //             distance: '100',
-  //           },
-  //         ],
-  //       },
-  //     ],
-  //   },
-  // };
   return (
-    <div className='App'>
-      <input
-        value={value}
-        onChange={(event) => {
-          setValue(event.currentTarget.value);
-        }}
-      />
-      <button type='button' onClick={handleSubmit}>
-        Submit
-      </button>
-      <Game />
+    <div>
+      <Routes>
+        <Route path='/' element={<Homepage />}>
+          <Route path='game' element={<Game />} />
+          <Route path='training' element={<Training />} />
+        </Route>
+      </Routes>
     </div>
   );
 }

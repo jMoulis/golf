@@ -1,91 +1,64 @@
-import React, { useEffect, useState } from 'react';
+import {
+  addDoc,
+  collection,
+  getDocs,
+  getFirestore,
+  onSnapshot,
+  query,
+} from 'firebase/firestore';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { app } from '../firebase';
 import { GameType, HoleType, newGame } from '../game';
 import { HoleForm } from './HoleForm';
+import { saconnay } from './sacconnay';
 
 type Props = {};
 
 export const Game = (props: Props) => {
-  const [game, setGame] = useState<GameType | null>(null);
-  const [selectedHole, setSelectedHole] = useState<HoleType | null>(null);
+  const [selectedCourse, setSelectedCourse] = useState<any | null>(null);
+  const [courses, setCourses] = useState<any[]>([]);
 
-  useEffect(() => {
-    setGame(newGame);
-  }, []);
-
-  const handleSelectHole = (incomingHole: HoleType) => {
-    setSelectedHole(incomingHole);
-  };
-
-  const handleAddShot = (updatedHole: HoleType) => {
-    if (game) {
-      const updatedholes = (incomingHole: HoleType, prevHoles: HoleType[]) => {
-        return prevHoles.map((prevHole) => {
-          if (prevHole.id === incomingHole.id) {
-            return incomingHole;
-          }
-          return prevHole;
-        });
+  const handleSubmit = async () => {
+    const db = getFirestore(app);
+    try {
+      const newGame = {
+        date: Date.now(),
+        course: selectedCourse.value,
       };
-
-      setGame((prevGame) => {
-        if (prevGame) {
-          return {
-            ...prevGame,
-            course: {
-              ...prevGame.course,
-              holes: updatedholes(updatedHole, prevGame.course.holes),
-            },
-          };
-        }
-        return prevGame;
-      });
-      setSelectedHole(updatedHole);
+      const docRef = await addDoc(collection(db, 'games'), newGame);
+      console.log('Document written with ID: ', docRef.id);
+    } catch (e) {
+      console.error('Error adding document: ', e);
     }
   };
 
-  if (!game) return null;
+  const getCourses = useCallback(async () => {
+    const db = getFirestore(app);
+    const querySnapshot = await getDocs(collection(db, 'courses'));
+    const payload = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      label: doc.data()?.name,
+      value: doc.data(),
+    }));
 
+    setCourses(payload);
+  }, []);
+
+  useEffect(() => {
+    getCourses();
+  }, [getCourses]);
+
+  console.log(selectedCourse);
   return (
     <div>
-      <h1>{game.player.firstname}</h1>
-      <h2>{game.course.name}</h2>
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            {game.course.holes.map((hole) => (
-              <th>{hole.name}</th>
-            ))}
-            <th>Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Par</td>
-            {game.course.holes.map((hole) => (
-              <td>{hole.par}</td>
-            ))}
-            <td>
-              {game.course.holes.reduce((acc, hole) => acc + hole.par, 0)}
-            </td>
-          </tr>
-          <tr>
-            <td>score</td>
-            {game.course.holes.map((hole) => (
-              <td onClick={() => handleSelectHole(hole)}>
-                {hole.shots.length}
-              </td>
-            ))}
-            <td>
-              {game.course.holes.reduce(
-                (acc, hole) => acc + hole.shots.length,
-                0,
-              )}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <HoleForm onAddShot={handleAddShot} hole={selectedHole} />
+      <ul>
+        {courses?.map((course) => (
+          <li onClick={() => setSelectedCourse(course)}>{course.label}</li>
+        ))}
+      </ul>
+      <button type='button' onClick={() => handleSubmit()}>
+        New Game
+      </button>
     </div>
   );
 };
