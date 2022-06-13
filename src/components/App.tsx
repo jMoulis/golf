@@ -1,57 +1,37 @@
-import React, { useEffect, useState } from 'react';
-import { app } from '../firebase';
-import {
-  collection,
-  addDoc,
-  getFirestore,
-  query,
-  onSnapshot,
-} from 'firebase/firestore';
-import { Game } from './Game';
+import React from 'react';
+import { NewGame } from './Game/NewGame';
 import { Route, Routes } from 'react-router-dom';
 import { Homepage } from './Homepage';
 import { Training } from './Training';
+import { GameBoard } from './Game/GameBoard';
+import { AddCourse } from './AddCourse';
+import { Landing } from './Landing';
+import styled from '@emotion/styled';
+import { Games } from './Game/Games';
+import { GameIndex } from './Game/GameIndex';
+
+const Grid = styled.div`
+  display: grid;
+  grid-template-rows: 3rem 1fr;
+  min-height: 100%;
+`;
 
 function App() {
-  const [value, setValue] = useState('');
-
-  const getUsers = async () => {
-    const db = getFirestore(app);
-    const q = query(collection(db, 'test'));
-    // const querySnapshot = await getDocs(collection(db, 'test'));
-    // setUsers()
-    onSnapshot(q, (querySnapshot) => {
-      // querySnapshot.forEach((doc) => {
-      //   cities.push(doc.data().name);
-      // });
-    });
-  };
-
-  useEffect(() => {
-    getUsers();
-  }, []);
-
-  const handleSubmit = async () => {
-    const db = getFirestore(app);
-    try {
-      const docRef = await addDoc(collection(db, 'test'), {
-        first: value,
-      });
-      console.log('Document written with ID: ', docRef.id);
-    } catch (e) {
-      console.error('Error adding document: ', e);
-    }
-  };
-
   return (
-    <div>
+    <Grid>
       <Routes>
         <Route path='/' element={<Homepage />}>
-          <Route path='game' element={<Game />} />
-          <Route path='training' element={<Training />} />
+          <Route index element={<Landing />} />
+          <Route path='games' element={<GameIndex />}>
+            <Route index element={<Games />} />
+            <Route path='new' element={<NewGame />} />
+            <Route path=':gameId' element={<GameBoard />} />
+          </Route>
+          <Route path='trainings' element={<Training />} />
+          <Route path='admin' element={<AddCourse />} />
         </Route>
       </Routes>
-    </div>
+    </Grid>
   );
 }
 

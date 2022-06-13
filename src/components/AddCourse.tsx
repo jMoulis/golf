@@ -1,32 +1,31 @@
 import {
-  addDoc,
   collection,
+  doc,
   getDocs,
   getFirestore,
-  onSnapshot,
-  query,
+  setDoc,
 } from 'firebase/firestore';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { app } from '../firebase';
-import { GameType, HoleType, newGame } from '../game';
-import { HoleForm } from './HoleForm';
 import { saconnay } from './sacconnay';
 
-type Props = {};
-
-export const Game = (props: Props) => {
+export const AddCourse = () => {
+  console.log(saconnay);
   const [selectedCourse, setSelectedCourse] = useState<any | null>(null);
   const [courses, setCourses] = useState<any[]>([]);
-
   const handleSubmit = async () => {
     const db = getFirestore(app);
     try {
-      const newGame = {
-        date: Date.now(),
-        course: selectedCourse.value,
-      };
-      const docRef = await addDoc(collection(db, 'games'), newGame);
-      console.log('Document written with ID: ', docRef.id);
+      const docRef = doc(db, 'courses', saconnay.name);
+
+      setDoc(docRef, {
+        name: saconnay.name,
+      });
+
+      saconnay.holes.forEach((hole: any) => {
+        const holRef = doc(docRef, 'holes', `hole-${hole.number}`);
+        setDoc(holRef, hole);
+      });
     } catch (e) {
       console.error('Error adding document: ', e);
     }
@@ -35,12 +34,7 @@ export const Game = (props: Props) => {
   const getCourses = useCallback(async () => {
     const db = getFirestore(app);
     const querySnapshot = await getDocs(collection(db, 'courses'));
-    const payload = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      label: doc.data()?.name,
-      value: doc.data(),
-    }));
-
+    const payload = querySnapshot.docs.map((doc) => doc.data());
     setCourses(payload);
   }, []);
 
@@ -53,12 +47,14 @@ export const Game = (props: Props) => {
     <div>
       <ul>
         {courses?.map((course) => (
-          <li onClick={() => setSelectedCourse(course)}>{course.label}</li>
+          <li onClick={() => setSelectedCourse(course)}>{course.name}</li>
         ))}
       </ul>
+      {/* {selectedCourse ? ( */}
       <button type='button' onClick={() => handleSubmit()}>
-        New Game
+        New course
       </button>
+      {/* ) : null} */}
     </div>
   );
 };
