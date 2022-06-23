@@ -35,43 +35,6 @@ export const RenderHolesTable = ({
         selectedHole={selectedHole}
         onSelectHole={onSelectHole}
       />
-
-      {/* <tfoot>
-          <tr>
-            <TableCell style={{ textAlign: 'left' }}>PAR</TableCell>
-            <TableCell></TableCell>
-            <TableCell></TableCell>
-            <TableCell></TableCell>
-            <TableCell></TableCell>
-            <TableCell></TableCell>
-            <TableCell></TableCell>
-            <TableCell></TableCell>
-            <TableCell></TableCell>
-            <TableCell></TableCell>
-            <TableCell>
-              {holes.reduce((acc: any, hole: any) => acc + hole.par, 0)}
-            </TableCell>
-          </tr>
-          <tr>
-            <TableCell style={{ textAlign: 'left' }}>SCORE</TableCell>
-            <TableCell></TableCell>
-            <TableCell></TableCell>
-            <TableCell></TableCell>
-            <TableCell></TableCell>
-            <TableCell></TableCell>
-            <TableCell></TableCell>
-            <TableCell></TableCell>
-            <TableCell></TableCell>
-            <TableCell></TableCell>
-            <TableCell>
-              {holes.reduce(
-                (acc: any, hole: any) =>
-                  acc + (holeShots[hole.ref]?.length || 0),
-                0,
-              )}
-            </TableCell>
-          </tr>
-        </tfoot> */}
     </div>
   );
 };

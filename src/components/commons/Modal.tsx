@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
-import React, { useEffect } from 'react';
+import { faRectangleXmark } from '@fortawesome/pro-duotone-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useEffect } from 'react';
 import { Portal } from './Portal';
 
 const Root = styled.div`
@@ -16,15 +18,25 @@ const Root = styled.div`
   padding: 40px 20px 20px;
 `;
 
-const Content = styled.div`
-  width: 70%;
-  height: 70%;
-  background-color: #282c34;
-  color: #fff;
+const Header = styled.header`
+  padding: 5px;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  font-size: 2rem;
+  border-radius: 10px 10px 0 0;
+  background-color: rgba(0, 0, 0, 0.3);
+`;
+
+const Content = styled.div`
+  background-color: #fff;
+  border-radius: 10px;
+`;
+
+const CloseButton = styled.button`
+  border: none;
+  background-color: transparent;
+  color: #000;
+  font-size: 20px;
 `;
 
 type Props = {
@@ -35,25 +47,28 @@ type Props = {
 
 export const Modal = ({ isOpen, onClose, children }: Props) => {
   useEffect(() => {
-    // const closeOnEscapeKey = (e: any) =>
-    //   e.key === 'Escape' ? onClose() : null;
-    // document.body.addEventListener('keydown', closeOnEscapeKey);
-    // return () => {
-    //   document.body.removeEventListener('keydown', closeOnEscapeKey);
-    // };
+    const closeOnEscapeKey = (e: any) =>
+      e.key === 'Escape' ? onClose() : null;
+    document.body.addEventListener('keydown', closeOnEscapeKey);
+    return () => {
+      document.body.removeEventListener('keydown', closeOnEscapeKey);
+    };
   }, [onClose]);
-
-  console.log(isOpen);
 
   if (!isOpen) return null;
 
   return (
     <Portal wrapperID='react-portal-modal-container'>
-      <Root className='modal'>
-        <button onClick={onClose} className='close-btn'>
-          Close
-        </button>
-        <Content className='modal-content'>{children}</Content>
+      <Root>
+        <Content>
+          <Header>
+            <span>Quality shot</span>
+            <CloseButton onClick={onClose}>
+              <FontAwesomeIcon icon={faRectangleXmark} />
+            </CloseButton>
+          </Header>
+          {children}
+        </Content>
       </Root>
     </Portal>
   );

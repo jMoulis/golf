@@ -1,9 +1,6 @@
 import {
   collection,
-  deleteDoc,
-  doc,
   Firestore,
-  getDocs,
   getFirestore,
   onSnapshot,
   query,

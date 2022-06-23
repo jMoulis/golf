@@ -91,6 +91,7 @@ export const RenderNine = ({
     return scores;
   }, [holes, shots]);
 
+  if (!holes?.length) return null;
   return (
     <Table>
       {holes.map((hole: any, key) => (
