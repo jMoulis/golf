@@ -9,17 +9,16 @@ import {
 } from 'firebase/firestore';
 import { app } from '../../firebase';
 import { ScoreCard } from './ScoreCard/ScoreCard';
-import { EvaluationForm } from './EvaluationForm/EvaluationForm';
-import { MentalCard } from './MentalCard/MentalCard';
-import { Tab, TabWrapper } from './StyledComponents/Tab';
+import styled from '@emotion/styled';
 
+const Root = styled.div`
+  display: grid;
+  grid-template-rows: 2rem 60vh 1fr;
+`;
 export const GameBoard = () => {
   const [game, setGame] = useState<any | null>(null);
   const { gameId } = useParams();
   const gameRef = useRef<DocumentReference<DocumentData> | null>(null);
-  const [selectedTab, setSelectedTab] = useState<
-    'score' | 'evaluation' | 'mental'
-  >('score');
 
   const fetchGame = useCallback(async (id: string) => {
     const db = getFirestore(app);
@@ -45,37 +44,12 @@ export const GameBoard = () => {
   if (!game) return null;
 
   return (
-    <div>
+    <Root>
       <header style={{ display: 'flex' }}>
         <h2>{game.courseRef}</h2>
       </header>
-      <TabWrapper>
-        <Tab
-          selected={selectedTab === 'score'}
-          onClick={() => setSelectedTab('score')}>
-          Score
-        </Tab>
-        <Tab
-          selected={selectedTab === 'evaluation'}
-          onClick={() => setSelectedTab('evaluation')}>
-          Evaluation
-        </Tab>
-        <Tab
-          selected={selectedTab === 'mental'}
-          onClick={() => setSelectedTab('mental')}>
-          Mental
-        </Tab>
-      </TabWrapper>
 
-      {selectedTab === 'score' ? (
-        <ScoreCard game={game} gameRef={gameRef.current} />
-      ) : null}
-      {selectedTab === 'evaluation' ? (
-        <EvaluationForm game={game} gameRef={gameRef.current} />
-      ) : null}
-      {selectedTab === 'mental' ? (
-        <MentalCard game={game} gameRef={gameRef.current} />
-      ) : null}
-    </div>
+      <ScoreCard game={game} gameRef={gameRef.current} />
+    </Root>
   );
 };

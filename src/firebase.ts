@@ -1,4 +1,5 @@
 import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
 import { enableIndexedDbPersistence, getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -13,9 +14,9 @@ const firebaseConfig = {
 };
 
 export const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
 
 const db = getFirestore(app);
-
 enableIndexedDbPersistence(db).catch((err) => {
   if (err.code === 'failed-precondition') {
     // Multiple tabs open, persistence can only be enabled
@@ -28,4 +29,4 @@ enableIndexedDbPersistence(db).catch((err) => {
     // ...
     console.error(err)
   }
-})
+});

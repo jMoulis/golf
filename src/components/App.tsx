@@ -9,18 +9,20 @@ import { Landing } from './Landing';
 import styled from '@emotion/styled';
 import { Games } from './Game/Games';
 import { GameIndex } from './Game/GameIndex';
+import { LoginPage } from './pages/LoginPage';
 
 const Grid = styled.div`
   display: grid;
   grid-template-rows: 3rem 1fr;
   min-height: 100%;
 `;
-
+console.log('here');
 function App() {
   return (
     <Grid>
       <Routes>
-        <Route path='/' element={<Homepage />}>
+        <Route path='/' element={<LoginPage />} />
+        <Route path='protected' element={<Homepage />}>
           <Route index element={<Landing />} />
           <Route path='games' element={<GameIndex />}>
             <Route index element={<Games />} />

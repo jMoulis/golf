@@ -15,11 +15,27 @@ import {
   Unsubscribe,
 } from 'firebase/firestore';
 import { app } from '../../../firebase';
-import { RenderHolesTable } from '../RenderHolesTable';
 import { Shots } from './ShotForm/Shots';
-import { Flexbox } from '../../commons';
-import { InfoMessage } from '../StyledComponents/InfoMessage';
+import styled from '@emotion/styled';
 
+const List = styled.ul`
+  overflow: auto;
+`;
+const ListItem = styled.div<{ selected: boolean }>`
+  display: grid;
+  grid-template-columns: 4rem 1fr;
+  align-items: center;
+  border: 1px solid
+    ${({ selected }) => (selected ? 'lightgray' : 'transparent')};
+  padding: 0.25rem;
+  margin: 0 0.25rem;
+  border-radius: 3px;
+`;
+
+const HoleHeader = styled.div`
+  display: flex;
+  align-items: center;
+`;
 type Props = {
   game?: {
     courseRef: string;
@@ -120,30 +136,42 @@ export const ScoreCard = ({ game, gameRef }: Props) => {
   if (!game) return null;
 
   return (
-    <div>
-      <RenderHolesTable
+    <>
+      <List>
+        {holes.map((hole) => (
+          <ListItem selected={hole.ref === selectedHole?.ref} key={hole.ref}>
+            <HoleHeader onClick={() => handleSelectHole(hole)}>
+              <span
+                style={{
+                  fontWeight: 'bold',
+                  fontSize: '20px',
+                  display: 'inline-block',
+                  marginRight: '5px',
+                }}>
+                {hole.number}
+              </span>
+              <span style={{ fontSize: '13px', color: 'gray' }}>
+                Par {hole.par}
+              </span>
+            </HoleHeader>
+
+            <Shots
+              shots={hole ? shots[hole.ref] : []}
+              onShotDelete={(shotID) => handleDeleteShot(shotID, hole)}
+              holeRef={hole?.ref || null}
+              gameRef={gameRef}
+            />
+          </ListItem>
+        ))}
+      </List>
+      {/* <RenderHolesTable
         selectedHole={selectedHole}
         holeShots={shots}
         holes={holes || []}
         onSelectHole={handleSelectHole}
-      />
-      <Flexbox flexDirection='column'>
-        {selectedHole ? (
-          <Shots
-            shots={selectedHole ? shots[selectedHole.ref] : []}
-            onShotDelete={(shotID) => handleDeleteShot(shotID, selectedHole)}
-            holeRef={selectedHole?.ref || null}
-            gameRef={gameRef}
-          />
-        ) : (
-          <InfoMessage>Select a hole</InfoMessage>
-        )}
-        <ShotForm
-          shots={selectedHole ? shots[selectedHole.ref] : []}
-          onAddShot={handleAddShot}
-          hole={selectedHole}
-        />
-      </Flexbox>
-    </div>
+      /> */}
+
+      <ShotForm onAddShot={handleAddShot} hole={selectedHole} />
+    </>
   );
 };

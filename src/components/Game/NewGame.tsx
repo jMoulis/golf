@@ -84,7 +84,7 @@ export const NewGame = () => {
         setDoc(holRef, hole);
       });
 
-      navigate(`/games/${docRef.id}`);
+      navigate(`/protected/games/${docRef.id}`, { replace: true });
     } catch (e) {
       console.error('Error adding document: ', e);
     }

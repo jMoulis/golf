@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { faRectangleXmark } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect } from 'react';
+import { theme } from '../../style/theme';
 import { Portal } from './Portal';
 
 const Root = styled.div`
@@ -19,12 +20,13 @@ const Root = styled.div`
 `;
 
 const Header = styled.header`
-  padding: 5px;
+  padding: 10px 5px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-radius: 10px 10px 0 0;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: ${theme.colors.pink};
+  color: #fff;
 `;
 
 const Content = styled.div`
@@ -35,7 +37,7 @@ const Content = styled.div`
 const CloseButton = styled.button`
   border: none;
   background-color: transparent;
-  color: #000;
+  color: #fff;
   font-size: 20px;
 `;
 

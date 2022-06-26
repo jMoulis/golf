@@ -5,7 +5,7 @@ import { shotTypes } from './shotTypes';
 
 const Root = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, minmax(70px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   flex: 1;
   flex-wrap: wrap;
   grid-gap: 5px;
@@ -19,8 +19,11 @@ const ShotButton = styled.button<{
     end: string;
   };
 }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: none;
-  font-size: 50px;
+  font-size: 30px;
   color: ${({ color }) => color};
   border-radius: 5px;
   grid-column-start: ${({ gridColumn }) => gridColumn.start};
@@ -30,7 +33,6 @@ const ShotButton = styled.button<{
 type Props = {
   hole: HoleType | null;
   onAddShot: (shot: any, hole: any) => void;
-  shots: any[];
 };
 
 export const ShotForm = ({ hole, onAddShot }: Props) => {
@@ -39,8 +41,6 @@ export const ShotForm = ({ hole, onAddShot }: Props) => {
       onAddShot(incomingShot, hole);
     }
   };
-  if (!hole) return null;
-
   return (
     <Root>
       {shotTypes.map((shot, key) => (

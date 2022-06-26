@@ -1,14 +1,18 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsDown, faThumbsUp } from '@fortawesome/pro-duotone-svg-icons';
 
-export const shotQuality = [
+export const shotQuality: {
+  value: 'KO' | 'OK';
+  icon: JSX.Element;
+  color: string;
+}[] = [
   {
-    value: 'ok',
+    value: 'OK',
     icon: <FontAwesomeIcon icon={faThumbsUp} />,
     color: '#B0D959',
   },
   {
-    value: 'ko',
+    value: 'KO',
     icon: <FontAwesomeIcon icon={faThumbsDown} />,
     color: '#d73038',
   },
@@ -27,4 +31,12 @@ export const shotEvaluations = [
     type: 'technique',
     values: shotQuality,
   },
-];
+].sort((a, b) => {
+  if (a.type < b.type) {
+    return -1;
+  }
+  if (a.type > b.type) {
+    return 1;
+  }
+  return 0;
+});

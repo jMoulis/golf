@@ -59,7 +59,7 @@ export const Games = (props: Props) => {
     <div>
       <ul>
         <li>
-          <Link to='/games/new'>New Game</Link>
+          <Link to='new'>New Game</Link>
         </li>
       </ul>
       <ul>
@@ -71,7 +71,7 @@ export const Games = (props: Props) => {
               styling={{
                 padding: '0.5rem',
               }}>
-              <Link to={`/games/${game._id}`}>
+              <Link to={`${game._id}`}>
                 <div>
                   <span>{game.courseRef}</span>
                   <div>{dateFormat.current.format(game.date)}</div>
