@@ -20,16 +20,17 @@ import styled from '@emotion/styled';
 
 const List = styled.ul`
   overflow: auto;
+  height: calc(100vh - 4rem - 2rem - 200px);
 `;
 const ListItem = styled.div<{ selected: boolean }>`
   display: grid;
   grid-template-columns: 4rem 1fr;
   align-items: center;
-  border: 1px solid
-    ${({ selected }) => (selected ? 'lightgray' : 'transparent')};
+  border: 1px solid ${({ selected }) => (selected ? '#e2e1e0' : 'transparent')};
+  background-color: ${({ selected }) => (selected ? '#e2e1e0' : 'transparent')};
   padding: 0.25rem;
   margin: 0 0.25rem;
-  border-radius: 3px;
+  border-radius: 5px;
 `;
 
 const HoleHeader = styled.div`

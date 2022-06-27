@@ -13,10 +13,11 @@ import { LoginPage } from './pages/LoginPage';
 
 const Grid = styled.div`
   display: grid;
-  grid-template-rows: 3rem 1fr;
-  min-height: 100%;
+  grid-template-rows: 40px 1fr;
+  height: 100vh;
+  overflow: hidden;
 `;
-console.log('here');
+
 function App() {
   return (
     <Grid>

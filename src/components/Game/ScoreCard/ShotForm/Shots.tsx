@@ -25,8 +25,8 @@ const Content = styled.div`
 `;
 
 const Dot = styled.div<{ status: boolean }>`
-  height: 10px;
-  width: 10px;
+  height: 14px;
+  width: 14px;
   margin: 0 2px;
   border-radius: 20rem;
   font-size: 10px;
@@ -42,10 +42,14 @@ const ShotButton = styled.button<{
   color?: string;
 }>`
   border: none;
-  font-size: 35px;
+  font-size: 30px;
   margin: 0.25rem;
+  height: 50px;
+  width: 50px;
   color: ${({ color }) => color};
-  border-radius: 5px;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 `;
 const ModalShotButton = styled(ShotButton)<{
   color?: string;
@@ -126,7 +130,6 @@ export const Shots = ({ shots, onShotDelete, gameRef, holeRef }: Props) => {
       {shots?.length ? (
         <Root>
           {shots?.map((shot, key) => {
-            console.log(shot.themes);
             const typedShot = (shotTypesByTypes as any)[shot.type];
             return (
               <Flexbox
@@ -149,9 +152,7 @@ export const Shots = ({ shots, onShotDelete, gameRef, holeRef }: Props) => {
                   {Object.keys(shot.themes || {})
                     .sort()
                     .map((key) => (
-                      <Dot status={shot.themes?.[key] === 'OK'}>
-                        {/* {key[0]} */}
-                      </Dot>
+                      <Dot status={shot.themes?.[key] === 'OK'}>{key[0]}</Dot>
                     ))}
                 </Flexbox>
               </Flexbox>

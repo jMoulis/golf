@@ -12,8 +12,8 @@ import { ScoreCard } from './ScoreCard/ScoreCard';
 import styled from '@emotion/styled';
 
 const Root = styled.div`
-  display: grid;
-  grid-template-rows: 2rem 60vh 1fr;
+  display: flex;
+  flex-direction: column;
 `;
 export const GameBoard = () => {
   const [game, setGame] = useState<any | null>(null);
