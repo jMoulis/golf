@@ -3,14 +3,12 @@ import {
   collection,
   getDocs,
   getFirestore,
-  orderBy,
-  query,
   Timestamp,
 } from 'firebase/firestore';
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { app } from '../../firebase';
 import { useNavigate } from 'react-router-dom';
-import { CourseHoleType, CourseType, GameHoleType } from '../types';
+import { CourseType } from '../types';
 import styled from '@emotion/styled';
 import { theme } from '../../style/theme';
 
@@ -60,39 +58,10 @@ export const NewGame = () => {
         courseRef: selectedCourse.id,
         holes: {},
       };
-      const holesQuery = query(
-        collection(db, 'courses', selectedCourse.name, 'holes'),
-        orderBy('number', 'asc'),
-      );
-      const holesSnapshot = await getDocs(holesQuery);
-
-      const holes = holesSnapshot.docs.reduce(
-        (acc: Record<string, GameHoleType>, doc) => {
-          const hole = doc.data() as CourseHoleType;
-          if (!hole) return acc;
-          return {
-            ...acc,
-            [doc.id]: {
-              ref: doc.id,
-              number: hole.number,
-              par: hole.par,
-              shots: [],
-            },
-          };
-        },
-        {},
-      );
-
       const docRef = await addDoc(collection(db, 'games'), {
         ...newGame,
-        holes,
+        holes: selectedCourse?.holes || {},
       });
-
-      // holes.forEach((hole: any) => {
-      //   const holRef = doc(docRef, 'holes', `${hole.ref}`);
-      //   setDoc(holRef, hole);
-      // });
-
       navigate(`/protected/games/${docRef.id}`, { replace: true });
     } catch (e) {
       console.error('Error adding document: ', e);
@@ -106,7 +75,7 @@ export const NewGame = () => {
       const course = doc.data() as CourseType;
       return {
         id: doc.id,
-        name: course.name,
+        ...course,
       };
     });
     setCourses(payload);

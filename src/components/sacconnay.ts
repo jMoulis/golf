@@ -1,15 +1,33 @@
-export const saconnay: {
-  name: string,
-  holes: {
-    number: number,
-    par: number,
-    hcp: number,
-    distances: {
-      black?: number, white?: number, yellow: number, blue?: number, red?: number
-    }[]
-  }[]
-} = {
+import { CourseType } from "./types";
+
+export const saconnay: CourseType = {
   name: 'Esery - Saconnay',
+  sss: {
+    men: {
+      yellow: 70.6,
+      white: 73.7,
+      blue: 68.5,
+      red: 66.3
+    },
+    women: {
+      yellow: 76.2,
+      blue: 73.6,
+      red: 71
+    }
+  },
+  slope: {
+    men: {
+      yellow: 139,
+      white: 146,
+      blue: 135,
+      red: 131
+    },
+    women: {
+      yellow: 145,
+      blue: 140,
+      red: 132
+    }
+  },
   holes: [{
     number: 1,
     par: 4,
@@ -22,7 +40,6 @@ export const saconnay: {
       red: 302
     }]
   }, {
-
     number: 2,
     par: 5,
     hcp: 6,

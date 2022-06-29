@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import React from 'react';
 import { HoleType, ShotType } from '../../../../game';
 import { shotTypes } from './shotTypes';
 
@@ -10,6 +9,8 @@ const Root = styled.div`
   flex-wrap: wrap;
   grid-gap: 5px;
   padding: 0.5rem;
+  box-shadow: 0px -3px 7px -2px rgba(0, 0, 0, 0.25);
+  z-index: 1;
 `;
 
 const ShotButton = styled.button<{

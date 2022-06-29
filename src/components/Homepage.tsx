@@ -15,9 +15,11 @@ const Nav = styled.ul`
 `;
 
 const NavItem = styled.li`
-  & a {
+  & a,
+  button {
     text-decoration: none;
     color: #fff;
+    font-size: 16px;
   }
 `;
 
@@ -50,7 +52,7 @@ export const Homepage = () => {
           <Link to='admin'>Admin</Link>
         </NavItem>
         <NavItem>
-          <Button onClick={logout}>Lougout</Button>
+          <Button onClick={logout}>Logout</Button>
         </NavItem>
       </Nav>
       <Outlet />

@@ -1,7 +1,7 @@
 {
   "theme_color": "#d847a5",
   "background_color": "#d847a5",
-  "display": "standalone",
+  "display": "fullscreen",
   "scope": "/",
   "start_url": "/",
   "name": "Golf training aid",

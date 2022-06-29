@@ -81,12 +81,11 @@ type Props = {
     type: string;
     themes?: Record<string, 'KO' | 'OK'>;
   }[];
-  onShotDelete: (shotID: string) => void;
   hole: GameHoleType;
   gameRef: DocumentReference | null;
 };
 
-export const Shots = ({ shots, onShotDelete, gameRef, hole }: Props) => {
+export const Shots = ({ shots, gameRef, hole }: Props) => {
   const [selectedshot, setSelectedShot] = useState<{
     id: string;
     order: number;
@@ -98,9 +97,7 @@ export const Shots = ({ shots, onShotDelete, gameRef, hole }: Props) => {
     evaluationValue: 'KO' | 'OK',
     evaluationType: string,
   ) => {
-    console.log(selectedshot);
     if (gameRef && selectedshot?.id && hole.ref) {
-      // const ref = doc(gameRef, 'holes', holeRef, 'shots', selectedshot.id);
       const updatedShot = {
         ...selectedshot,
         themes: {
@@ -109,14 +106,12 @@ export const Shots = ({ shots, onShotDelete, gameRef, hole }: Props) => {
         },
       };
       setSelectedShot(updatedShot);
-      console.log(updatedShot);
       const updatedShots = hole?.shots.map((shot) => {
         if (shot.id === updatedShot.id) {
           return updatedShot;
         }
         return shot;
       });
-      console.log('update', updatedShots);
 
       await setDoc(
         gameRef,
@@ -133,8 +128,21 @@ export const Shots = ({ shots, onShotDelete, gameRef, hole }: Props) => {
   };
 
   const handleDelete = () => {
-    if (selectedshot) {
-      onShotDelete(selectedshot.id);
+    if (selectedshot && gameRef) {
+      const updatedShots = hole.shots?.filter(
+        (shot) => shot.id !== selectedshot.id,
+      );
+      setDoc(
+        gameRef,
+        {
+          holes: {
+            [hole.ref]: {
+              shots: updatedShots,
+            },
+          },
+        },
+        { merge: true },
+      );
       setSelectedShot(null);
     }
   };
@@ -147,11 +155,11 @@ export const Shots = ({ shots, onShotDelete, gameRef, hole }: Props) => {
             const typedShot = (shotTypesByTypes as any)[shot.type];
             return (
               <Flexbox
+                key={key}
                 flexDirection='column'
                 styling={{ position: 'relative' }}>
                 <ShotButton
                   color={typedShot?.color}
-                  key={key}
                   onClick={() => setSelectedShot(shot)}>
                   {typedShot?.icon}
                 </ShotButton>
@@ -166,7 +174,9 @@ export const Shots = ({ shots, onShotDelete, gameRef, hole }: Props) => {
                   {Object.keys(shot.themes || {})
                     .sort()
                     .map((key) => (
-                      <Dot status={shot.themes?.[key] === 'OK'}>{key[0]}</Dot>
+                      <Dot key={key} status={shot.themes?.[key] === 'OK'}>
+                        {key[0]}
+                      </Dot>
                     ))}
                 </Flexbox>
               </Flexbox>
