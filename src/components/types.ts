@@ -24,15 +24,18 @@ export type GameHoleType = {
   ref: string;
   number: number;
   par: number;
+  shots: any[]
 }
 
 export type GamePayloadType = {
   courseRef: string;
-  date: Timestamp
+  date: Timestamp;
+  holes: Record<string, GameHoleType>
 }
 
 export type GameType = {
-  _id: string;
+  id: string;
   courseRef: string;
-  date: Date
+  date: Date;
+  holes: Record<string, GameHoleType>
 }

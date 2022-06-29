@@ -1,10 +1,10 @@
 import {
   addDoc,
   collection,
-  doc,
   getDocs,
   getFirestore,
-  setDoc,
+  orderBy,
+  query,
   Timestamp,
 } from 'firebase/firestore';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -58,31 +58,40 @@ export const NewGame = () => {
       const newGame = {
         date: Timestamp.fromDate(new Date()),
         courseRef: selectedCourse.id,
+        holes: {},
       };
-
-      const holesSnapshot = await getDocs(
+      const holesQuery = query(
         collection(db, 'courses', selectedCourse.name, 'holes'),
+        orderBy('number', 'asc'),
+      );
+      const holesSnapshot = await getDocs(holesQuery);
+
+      const holes = holesSnapshot.docs.reduce(
+        (acc: Record<string, GameHoleType>, doc) => {
+          const hole = doc.data() as CourseHoleType;
+          if (!hole) return acc;
+          return {
+            ...acc,
+            [doc.id]: {
+              ref: doc.id,
+              number: hole.number,
+              par: hole.par,
+              shots: [],
+            },
+          };
+        },
+        {},
       );
 
-      const holes = holesSnapshot.docs.reduce((acc: GameHoleType[], doc) => {
-        const hole = doc.data() as CourseHoleType;
-        if (!hole) return acc;
-        return [
-          ...acc,
-          {
-            ref: doc.id,
-            number: hole.number,
-            par: hole.par,
-          },
-        ];
-      }, []);
-
-      const docRef = await addDoc(collection(db, 'games'), newGame);
-
-      holes.forEach((hole: any) => {
-        const holRef = doc(docRef, 'holes', `${hole.ref}`);
-        setDoc(holRef, hole);
+      const docRef = await addDoc(collection(db, 'games'), {
+        ...newGame,
+        holes,
       });
+
+      // holes.forEach((hole: any) => {
+      //   const holRef = doc(docRef, 'holes', `${hole.ref}`);
+      //   setDoc(holRef, hole);
+      // });
 
       navigate(`/protected/games/${docRef.id}`, { replace: true });
     } catch (e) {

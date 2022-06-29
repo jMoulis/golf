@@ -4,8 +4,9 @@ import {
   doc,
   DocumentData,
   DocumentReference,
-  getDoc,
   getFirestore,
+  onSnapshot,
+  Unsubscribe,
 } from 'firebase/firestore';
 import { app } from '../../firebase';
 import { ScoreCard } from './ScoreCard/ScoreCard';
@@ -19,17 +20,19 @@ export const GameBoard = () => {
   const [game, setGame] = useState<any | null>(null);
   const { gameId } = useParams();
   const gameRef = useRef<DocumentReference<DocumentData> | null>(null);
+  const holeUnsubscribe = useRef<Unsubscribe | null>(null);
 
   const fetchGame = useCallback(async (id: string) => {
     const db = getFirestore(app);
     gameRef.current = doc(db, 'games', id);
     try {
-      const docSnap = await getDoc(gameRef.current);
-      if (docSnap.exists()) {
-        setGame({ ...docSnap.data(), id: docSnap.id });
-      } else {
-        console.log('No such document!');
-      }
+      holeUnsubscribe.current = onSnapshot(gameRef.current, (data) => {
+        if (data.exists()) {
+          setGame({ ...data.data(), id: data.id });
+        } else {
+          console.log('No such document!');
+        }
+      });
     } catch (error: any) {
       console.log(error.message);
     }
@@ -41,6 +44,13 @@ export const GameBoard = () => {
     }
   }, [gameId, fetchGame]);
 
+  useEffect(() => {
+    const shotUnsub = holeUnsubscribe.current;
+    return () => {
+      if (shotUnsub) shotUnsub();
+    };
+  }, []);
+
   if (!game) return null;
 
   return (
@@ -48,7 +58,6 @@ export const GameBoard = () => {
       <header style={{ display: 'flex' }}>
         <h2>{game.courseRef}</h2>
       </header>
-
       <ScoreCard game={game} gameRef={gameRef.current} />
     </Root>
   );

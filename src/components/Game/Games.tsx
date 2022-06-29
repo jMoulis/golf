@@ -1,5 +1,7 @@
 import {
   collection,
+  deleteDoc,
+  doc,
   Firestore,
   getFirestore,
   onSnapshot,
@@ -17,20 +19,21 @@ type Props = {};
 
 export const Games = (props: Props) => {
   const [games, setGames] = useState<GameType[]>([]);
-  const [confirmationModal, setConfirmationModal] = useState<boolean>(false);
+  const [deleteGame, setDeleteGame] = useState<GameType | null>(null);
   const dateFormat = useRef<Intl.DateTimeFormat>(new Intl.DateTimeFormat());
   const gamesUnsubscribe = useRef<Unsubscribe | null>(null);
-  const db = useRef<Firestore | null>(null);
+  const db = useRef<Firestore>(getFirestore(app));
+
   const getGames = useCallback(async () => {
-    db.current = getFirestore(app);
     const gamesQuery = query(collection(db.current, 'games'));
     gamesUnsubscribe.current = onSnapshot(gamesQuery, (payload) => {
       const incomingGames = payload.docs.map((doc) => {
         const game = doc.data() as GamePayloadType;
         return {
-          _id: doc.id,
+          id: doc.id,
           courseRef: game.courseRef,
           date: game.date.toDate(),
+          holes: {},
         };
       });
       setGames(incomingGames);
@@ -47,12 +50,12 @@ export const Games = (props: Props) => {
     };
   }, [getGames]);
 
-  const handleDeleteGame = (game: GameType) => {
-    setConfirmationModal(true);
-    // if (db.current) {
-    //   const deleteRef = doc(db.current, 'games', game._id);
-    //   deleteDoc(deleteRef);
-    // }
+  const handleDeleteGame = () => {
+    if (db.current && deleteGame) {
+      const deleteRef = doc(db.current, 'games', deleteGame.id);
+      deleteDoc(deleteRef);
+      setDeleteGame(null);
+    }
   };
 
   return (
@@ -64,21 +67,21 @@ export const Games = (props: Props) => {
       </ul>
       <ul>
         {games.map((game) => (
-          <li key={game._id}>
+          <li key={game.id}>
             <Flexbox
               justifyContent='space-between'
               alignItems='center'
               styling={{
                 padding: '0.5rem',
               }}>
-              <Link to={`${game._id}`}>
+              <Link to={`${game.id}`}>
                 <div>
                   <span>{game.courseRef}</span>
                   <div>{dateFormat.current.format(game.date)}</div>
                 </div>
               </Link>
               <div>
-                <Button type='button' onClick={() => handleDeleteGame(game)}>
+                <Button type='button' onClick={() => setDeleteGame(game)}>
                   Delete
                 </Button>
               </div>
@@ -86,10 +89,10 @@ export const Games = (props: Props) => {
           </li>
         ))}
       </ul>
-      <Modal
-        onClose={() => setConfirmationModal(false)}
-        isOpen={confirmationModal}>
-        <Button type='button'>Delete</Button>
+      <Modal onClose={() => setDeleteGame(null)} isOpen={Boolean(deleteGame)}>
+        <Button type='button' onClick={handleDeleteGame}>
+          Delete
+        </Button>
       </Modal>
     </div>
   );

@@ -1,11 +1,12 @@
 import styled from '@emotion/styled';
 import { faCheck, faTrash } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { doc, DocumentReference, setDoc } from 'firebase/firestore';
+import { DocumentReference, setDoc } from 'firebase/firestore';
 import { useState } from 'react';
 import { theme } from '../../../../style/theme';
 import { Flexbox } from '../../../commons';
 import { Modal } from '../../../commons/Modal';
+import { GameHoleType } from '../../../types';
 import { shotEvaluations } from './shotQuality';
 import { shotTypesByTypes } from './shotTypes';
 
@@ -81,11 +82,11 @@ type Props = {
     themes?: Record<string, 'KO' | 'OK'>;
   }[];
   onShotDelete: (shotID: string) => void;
-  holeRef: string | null;
+  hole: GameHoleType;
   gameRef: DocumentReference | null;
 };
 
-export const Shots = ({ shots, onShotDelete, gameRef, holeRef }: Props) => {
+export const Shots = ({ shots, onShotDelete, gameRef, hole }: Props) => {
   const [selectedshot, setSelectedShot] = useState<{
     id: string;
     order: number;
@@ -97,20 +98,33 @@ export const Shots = ({ shots, onShotDelete, gameRef, holeRef }: Props) => {
     evaluationValue: 'KO' | 'OK',
     evaluationType: string,
   ) => {
-    if (gameRef && holeRef && selectedshot?.id) {
-      const ref = doc(gameRef, 'holes', holeRef, 'shots', selectedshot.id);
-      setSelectedShot({
+    console.log(selectedshot);
+    if (gameRef && selectedshot?.id && hole.ref) {
+      // const ref = doc(gameRef, 'holes', holeRef, 'shots', selectedshot.id);
+      const updatedShot = {
         ...selectedshot,
         themes: {
           ...selectedshot.themes,
           [evaluationType]: evaluationValue,
         },
+      };
+      setSelectedShot(updatedShot);
+      console.log(updatedShot);
+      const updatedShots = hole?.shots.map((shot) => {
+        if (shot.id === updatedShot.id) {
+          return updatedShot;
+        }
+        return shot;
       });
+      console.log('update', updatedShots);
+
       await setDoc(
-        ref,
+        gameRef,
         {
-          themes: {
-            [evaluationType]: evaluationValue,
+          holes: {
+            [hole.ref]: {
+              shots: updatedShots,
+            },
           },
         },
         { merge: true },
