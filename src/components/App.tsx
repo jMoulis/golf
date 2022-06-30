@@ -3,7 +3,7 @@ import { NewGame } from './Game/NewGame';
 import { Route, Routes } from 'react-router-dom';
 import { Homepage } from './Homepage';
 import { Training } from './Training';
-import { GameBoard } from './Game/GameBoard';
+import { GameBoard } from './Game/GameBoard/GameBoard';
 import { AddCourse } from './AddCourse';
 import { Landing } from './Landing';
 import styled from '@emotion/styled';

@@ -11,6 +11,11 @@ const Root = styled.div`
   padding: 0.5rem;
   box-shadow: 0px -3px 7px -2px rgba(0, 0, 0, 0.25);
   z-index: 1;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
 `;
 
 const ShotButton = styled.button<{

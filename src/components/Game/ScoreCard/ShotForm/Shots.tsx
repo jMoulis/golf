@@ -47,6 +47,9 @@ const ShotButton = styled.button<{
   margin: 0.25rem;
   height: 50px;
   width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: ${({ color }) => color};
   border-radius: 10px;
   background-color: #fff;

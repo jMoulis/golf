@@ -13,7 +13,7 @@ import { RenderHoles } from './RenderHoles';
 
 const List = styled.ul`
   overflow: auto;
-  height: calc(100vh - 4rem - 2rem - 200px);
+  height: calc(100vh - 4rem - 2rem - 300px);
 `;
 
 type Props = {
