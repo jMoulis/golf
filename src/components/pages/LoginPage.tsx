@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { logInWithEmailAndPassword } from '../../auth/authActions';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -20,12 +20,14 @@ export const LoginPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, loading]);
 
+  const handleLogin = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    logInWithEmailAndPassword(email, password);
+  };
   if (loading) return null;
 
   return (
-    <form
-      className='login__container'
-      onSubmit={() => logInWithEmailAndPassword(email, password)}>
+    <form className='login__container' onSubmit={handleLogin}>
       <input
         type='text'
         className='login__textBox'
