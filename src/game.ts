@@ -6,6 +6,8 @@ export type ShotType = {
   distance?: number;
   direction?: string;
   slope?: string
+  themes?: any;
+  id?: any;
 }
 export type HoleType = {
   id: string;

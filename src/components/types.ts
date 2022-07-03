@@ -46,7 +46,8 @@ export type GameHoleType = {
 export type GamePayloadType = {
   courseRef: string;
   date: Timestamp;
-  holes: Record<string, GameHoleType>
+  holes: Record<string, GameHoleType>;
+  themes: ThemeType[]
 }
 
 export type GameType = {
@@ -54,4 +55,14 @@ export type GameType = {
   courseRef: string;
   date: Date;
   holes: Record<string, GameHoleType>
+  themes: ThemeType[]
+}
+
+export type ThemeType = {
+  id: string;
+  type: string;
+}
+
+export type ThemeTypeInput = {
+  type: string;
 }

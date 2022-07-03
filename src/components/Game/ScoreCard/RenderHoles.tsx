@@ -4,7 +4,7 @@ import React, { useMemo } from 'react';
 import { theme } from '../../../style/theme';
 import { scoreResult } from '../../../utils/scoreUtils';
 import { Flexbox } from '../../commons';
-import { GameHoleType } from '../../types';
+import { GameHoleType, GameType } from '../../types';
 import { Shots } from './ShotForm/Shots';
 
 const ListItem = styled.div<{ selected: boolean }>`
@@ -35,6 +35,7 @@ const Tag = styled.div<{ scoreColor?: { bk: string; color: string } }>`
   align-items: center;
   justify-content: center;
 `;
+
 const Footer = styled.footer`
   display: flex;
   justify-content: space-around;
@@ -46,9 +47,11 @@ const Footer = styled.footer`
 
 type Props = {
   holes: GameHoleType[];
-  selectedHole?: GameHoleType;
+  selectedHole?: GameHoleType | null;
   onSelectHole: (hole: GameHoleType) => void;
   gameRef: DocumentReference | null;
+  onOpenForm: (event: React.KeyboardEvent | React.MouseEvent) => void;
+  game: GameType;
 };
 
 export const RenderHoles = ({
@@ -56,6 +59,8 @@ export const RenderHoles = ({
   selectedHole,
   onSelectHole,
   gameRef,
+  onOpenForm,
+  game,
 }: Props) => {
   const totalScore = useMemo(() => {
     const score: any = holes.reduce(
@@ -103,6 +108,9 @@ export const RenderHoles = ({
             shots={hole.shots || []}
             hole={hole || null}
             gameRef={gameRef}
+            onOpenForm={onOpenForm}
+            selectedHole={selectedHole?.ref === hole.ref}
+            game={game}
           />
         </ListItem>
       ))}

@@ -10,11 +10,15 @@ import styled from '@emotion/styled';
 import { Games } from './Game/Games';
 import { GameIndex } from './Game/GameIndex';
 import { LoginPage } from './pages/LoginPage';
+import { AdminPage } from './pages/AdminPage';
+import { ThemePage } from './pages/ThemePage';
+import { CoursePage } from './pages/CoursePage';
 
 const Grid = styled.div`
   display: grid;
-  grid-template-rows: 40px 1fr;
-  height: 100vh;
+  grid-template-rows: 50px calc(100% - 50px);
+  height: 100%;
+  /* /* height: 100vh; */
   overflow: hidden;
 `;
 
@@ -31,7 +35,10 @@ function App() {
             <Route path=':gameId' element={<GameBoard />} />
           </Route>
           <Route path='trainings' element={<Training />} />
-          <Route path='admin' element={<AddCourse />} />
+          <Route path='admin' element={<AdminPage />}>
+            <Route path='themes' element={<ThemePage />} />
+            <Route path='courses' element={<CoursePage />} />
+          </Route>
         </Route>
       </Routes>
     </Grid>

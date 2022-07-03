@@ -1,14 +1,16 @@
 import styled from '@emotion/styled';
-import { faCheck, faTrash } from '@fortawesome/pro-duotone-svg-icons';
+import { faSquarePlus, faTrash } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DocumentReference, setDoc } from 'firebase/firestore';
 import { useState } from 'react';
+import { ShotType } from '../../../../game';
 import { theme } from '../../../../style/theme';
-import { Flexbox } from '../../../commons';
-import { Modal } from '../../../commons/Modal';
-import { GameHoleType } from '../../../types';
-import { shotEvaluations } from './shotQuality';
+import { ShotButton } from '../../../commons/ShotButton';
+import { GameHoleType, GameType } from '../../../types';
+import { ShotEvaluationForm } from '../ShotEvaluationForm/ShotEvaluationForm';
+import { Shot } from './Shot';
 import { shotTypesByTypes } from './shotTypes';
+import { useScoring } from './useScoring';
 
 const Root = styled.div`
   display: flex;
@@ -18,122 +20,63 @@ const Root = styled.div`
   flex-wrap: wrap;
 `;
 
-const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  min-width: 90vw;
-  padding: 0.5rem;
-`;
-
-const Dot = styled.div<{ status: boolean }>`
-  height: 14px;
-  width: 14px;
-  margin: 0 2px;
-  border-radius: 20rem;
-  font-size: 10px;
-  font-weight: bold;
-  text-transform: uppercase;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  background-color: ${({ status }) => (status ? '#02732A' : '#d73038')};
-`;
-const ShotButton = styled.button<{
-  color?: string;
-}>`
-  border: none;
-  font-size: 30px;
-  margin: 0.25rem;
-  height: 50px;
-  width: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: ${({ color }) => color};
-  border-radius: 10px;
-  background-color: #fff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-`;
-const ModalShotButton = styled(ShotButton)<{
-  color?: string;
-  selected?: boolean;
-}>`
-  color: ${({ color, selected }) => (selected ? color : 'gray')};
-  background-color: transparent;
-  border-radius: 5px;
-`;
-
 const DeleteButton = styled.button<{
   color?: string;
   backgroundColor?: string;
 }>`
-  flex: 1;
   border: none;
-  font-size: 30px;
+  font-size: 15px;
   margin: 0.25rem;
+  width: 110px;
+  height: 40px;
   color: ${({ color }) => color};
   border-radius: 5px;
   background-color: ${({ backgroundColor }) => backgroundColor || '#f8d7da'};
+  & span {
+    display: inline-block;
+    margin-left: 5px;
+    font-size: 15px;
+  }
 `;
 
 type Props = {
-  shots: {
-    id: string;
-    order: number;
-    type: string;
-    themes?: Record<string, 'KO' | 'OK'>;
-  }[];
+  shots: ShotType[];
   hole: GameHoleType;
   gameRef: DocumentReference | null;
+  onOpenForm: (event: React.KeyboardEvent | React.MouseEvent) => void;
+  selectedHole: boolean;
+  game: GameType;
 };
 
-export const Shots = ({ shots, gameRef, hole }: Props) => {
-  const [selectedshot, setSelectedShot] = useState<{
-    id: string;
-    order: number;
-    type: string;
-    themes?: Record<string, 'KO' | 'OK'>;
-  } | null>(null);
-
+export const Shots = ({
+  shots,
+  gameRef,
+  hole,
+  onOpenForm,
+  selectedHole,
+  game,
+}: Props) => {
+  const [selectedShot, setSelectedShot] = useState<ShotType | null>(null);
+  const { onAddShotScoring } = useScoring();
   const handleAddShotScoring = async (
     evaluationValue: 'KO' | 'OK',
     evaluationType: string,
   ) => {
-    if (gameRef && selectedshot?.id && hole.ref) {
-      const updatedShot = {
-        ...selectedshot,
-        themes: {
-          ...selectedshot.themes,
-          [evaluationType]: evaluationValue,
-        },
-      };
-      setSelectedShot(updatedShot);
-      const updatedShots = hole?.shots.map((shot) => {
-        if (shot.id === updatedShot.id) {
-          return updatedShot;
-        }
-        return shot;
-      });
-
-      await setDoc(
-        gameRef,
-        {
-          holes: {
-            [hole.ref]: {
-              shots: updatedShots,
-            },
-          },
-        },
-        { merge: true },
-      );
+    const payload = onAddShotScoring({
+      evaluation: { type: evaluationType, value: evaluationValue },
+      gameRef,
+      selectedShot,
+      hole,
+    });
+    if (payload?.updatedShot) {
+      setSelectedShot(payload?.updatedShot);
     }
   };
 
   const handleDelete = () => {
-    if (selectedshot && gameRef) {
+    if (selectedShot && gameRef) {
       const updatedShots = hole.shots?.filter(
-        (shot) => shot.id !== selectedshot.id,
+        (shot) => shot.id !== selectedShot.id,
       );
       setDoc(
         gameRef,
@@ -152,90 +95,40 @@ export const Shots = ({ shots, gameRef, hole }: Props) => {
 
   return (
     <>
-      {shots?.length ? (
-        <Root>
-          {shots?.map((shot, key) => {
+      <Root>
+        {shots?.length &&
+          shots?.map((shot, key) => {
             const typedShot = (shotTypesByTypes as any)[shot.type];
             return (
-              <Flexbox
+              <Shot
                 key={key}
-                flexDirection='column'
-                styling={{ position: 'relative' }}>
-                <ShotButton
-                  color={typedShot?.color}
-                  onClick={() => setSelectedShot(shot)}>
-                  {typedShot?.icon}
-                </ShotButton>
-                <Flexbox
-                  styling={{
-                    position: 'absolute',
-                    bottom: '0',
-                    left: 0,
-                    right: 0,
-                    justifyContent: 'space-around',
-                  }}>
-                  {Object.keys(shot.themes || {})
-                    .sort()
-                    .map((key) => (
-                      <Dot key={key} status={shot.themes?.[key] === 'OK'}>
-                        {key[0]}
-                      </Dot>
-                    ))}
-                </Flexbox>
-              </Flexbox>
+                typedShot={typedShot}
+                onSelectShot={setSelectedShot}
+                shot={shot}
+              />
             );
           })}
-        </Root>
-      ) : null}
-      <Modal
-        isOpen={Boolean(selectedshot)}
+        {selectedHole ? (
+          <ShotButton color={theme.colors.blue} onClick={onOpenForm}>
+            <FontAwesomeIcon icon={faSquarePlus as any} />
+          </ShotButton>
+        ) : null}
+      </Root>
+
+      <ShotEvaluationForm
+        onAddEvaluation={handleAddShotScoring}
+        selectedShot={selectedShot}
+        open={Boolean(selectedShot)}
+        hole={hole}
+        onOpen={() => {}}
+        game={game}
+        gameRef={gameRef}
         onClose={() => setSelectedShot(null)}>
-        <Content>
-          {selectedshot &&
-            shotEvaluations.map((evaluation, key) => {
-              const selectedEvaluationValue =
-                selectedshot?.themes?.[evaluation.type];
-              return (
-                <div key={key}>
-                  <span style={{ textTransform: 'capitalize' }}>
-                    {evaluation.type}
-                  </span>
-                  <Flexbox>
-                    {evaluation.values.map((evaluationValue, evalKey) => {
-                      return (
-                        <ModalShotButton
-                          key={evalKey}
-                          onClick={() =>
-                            handleAddShotScoring(
-                              evaluationValue.value,
-                              evaluation.type,
-                            )
-                          }
-                          selected={
-                            selectedEvaluationValue === evaluationValue.value
-                          }
-                          color={evaluationValue.color}>
-                          {evaluationValue.icon}
-                        </ModalShotButton>
-                      );
-                    })}
-                  </Flexbox>
-                </div>
-              );
-            })}
-          <Flexbox>
-            <DeleteButton
-              onClick={() => setSelectedShot(null)}
-              color={theme.colors.blue}
-              backgroundColor={theme.colors.blueGreen}>
-              <FontAwesomeIcon icon={faCheck} />
-            </DeleteButton>
-            <DeleteButton onClick={handleDelete} color='#d73038'>
-              <FontAwesomeIcon icon={faTrash} />
-            </DeleteButton>
-          </Flexbox>
-        </Content>
-      </Modal>
+        <DeleteButton onClick={handleDelete} color='#d73038'>
+          <FontAwesomeIcon icon={faTrash} />
+          <span>Delete shot</span>
+        </DeleteButton>
+      </ShotEvaluationForm>
     </>
   );
 };

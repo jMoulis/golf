@@ -17,6 +17,8 @@ import { GameBoardHeader } from './GameBoardHeader';
 const Root = styled.div`
   display: flex;
   flex-direction: column;
+  height: 100%;
+  /* overflow: hidden; */
 `;
 
 export const GameBoard = () => {

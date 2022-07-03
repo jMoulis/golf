@@ -34,6 +34,7 @@ export const Games = (props: Props) => {
           courseRef: game.courseRef,
           date: game.date.toDate(),
           holes: {},
+          themes: game.themes,
         };
       });
       setGames(incomingGames);

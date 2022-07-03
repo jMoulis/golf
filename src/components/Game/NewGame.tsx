@@ -8,9 +8,14 @@ import {
 import { useCallback, useEffect, useState } from 'react';
 import { app } from '../../firebase';
 import { useNavigate } from 'react-router-dom';
-import { CourseType } from '../types';
+import { CourseType, ThemeType } from '../types';
 import styled from '@emotion/styled';
 import { theme } from '../../style/theme';
+import { useThemes } from './ScoreCard/ThemeForm/useThemes';
+import { ThemeList } from './ScoreCard/ThemeForm/ThemeList';
+import { Flexbox } from '../commons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/pro-duotone-svg-icons';
 
 const Root = styled.div`
   display: flex;
@@ -36,6 +41,26 @@ const ListItem = styled.li<{ selected: boolean }>`
   border-radius: 3px;
 `;
 
+const ThemeTag = styled.div`
+  padding: 5px;
+  border-radius: 3px 0 0 3px;
+  background-color: ${theme.colors.lightPink};
+  margin: 5px 0;
+  display: flex;
+  align-items: center;
+`;
+
+const ThemeDeleteButton = styled.button`
+  border: none;
+  padding: 5px;
+  border-radius: 0 3px 3px 0;
+  color: #d73038;
+  background-color: #f8d7da;
+  margin: 5px 0;
+  margin-right: 5px;
+  font-size: 20px;
+`;
+
 const Button = styled.button`
   background-color: ${theme.colors.blueGreen};
   padding: 0.5rem 1rem;
@@ -47,6 +72,8 @@ const Button = styled.button`
 export const NewGame = () => {
   const [selectedCourse, setSelectedCourse] = useState<CourseType | null>(null);
   const [courses, setCourses] = useState<CourseType[]>([]);
+  const [selectedThemes, setSelectedThemes] = useState<ThemeType[]>([]);
+  const { themes, onInit } = useThemes();
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
@@ -58,8 +85,10 @@ export const NewGame = () => {
         courseRef: selectedCourse.id,
         holes: {},
       };
+
       const docRef = await addDoc(collection(db, 'games'), {
         ...newGame,
+        themes: selectedThemes,
         holes: selectedCourse?.holes || {},
       });
       navigate(`/protected/games/${docRef.id}`, { replace: true });
@@ -81,9 +110,21 @@ export const NewGame = () => {
     setCourses(payload);
   }, []);
 
+  const handleSelectTheme = (incomingTheme: ThemeType) => {
+    setSelectedThemes((prev) => [...prev, incomingTheme]);
+  };
+
+  const handleRemoveTheme = (themeID: string) => {
+    const updatedSelectedThemes = selectedThemes.filter(
+      (prevTheme) => prevTheme.id !== themeID,
+    );
+    setSelectedThemes(updatedSelectedThemes);
+  };
+
   useEffect(() => {
+    onInit();
     getCourses();
-  }, [getCourses]);
+  }, [getCourses, onInit]);
 
   return (
     <Root>
@@ -99,6 +140,26 @@ export const NewGame = () => {
             {course.name}
           </ListItem>
         ))}
+        {selectedCourse ? (
+          <>
+            <Flexbox flexWrap='wrap'>
+              {selectedThemes.map((theme) => (
+                <Flexbox key={theme.id}>
+                  <ThemeTag>{theme.type}</ThemeTag>
+                  <ThemeDeleteButton
+                    onClick={() => handleRemoveTheme(theme.id)}>
+                    <FontAwesomeIcon icon={faTrash} />
+                  </ThemeDeleteButton>
+                </Flexbox>
+              ))}
+            </Flexbox>
+            <ThemeList
+              onSelectTheme={handleSelectTheme}
+              selectedThemes={selectedThemes}
+              themes={themes}
+            />
+          </>
+        ) : null}
       </List>
       <ButtonWrapper>
         {selectedCourse ? (
