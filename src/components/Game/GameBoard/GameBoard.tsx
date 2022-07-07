@@ -13,11 +13,13 @@ import { ScoreCard } from '../ScoreCard/ScoreCard';
 import styled from '@emotion/styled';
 import { GameType } from '../../types';
 import { GameBoardHeader } from './GameBoardHeader';
+import { BOTTOM_NAVBAR_HEIGHT, TOP_NAVBAR_HEIGHT } from '../../cssConstants';
 
 const Root = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: calc(100vh - ${TOP_NAVBAR_HEIGHT} - ${BOTTOM_NAVBAR_HEIGHT});
+  /* height: 100%; */
   /* overflow: hidden; */
 `;
 

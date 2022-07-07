@@ -2,6 +2,8 @@ import styled from '@emotion/styled';
 import { faSquarePlus } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { FormEvent, useEffect, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '../../../../firebase';
 import { theme } from '../../../../style/theme';
 import { Flexbox } from '../../../commons';
 import { ThemeType, ThemeTypeInput } from '../../../types';
@@ -30,11 +32,13 @@ const Label = styled.label`
 
 type Props = {
   selectedTheme: ThemeType | null;
+  onUpdate?: () => void;
 };
 
-export const ThemeForm = ({ selectedTheme }: Props) => {
+export const ThemeForm = ({ selectedTheme, onUpdate }: Props) => {
   const [input, setInput] = useState<string>('');
   const { onUpdateTheme, onAddTheme } = useThemes();
+  const [user] = useAuthState(auth);
 
   useEffect(() => {
     if (selectedTheme?.type) {
@@ -44,15 +48,20 @@ export const ThemeForm = ({ selectedTheme }: Props) => {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!user) return null;
+
     if (selectedTheme) {
       onUpdateTheme({ id: selectedTheme.id, type: input });
     } else {
       const theme: ThemeTypeInput = {
         type: input,
+        userId: user?.uid,
       };
       onAddTheme(theme);
     }
-
+    if (onUpdate) {
+      onUpdate();
+    }
     setInput('');
   };
 

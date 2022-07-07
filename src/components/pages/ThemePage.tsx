@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { faTrash } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
+import { Flexbox } from '../commons';
 import { DeleteButton } from '../commons/DeleteButton';
 import { ThemeForm } from '../Game/ScoreCard/ThemeForm/ThemeForm';
 import { useThemes } from '../Game/ScoreCard/ThemeForm/useThemes';
@@ -16,10 +17,8 @@ const ListItem = styled.li`
   padding: 5px 10px;
 `;
 
-type Props = {};
-
-export const ThemePage = (props: Props) => {
-  const { themes, onInit } = useThemes();
+export const ThemePage = () => {
+  const { themes, onInit, onDeleteTheme } = useThemes();
   const [selectedTheme, setSelectedTheme] = useState<ThemeType | null>(null);
 
   useEffect(() => {
@@ -31,9 +30,12 @@ export const ThemePage = (props: Props) => {
       ThemePage
       <List>
         {themes.map((theme) => (
-          <ListItem onClick={() => setSelectedTheme(theme)} key={theme.id}>
-            <span>{theme.type}</span>
+          <ListItem key={theme.id}>
+            <Flexbox flex='1' onClick={() => setSelectedTheme(theme)}>
+              <span>{theme.type}</span>
+            </Flexbox>
             <DeleteButton
+              onClick={() => onDeleteTheme(theme.id)}
               style={{
                 height: '40px',
                 width: '40px',
@@ -43,7 +45,10 @@ export const ThemePage = (props: Props) => {
           </ListItem>
         ))}
       </List>
-      <ThemeForm selectedTheme={selectedTheme} />
+      <ThemeForm
+        selectedTheme={selectedTheme}
+        onUpdate={() => setSelectedTheme(null)}
+      />
     </div>
   );
 };

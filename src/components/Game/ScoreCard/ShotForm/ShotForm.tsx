@@ -132,7 +132,10 @@ export const ShotForm = ({
                 type='button'
                 key={key}
                 onClick={() => handleAddShot({ type: shot.type }, hole)}
-                color={shot?.color}>
+                color={selectedShot?.type === shot?.type ? '#fff' : shot?.color}
+                backgroundColor={
+                  selectedShot?.type === shot?.type ? theme.colors.blue : '#fff'
+                }>
                 {shot?.icon}
               </ShotButton>
             ) : null,

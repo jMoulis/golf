@@ -71,7 +71,7 @@ export const ShotsStats = ({ holes }: Props) => {
     <Flexbox
       styling={{
         marginBottom: '7px',
-        justifyContent: 'space-around',
+        marginLeft: '10px',
       }}>
       {Object.keys(totalScore).map((key) => (
         <Stat key={key}>

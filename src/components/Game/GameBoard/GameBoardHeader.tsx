@@ -4,6 +4,7 @@ import { GameHoleType } from '../../types';
 import { TotalScores } from './TotalScoresPars';
 import { CourseStats } from './CourseStats';
 import { ShotsStats } from './ShotsStats';
+import { EvalStats } from './EvalStats';
 
 const CourseName = styled.span``;
 
@@ -32,6 +33,7 @@ export const GameBoardHeader = ({ holes, courseName }: Props) => {
       </Flexbox>
       <TotalScores holes={holes} />
       <ShotsStats holes={holes} />
+      <EvalStats holes={holes} />
     </Header>
   );
 };

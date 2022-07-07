@@ -1,24 +1,27 @@
 import React from 'react';
 import { NewGame } from './Game/NewGame';
 import { Route, Routes } from 'react-router-dom';
-import { Homepage } from './Homepage';
+import { Homepage } from './pages/HomePage';
 import { Training } from './Training';
 import { GameBoard } from './Game/GameBoard/GameBoard';
-import { AddCourse } from './AddCourse';
-import { Landing } from './Landing';
+import { LandingPage } from './pages/LandingPage';
 import styled from '@emotion/styled';
-import { Games } from './Game/Games';
+import { GamePage } from './pages/GamePage';
 import { GameIndex } from './Game/GameIndex';
 import { LoginPage } from './pages/LoginPage';
 import { AdminPage } from './pages/AdminPage';
 import { ThemePage } from './pages/ThemePage';
 import { CoursePage } from './pages/CoursePage';
+import { CoachPage } from './pages/CoachPage';
+import { BOTTOM_NAVBAR_HEIGHT } from './cssConstants';
 
 const Grid = styled.div`
-  display: grid;
-  grid-template-rows: 50px calc(100% - 50px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* display: grid;
+  grid-template-rows: 50px 1fr ${BOTTOM_NAVBAR_HEIGHT}; */
   height: 100%;
-  /* /* height: 100vh; */
   overflow: hidden;
 `;
 
@@ -28,9 +31,9 @@ function App() {
       <Routes>
         <Route path='/' element={<LoginPage />} />
         <Route path='protected' element={<Homepage />}>
-          <Route index element={<Landing />} />
+          <Route index element={<LandingPage />} />
           <Route path='games' element={<GameIndex />}>
-            <Route index element={<Games />} />
+            <Route index element={<GamePage />} />
             <Route path='new' element={<NewGame />} />
             <Route path=':gameId' element={<GameBoard />} />
           </Route>
@@ -38,6 +41,7 @@ function App() {
           <Route path='admin' element={<AdminPage />}>
             <Route path='themes' element={<ThemePage />} />
             <Route path='courses' element={<CoursePage />} />
+            <Route path='coaches' element={<CoachPage />} />
           </Route>
         </Route>
       </Routes>

@@ -9,6 +9,7 @@ export const AdminPage = (props: Props) => {
       <nav>
         <Link to='themes'>Themes</Link>
         <Link to='courses'>Courses</Link>
+        <Link to='coaches'>Coaches</Link>
       </nav>
       <Outlet />
     </div>

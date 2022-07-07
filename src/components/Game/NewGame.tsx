@@ -6,7 +6,7 @@ import {
   Timestamp,
 } from 'firebase/firestore';
 import { useCallback, useEffect, useState } from 'react';
-import { app } from '../../firebase';
+import { app, auth } from '../../firebase';
 import { useNavigate } from 'react-router-dom';
 import { CourseType, ThemeType } from '../types';
 import styled from '@emotion/styled';
@@ -16,6 +16,7 @@ import { ThemeList } from './ScoreCard/ThemeForm/ThemeList';
 import { Flexbox } from '../commons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/pro-duotone-svg-icons';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 const Root = styled.div`
   display: flex;
@@ -74,23 +75,28 @@ export const NewGame = () => {
   const [courses, setCourses] = useState<CourseType[]>([]);
   const [selectedThemes, setSelectedThemes] = useState<ThemeType[]>([]);
   const { themes, onInit } = useThemes();
+  const [user] = useAuthState(auth);
+
+  console.log(themes);
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
     const db = getFirestore(app);
     if (!selectedCourse) return null;
+    if (!user) return null;
     try {
       const newGame = {
         date: Timestamp.fromDate(new Date()),
         courseRef: selectedCourse.id,
-        holes: {},
-      };
-
-      const docRef = await addDoc(collection(db, 'games'), {
-        ...newGame,
         themes: selectedThemes,
         holes: selectedCourse?.holes || {},
-      });
+        userId: user.uid,
+        roles: {
+          SfqfLdvgdiUXxC8x865JfxFhoys2: 'coach',
+          [user.uid]: 'owner',
+        },
+      };
+      const docRef = await addDoc(collection(db, 'games'), newGame);
       navigate(`/protected/games/${docRef.id}`, { replace: true });
     } catch (e) {
       console.error('Error adding document: ', e);

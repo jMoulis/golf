@@ -1,6 +1,7 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   Firestore,
   getFirestore,
@@ -9,22 +10,29 @@ import {
   query,
   Unsubscribe,
   updateDoc,
+  where,
 } from 'firebase/firestore';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { app } from '../../../../firebase';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { app, auth } from '../../../../firebase';
 import { ThemeType, ThemeTypeInput } from '../../../types';
 
 
 export const useThemes = () => {
   const [themes, setThemes] = useState<ThemeType[]>([]);
-  const [deleteTheme, setDeleteTheme] = useState<ThemeType | null>(null);
   const themesUnsubscribe = useRef<Unsubscribe | null>(null);
   const db = useRef<Firestore>(getFirestore(app));
+  const [user] = useAuthState(auth);
+  const COLLECTION = 'themes';
 
   const getThemes = useCallback(async () => {
+    if (!user) return null;
+
     const themesQuery = query(
-      collection(db.current, 'themes'),
+      collection(db.current, COLLECTION),
+      where('userId', '==', user.uid),
       orderBy('type', 'asc'),
+
     );
     themesUnsubscribe.current = onSnapshot(themesQuery, (payload) => {
       const incomingThemes = payload.docs.map((doc) => {
@@ -35,8 +43,8 @@ export const useThemes = () => {
         };
       });
       setThemes(incomingThemes);
-    });
-  }, []);
+    }, (error) => console.error(error));
+  }, [user]);
 
   const onInit = useCallback(() => {
     getThemes();
@@ -59,12 +67,20 @@ export const useThemes = () => {
   }
 
   const onAddTheme = (theme: ThemeTypeInput) => {
-    addDoc(collection(db.current, 'themes'), theme);
+    if (!user) return null;
+    console.log(COLLECTION)
+    addDoc(collection(db.current, COLLECTION), theme).catch((error) => console.log('AddTheme', error));
+  }
+
+  const onDeleteTheme = (themeID: string) => {
+    const deleteRef = doc(db.current, COLLECTION, themeID);
+    deleteDoc(deleteRef);
   }
 
   return {
     themes,
     onUpdateTheme,
+    onDeleteTheme,
     onInit,
     onAddTheme
   }

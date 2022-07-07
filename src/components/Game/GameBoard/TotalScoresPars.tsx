@@ -66,7 +66,6 @@ export const TotalScores = ({ holes }: Props) => {
     <Flexbox
       styling={{
         margin: '7px',
-        justifyContent: 'space-around',
       }}>
       {Object.keys(stats).map((key) => (
         <Stat key={key}>

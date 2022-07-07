@@ -18,6 +18,15 @@ export const shotQuality: {
   },
 ];
 
+export const shotQualityAsObject: {
+  [key: string]: { value: 'OK' | 'KO'; icon: JSX.Element; color: string };
+} = shotQuality.reduce(
+  (acc: any, shot) => ({
+    ...acc,
+    [shot.value]: shot,
+  }),
+  {},
+);
 export const shotEvaluations = [
   {
     type: 'choice',

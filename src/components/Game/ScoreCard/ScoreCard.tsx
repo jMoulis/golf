@@ -16,7 +16,7 @@ import { ShotType } from '../../../game';
 
 const List = styled.ul`
   overflow: auto;
-  height: calc(100% - 150px);
+  max-height: 100%;
 `;
 
 type Props = {
