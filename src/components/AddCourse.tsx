@@ -76,7 +76,7 @@ export const AddCourse = () => {
     try {
       await deleteDoc(doc(db, 'courses', courseID));
     } catch (error: any) {
-      console.log(error.message);
+      console.error(error.message);
     }
   };
 

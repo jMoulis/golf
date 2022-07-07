@@ -32,35 +32,36 @@ export const EvalStats = ({ holes }: Props) => {
       )
       .flat();
 
-    const lool: any = new Map();
+    const stats: any = new Map();
 
     themes.forEach((theme) => {
+      if (!theme) return null;
       return Object.keys(theme).forEach((key: string) => {
         const evaluation = theme[key];
-        const prev = lool.get(key);
+        const prev = stats.get(key);
         if (prev) {
-          lool.set(key, {
+          stats.set(key, {
             ...prev,
             [evaluation]: prev[evaluation]
               ? [...prev[evaluation], evaluation]
               : [evaluation],
           });
         } else {
-          console.log('here', key);
-          lool.set(key, {
+          stats.set(key, {
             [evaluation]: [evaluation],
           });
         }
       }, {});
     });
-    return [...lool];
+    return [...stats];
   }, [holes]);
-  console.log(shotQualityAsObject);
+
   return (
     <Flexbox
       styling={{
         marginBottom: '7px',
         marginLeft: '10px',
+        overflow: 'auto',
       }}>
       {totalScore.map(([key, value]) => (
         <Stat key={key}>

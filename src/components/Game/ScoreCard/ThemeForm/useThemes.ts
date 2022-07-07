@@ -68,8 +68,7 @@ export const useThemes = () => {
 
   const onAddTheme = (theme: ThemeTypeInput) => {
     if (!user) return null;
-    console.log(COLLECTION)
-    addDoc(collection(db.current, COLLECTION), theme).catch((error) => console.log('AddTheme', error));
+    addDoc(collection(db.current, COLLECTION), theme).catch((error) => console.error('AddTheme', error));
   }
 
   const onDeleteTheme = (themeID: string) => {

@@ -10,18 +10,8 @@ import {
 } from 'firebase/firestore';
 import { app } from '../../../firebase';
 import { ScoreCard } from '../ScoreCard/ScoreCard';
-import styled from '@emotion/styled';
 import { GameType } from '../../types';
 import { GameBoardHeader } from './GameBoardHeader';
-import { BOTTOM_NAVBAR_HEIGHT, TOP_NAVBAR_HEIGHT } from '../../cssConstants';
-
-const Root = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: calc(100vh - ${TOP_NAVBAR_HEIGHT} - ${BOTTOM_NAVBAR_HEIGHT});
-  /* height: 100%; */
-  /* overflow: hidden; */
-`;
 
 export const GameBoard = () => {
   const [game, setGame] = useState<GameType | null>(null);
@@ -61,9 +51,9 @@ export const GameBoard = () => {
   if (!game) return null;
 
   return (
-    <Root>
+    <>
       <GameBoardHeader holes={game?.holes} courseName={game.courseRef} />
       <ScoreCard game={game} gameRef={gameRef.current} />
-    </Root>
+    </>
   );
 };

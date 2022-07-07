@@ -40,6 +40,7 @@ const ListItem = styled.li<{ selected: boolean }>`
   background-color: ${({ selected }) =>
     selected ? theme.colors.lightBlue : 'transparent'};
   border-radius: 3px;
+  box-shadow: 0px 3px 7px -2px rgb(0 0 0 / 25%);
 `;
 
 const ThemeTag = styled.div`
@@ -77,7 +78,6 @@ export const NewGame = () => {
   const { themes, onInit } = useThemes();
   const [user] = useAuthState(auth);
 
-  console.log(themes);
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
@@ -97,7 +97,7 @@ export const NewGame = () => {
         },
       };
       const docRef = await addDoc(collection(db, 'games'), newGame);
-      navigate(`/protected/games/${docRef.id}`, { replace: true });
+      navigate(`/protected/games/list/${docRef.id}`, { replace: true });
     } catch (e) {
       console.error('Error adding document: ', e);
     }

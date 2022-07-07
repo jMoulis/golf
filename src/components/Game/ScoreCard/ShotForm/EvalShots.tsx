@@ -70,7 +70,6 @@ export const EvalShots = ({
   }, [onInit]);
 
   const handleSelectTheme = (incomingTheme: ThemeType) => {
-    console.log(gameRef);
     const updatedThemes = [...game.themes, incomingTheme];
     if (gameRef) {
       setDoc(

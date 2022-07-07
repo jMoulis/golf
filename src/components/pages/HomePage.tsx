@@ -4,7 +4,14 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase';
 import { BottomNavbar } from '../Home/BottomNavbar';
 import { TopNavbar } from '../Home/TopNavbar';
+import styled from '@emotion/styled';
+import { BOTTOM_NAVBAR_HEIGHT, TOP_NAVBAR_HEIGHT } from '../cssConstants';
 
+const ContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - ${TOP_NAVBAR_HEIGHT} - ${BOTTOM_NAVBAR_HEIGHT});
+`;
 export const Homepage = () => {
   const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
@@ -22,7 +29,9 @@ export const Homepage = () => {
     <>
       <div>
         <TopNavbar />
-        <Outlet />
+        <ContentWrapper>
+          <Outlet />
+        </ContentWrapper>
       </div>
       <BottomNavbar />
     </>

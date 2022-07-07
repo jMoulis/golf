@@ -96,18 +96,19 @@ export const Shots = ({
   return (
     <>
       <Root>
-        {shots?.length &&
-          shots?.map((shot, key) => {
-            const typedShot = (shotTypesByTypes as any)[shot.type];
-            return (
-              <Shot
-                key={key}
-                typedShot={typedShot}
-                onSelectShot={setSelectedShot}
-                shot={shot}
-              />
-            );
-          })}
+        {shots?.length
+          ? shots?.map((shot, key) => {
+              const typedShot = (shotTypesByTypes as any)[shot.type];
+              return (
+                <Shot
+                  key={key}
+                  typedShot={typedShot}
+                  onSelectShot={setSelectedShot}
+                  shot={shot}
+                />
+              );
+            })
+          : null}
         {selectedHole ? (
           <ShotButton color={theme.colors.blue} onClick={onOpenForm}>
             <FontAwesomeIcon icon={faSquarePlus as any} />

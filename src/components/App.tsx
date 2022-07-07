@@ -13,14 +13,13 @@ import { AdminPage } from './pages/AdminPage';
 import { ThemePage } from './pages/ThemePage';
 import { CoursePage } from './pages/CoursePage';
 import { CoachPage } from './pages/CoachPage';
-import { BOTTOM_NAVBAR_HEIGHT } from './cssConstants';
+import { PreviousGamePage } from './pages/PreviousGamePage';
+import { PreviousPage } from './pages/PreviousPage';
 
 const Grid = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  /* display: grid;
-  grid-template-rows: 50px 1fr ${BOTTOM_NAVBAR_HEIGHT}; */
   height: 100%;
   overflow: hidden;
 `;
@@ -35,7 +34,10 @@ function App() {
           <Route path='games' element={<GameIndex />}>
             <Route index element={<GamePage />} />
             <Route path='new' element={<NewGame />} />
-            <Route path=':gameId' element={<GameBoard />} />
+            <Route path='list' element={<PreviousPage />}>
+              <Route index element={<PreviousGamePage />} />
+              <Route path=':gameId' element={<GameBoard />} />
+            </Route>
           </Route>
           <Route path='trainings' element={<Training />} />
           <Route path='admin' element={<AdminPage />}>
