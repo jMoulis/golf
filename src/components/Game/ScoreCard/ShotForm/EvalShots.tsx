@@ -11,6 +11,7 @@ import { Flexbox } from '../../../commons';
 import { DeleteButton } from '../../../commons/DeleteButton';
 import { SwipeMenuHeader } from '../../../commons/SwipeMenuHeader';
 import { GameHoleType, GameType, ThemeType } from '../../../types';
+import { ThemeForm } from '../ThemeForm/ThemeForm';
 import { ThemeList } from '../ThemeForm/ThemeList';
 import { useThemes } from '../ThemeForm/useThemes';
 import { shotQuality } from './shotQuality';
@@ -23,23 +24,12 @@ const Wrapper = styled.div`
   border-bottom: 1px solid ${theme.colors.separator};
 `;
 
-const Header = styled.div`
-  display: flex;
-  font-size: 20px;
-  text-transform: uppercase;
-  align-items: center;
-  justify-content: space-between;
-  padding: 5px;
-  color: ${theme.colors.blue};
-`;
-
 const EvalWrapper = styled.div`
   border-radius: 10px;
   margin: 10px;
   margin-top: 0;
   box-shadow: 3px 5px 11px 0px rgba(0, 0, 0, 0.23);
   background-color: #fff;
-  max-height: 70%;
   overflow: auto;
 `;
 
@@ -130,12 +120,24 @@ export const EvalShots = ({
         flexDirection='column'
         style={{
           backgroundColor: theme.colors.backgroundPage,
-          maxHeight: 'calc(100% - 200px)',
+          maxHeight: 'calc(100% - 240px)',
         }}>
-        <Header>
-          <span>Themes</span>
-        </Header>
         <EvalWrapper>
+          <Flexbox
+            justifyContent='space-between'
+            alignItems='center'
+            style={{
+              padding: '5px',
+              borderBottom: `1px solid ${theme.colors.separator}`,
+            }}>
+            <span>Sélectionner ou créer un thème</span>
+            <ShotButton
+              color='#fff'
+              backgroundColor={theme.colors.saveButton}
+              onClick={() => setOpen(true)}>
+              <FontAwesomeIcon icon={faPlus} />
+            </ShotButton>
+          </Flexbox>
           {selectedShot &&
             availableShots.map((theme, key) => {
               const selectedEvaluationValue =
@@ -168,18 +170,6 @@ export const EvalShots = ({
                 </Wrapper>
               );
             })}
-          <Flexbox
-            justifyContent='flex-end'
-            style={{
-              padding: '5px',
-            }}>
-            <ShotButton
-              color='#fff'
-              backgroundColor={theme.colors.saveButton}
-              onClick={() => setOpen(true)}>
-              <FontAwesomeIcon icon={faPlus} />
-            </ShotButton>
-          </Flexbox>
         </EvalWrapper>
       </Flexbox>
       <SwipeableDrawer
@@ -188,14 +178,12 @@ export const EvalShots = ({
         anchor='bottom'
         open={open}
         PaperProps={{
-          style: {
-            borderRadius: '10px 10px 0 0',
-          },
+          style: theme.swipeable.paper,
         }}
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}>
         <SwipeMenuHeader title='Select a theme' />
-
+        <ThemeForm selectedTheme={null} />
         <ThemeList
           onSelectTheme={handleSelectTheme}
           selectedThemes={game?.themes}

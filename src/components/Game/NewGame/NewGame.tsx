@@ -15,35 +15,36 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { CourseList } from './CourseList';
 import { GameThemeForm } from './GameThemeForm';
 import { ButtonPill } from '../../commons/ButtonPill';
+import { FixedBottomToolbar } from '../../commons/FixedBottomToolbar';
+import { ListItem } from '../../commons/List';
+import { Flexbox } from '../../commons';
 
-const ButtonWrapper = styled.div`
+const ThemeTag = styled.div`
+  background-color: ${theme.colors.blueGreen};
+  padding: 5px;
+  margin: 5px;
+  border-radius: 10px;
+`;
+
+const ButtonWrapper = styled(FixedBottomToolbar)`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 1rem;
-  background-color: #fff;
-  box-shadow: ${theme.shadows.listItem};
-  min-height: 80px;
 `;
 
 const CustomButtonPill = styled(ButtonPill)`
   padding: 5px;
-  height: 47px;
+  height: 40px;
   margin: 0;
+  font-size: 13px;
 `;
 
-type StepType = 'SELECT_COURSE' | 'SELECT_THEME';
+type StepType = 'SELECT_COURSE' | 'SELECT_THEME' | null;
 
 export const NewGame = () => {
   const [selectedCourse, setSelectedCourse] = useState<CourseType | null>(null);
   const [courses, setCourses] = useState<CourseType[]>([]);
   const [selectedThemes, setSelectedThemes] = useState<ThemeType[]>([]);
-  const [step, setStep] = useState<StepType>('SELECT_COURSE');
+  const [step, setStep] = useState<StepType>(null);
   const [user] = useAuthState(auth);
 
   const navigate = useNavigate();
@@ -99,33 +100,52 @@ export const NewGame = () => {
     getCourses();
   }, [getCourses]);
 
+  useEffect(() => {
+    return () => {
+      setSelectedCourse(null);
+    };
+  }, []);
+
   return (
     <>
-      {step === 'SELECT_COURSE' ? (
-        <CourseList
-          courses={courses}
-          selectedCourse={selectedCourse}
-          onSelect={setSelectedCourse}
-        />
-      ) : null}
-      {step === 'SELECT_THEME' ? (
-        <GameThemeForm
-          selectedThemes={selectedThemes}
-          onRemoveTheme={handleRemoveTheme}
-          onSelectTheme={handleSelectTheme}
-        />
-      ) : null}
+      {selectedCourse ? (
+        <ListItem as='div'>
+          {selectedCourse?.name}
+          <Flexbox flexWrap='wrap'>
+            {selectedThemes.map((theme) => (
+              <ThemeTag onClick={() => handleRemoveTheme(theme.id)}>
+                {theme.type}
+              </ThemeTag>
+            ))}
+          </Flexbox>
+        </ListItem>
+      ) : (
+        <ListItem as='div'>Aucun parcours n'est sélectionné</ListItem>
+      )}
+
+      <CourseList
+        open={step === 'SELECT_COURSE'}
+        courses={courses}
+        selectedCourse={selectedCourse}
+        onSelect={setSelectedCourse}
+        onClose={() => setStep(null)}
+      />
+
+      <GameThemeForm
+        selectedThemes={selectedThemes}
+        onRemoveTheme={handleRemoveTheme}
+        onSelectTheme={handleSelectTheme}
+        onClose={() => setStep(null)}
+        open={step === 'SELECT_THEME'}
+      />
 
       <ButtonWrapper>
-        {selectedCourse && step === 'SELECT_THEME' ? (
-          <CustomButtonPill
-            onClick={() => setStep('SELECT_COURSE')}
-            backgroundColor={
-              theme.colors.deleteButton
-            }>{`Course`}</CustomButtonPill>
-        ) : (
-          <span />
-        )}
+        <CustomButtonPill
+          onClick={() => setStep('SELECT_COURSE')}
+          backgroundColor={
+            theme.colors.deleteButton
+          }>{`Parcours`}</CustomButtonPill>
+
         {selectedCourse ? (
           <ButtonPill type='button' onClick={() => handleSubmit()}>
             Créer
@@ -133,15 +153,12 @@ export const NewGame = () => {
         ) : (
           <span />
         )}
-        {selectedCourse && step === 'SELECT_COURSE' ? (
-          <CustomButtonPill
-            onClick={() => setStep('SELECT_THEME')}
-            backgroundColor={
-              theme.colors.deleteButton
-            }>{`Theme`}</CustomButtonPill>
-        ) : (
-          <span />
-        )}
+
+        <CustomButtonPill
+          onClick={() => setStep('SELECT_THEME')}
+          backgroundColor={
+            theme.colors.deleteButton
+          }>{`Themes`}</CustomButtonPill>
       </ButtonWrapper>
     </>
   );

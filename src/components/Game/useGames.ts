@@ -44,7 +44,6 @@ export const useGames = () => {
       (payload) => {
         const incomingGames = payload.docs.map((doc) => {
           const game = doc.data() as GamePayloadType;
-          console.log(game)
           return {
             id: doc.id,
             courseRef: game.courseRef,

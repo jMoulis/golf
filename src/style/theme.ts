@@ -21,6 +21,13 @@ export const theme = {
   radius: {
     listItem: '10px'
   },
+  swipeable: {
+    paper: {
+      height: '95vh',
+      borderRadius: '10px 10px 0 0',
+      backgroundColor: '#f6f5f9'
+    }
+  },
   headers: {
     games: {
       primary: 'rgba(248,68,133,1)',
@@ -41,6 +48,7 @@ export const theme = {
       linear: 'linear-gradient(150deg, rgba(207,68,67,1) 30%, rgba(255,107,107,1) 97%)',
       primary: 'rgba(207,68,67,1)',
       secondary: 'rgba(255,107,107,1)'
-    }
+    },
+
   }
 }

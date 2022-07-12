@@ -1,3 +1,5 @@
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SwipeableDrawer } from '@mui/material';
 import { DocumentReference } from 'firebase/firestore';
 import React from 'react';
@@ -6,6 +8,8 @@ import { theme } from '../../../../style/theme';
 import { iOS } from '../../../../utils/global.utils';
 import { Flexbox } from '../../../commons';
 import { ButtonPill } from '../../../commons/ButtonPill';
+import { DeleteButton } from '../../../commons/DeleteButton';
+import { FixedBottomToolbar } from '../../../commons/FixedBottomToolbar';
 import { List, ListItem } from '../../../commons/List';
 import { SwipeMenuHeader } from '../../../commons/SwipeMenuHeader';
 import { GameHoleType, GameType, ThemeType } from '../../../types';
@@ -23,6 +27,7 @@ type Props = {
   hole: GameHoleType | null;
   game: GameType;
   gameRef: DocumentReference | null;
+  onDeleteShot?: () => void;
 };
 
 export const ShotEvaluationForm = ({
@@ -36,6 +41,7 @@ export const ShotEvaluationForm = ({
   game,
   gameRef,
   onRemoveEvaluation,
+  onDeleteShot,
 }: Props) => {
   return (
     <SwipeableDrawer
@@ -45,11 +51,7 @@ export const ShotEvaluationForm = ({
       open={open}
       onClose={onClose}
       PaperProps={{
-        style: {
-          borderRadius: '10px 10px 0 0',
-          height: '90vh',
-          backgroundColor: theme.colors.backgroundPage,
-        },
+        style: theme.swipeable.paper,
       }}
       onOpen={onOpen}>
       <SwipeMenuHeader title={`Edit shot`}></SwipeMenuHeader>
@@ -94,24 +96,19 @@ export const ShotEvaluationForm = ({
         gameRef={gameRef}
         hole={hole}
       />
-      <Flexbox
-        justifyContent='center'
-        styling={{
-          paddingTop: '10px',
-          position: 'fixed',
-          paddingBottom: '10px',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          backgroundColor: '#fff',
-        }}>
+      <FixedBottomToolbar>
         <ButtonPill
           onClick={onClose}
           color='#fff'
           backgroundColor={theme.colors.saveButton}>
           <span>Enregistrer</span>
         </ButtonPill>
-      </Flexbox>
+        {onDeleteShot ? (
+          <DeleteButton onClick={onDeleteShot}>
+            <FontAwesomeIcon icon={faTrash} />
+          </DeleteButton>
+        ) : null}
+      </FixedBottomToolbar>
     </SwipeableDrawer>
   );
 };

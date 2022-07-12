@@ -13,6 +13,7 @@ import { SwipeableDrawer } from '@mui/material';
 import { iOS } from '../../../utils/global.utils';
 import { SwipeMenuHeader } from '../../commons/SwipeMenuHeader';
 import { ShotType } from '../../../game';
+import { theme } from '../../../style/theme';
 
 const List = styled.ul`
   overflow: auto;
@@ -125,6 +126,9 @@ export const ScoreCard = ({ game, gameRef }: Props) => {
         disableDiscovery={iOS}
         anchor='bottom'
         open={open}
+        PaperProps={{
+          style: theme.swipeable.paper,
+        }}
         onClose={toggleDrawer(false)}
         onOpen={toggleDrawer(true)}>
         <SwipeMenuHeader title='Add a shot' />

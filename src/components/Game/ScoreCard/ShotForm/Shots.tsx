@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import { faSquarePlus } from '@fortawesome/pro-duotone-svg-icons';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DocumentReference, setDoc } from 'firebase/firestore';
 import { useState } from 'react';
@@ -12,7 +11,6 @@ import { ShotEvaluationForm } from '../ShotEvaluationForm/ShotEvaluationForm';
 import { Shot } from './Shot';
 import { shotTypesByTypes } from './shotTypes';
 import { useScoring } from './useScoring';
-import { DeleteButton } from '../../../commons/DeleteButton';
 
 const Root = styled.div`
   display: flex;
@@ -116,17 +114,15 @@ export const Shots = ({
       <ShotEvaluationForm
         onAddEvaluation={handleAddShotScoring}
         onRemoveEvaluation={handleRemoveEval}
+        onDeleteShot={handleDelete}
         selectedShot={selectedShot}
         open={Boolean(selectedShot)}
         hole={hole}
         onOpen={() => {}}
         game={game}
         gameRef={gameRef}
-        onClose={() => setSelectedShot(null)}>
-        <DeleteButton onClick={handleDelete} color='#fff'>
-          <FontAwesomeIcon icon={faTrash} />
-        </DeleteButton>
-      </ShotEvaluationForm>
+        onClose={() => setSelectedShot(null)}
+      />
     </>
   );
 };

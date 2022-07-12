@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { faCheck, faTrash } from '@fortawesome/pro-duotone-svg-icons';
+import { faTrash } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DocumentReference } from 'firebase/firestore';
 import { useState } from 'react';
@@ -7,39 +7,31 @@ import { v4 } from 'uuid';
 import { ShotType } from '../../../../game';
 import { theme } from '../../../../style/theme';
 import { Flexbox } from '../../../commons';
+import { ButtonPill } from '../../../commons/ButtonPill';
+import { DeleteButton } from '../../../commons/DeleteButton';
+import { FixedBottomToolbar } from '../../../commons/FixedBottomToolbar';
 import { ShotButton } from '../../../commons/ShotButton';
 import { GameHoleType, GameType, ThemeType } from '../../../types';
 import { ShotEvaluationForm } from '../ShotEvaluationForm/ShotEvaluationForm';
 import { shotTypes } from './shotTypes';
 import { useScoring } from './useScoring';
 
-const SubmitButton = styled.button<{
-  color?: string;
-  backgroundColor?: string;
-}>`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+const Root = styled(Flexbox)`
+  background-color: ${theme.colors.backgroundPage};
   flex: 1;
-  padding: 5px;
-  border: none;
-  font-size: 30px;
-  margin: 0.25rem;
-  color: ${({ color }) => color};
-  border-radius: 5px;
-  background-color: ${({ backgroundColor }) => backgroundColor || '#f8d7da'};
-  & span {
-    font-size: 15px;
-  }
+  align-items: flex-start;
 `;
 
 const Wrapper = styled.div`
   display: flex;
-  flex: 1;
   flex-wrap: wrap;
-  padding: 0.5rem;
-  background-color: #fff;
+  padding: 0 0.5rem;
+`;
+
+const CustomShotButton = styled(ShotButton)`
+  height: 80px;
+  width: 80px;
+  font-size: 40px;
 `;
 
 type Props = {
@@ -118,16 +110,23 @@ export const ShotForm = ({
     setNewShot(null);
   };
 
-  const classicShots = ['tee', 'rough-left', 'fairway', 'rough-right', 'putt'];
-  const troubleShots = ['bunker', 'penalty'];
+  const classicShots = [
+    'tee',
+    'rough-left',
+    'fairway',
+    'rough-right',
+    'putt',
+    'bunker',
+    'penalty',
+  ];
 
   return (
     <>
-      <Flexbox flexDirection='column'>
+      <Root flexDirection='column'>
         <Wrapper>
           {shotTypes.map((shot, key) =>
             classicShots.includes(shot.type) ? (
-              <ShotButton
+              <CustomShotButton
                 type='button'
                 key={key}
                 onClick={() => handleAddShot({ type: shot.type }, hole)}
@@ -136,38 +135,23 @@ export const ShotForm = ({
                   selectedShot?.type === shot?.type ? theme.colors.blue : '#fff'
                 }>
                 {shot?.icon}
-              </ShotButton>
+              </CustomShotButton>
             ) : null,
           )}
         </Wrapper>
-        <Wrapper>
-          {shotTypes.map((shot, key) =>
-            troubleShots.includes(shot.type) ? (
-              <ShotButton
-                type='button'
-                key={key}
-                onClick={() => handleAddShot({ type: shot.type }, hole)}
-                color={selectedShot?.type === shot?.type ? '#fff' : shot?.color}
-                backgroundColor={
-                  selectedShot?.type === shot?.type ? theme.colors.blue : '#fff'
-                }>
-                {shot?.icon}
-              </ShotButton>
-            ) : null,
-          )}
-        </Wrapper>
-        <Flexbox>
-          <SubmitButton
-            onClick={handleSubmit}
-            color={theme.colors.blue}
-            backgroundColor={theme.colors.blueGreen}>
-            <FontAwesomeIcon icon={faCheck} />
-          </SubmitButton>
-          <SubmitButton onClick={handleClose} color='#d73038'>
+        <FixedBottomToolbar>
+          <ButtonPill onClick={handleSubmit}>Enregistrer</ButtonPill>
+          <DeleteButton
+            style={{
+              height: '50px',
+              width: '50px',
+            }}
+            onClick={handleClose}
+            color='#d73038'>
             <FontAwesomeIcon icon={faTrash} />
-          </SubmitButton>
-        </Flexbox>
-      </Flexbox>
+          </DeleteButton>
+        </FixedBottomToolbar>
+      </Root>
       <ShotEvaluationForm
         open={open}
         gameRef={gameRef}

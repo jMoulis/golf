@@ -1,11 +1,12 @@
 import styled from '@emotion/styled';
-import { faSquarePlus } from '@fortawesome/pro-duotone-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FormEvent, useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../../../firebase';
 import { theme } from '../../../../style/theme';
 import { Flexbox } from '../../../commons';
+import { ShotButton } from '../../../commons/ShotButton';
 import { ThemeType, ThemeTypeInput } from '../../../types';
 import { useThemes } from './useThemes';
 
@@ -13,21 +14,15 @@ const Form = styled.form`
   display: flex;
   align-items: center;
 `;
-const SubmitButton = styled.button`
-  font-size: 25px;
-  border: none;
-  background-color: transparent;
-  color: ${theme.colors.blue};
-`;
+
 const Input = styled.input`
   padding: 10px;
   border: 1px solid ${theme.colors.blue};
   border-radius: 3px;
   font-size: 17px;
-`;
-const Label = styled.label`
-  display: flex;
-  flex-direction: column;
+  &::placeholder {
+    font-style: italic;
+  }
 `;
 
 type Props = {
@@ -67,18 +62,27 @@ export const ThemeForm = ({ selectedTheme, onUpdate }: Props) => {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <Label>
-        Label
-        <Flexbox>
-          <Input
-            value={input}
-            onChange={(event) => setInput(event.currentTarget.value)}
-          />
-          <SubmitButton type='submit'>
-            <FontAwesomeIcon icon={faSquarePlus} />
-          </SubmitButton>
-        </Flexbox>
-      </Label>
+      <Input
+        placeholder='Nom du thème'
+        value={input}
+        onChange={(event) => setInput(event.currentTarget.value)}
+      />
+      <Flexbox
+        justifyContent='flex-end'
+        style={{
+          padding: '5px',
+        }}>
+        <ShotButton
+          style={{
+            height: '40px',
+            width: '40px',
+          }}
+          type='submit'
+          color='#fff'
+          backgroundColor={theme.colors.saveButton}>
+          <FontAwesomeIcon icon={faPlus} />
+        </ShotButton>
+      </Flexbox>
     </Form>
   );
 };

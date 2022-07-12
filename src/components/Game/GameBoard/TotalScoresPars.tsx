@@ -25,7 +25,9 @@ export const TotalScores = ({ holes }: Props) => {
       );
       const eagles = parsedHoles.reduce(
         (acc: number, hole: GameHoleType) =>
-          hole.shots?.length <= hole.par - 2 ? (acc += 1) : acc,
+          hole.shots?.length && hole.shots?.length <= hole.par - 2
+            ? (acc += 1)
+            : acc,
         0,
       );
       const boggeys = parsedHoles.reduce(

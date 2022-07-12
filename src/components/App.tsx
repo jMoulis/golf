@@ -16,6 +16,7 @@ import { CoachPage } from './pages/CoachPage';
 import { TrainingIndex } from './Training/TrainingIndex';
 import { NewTraining } from './Training/NewTraining';
 import { EditTraining } from './Training/EditTraining';
+import { AdminIndex } from './Admin/AdminIndex';
 
 const Grid = styled.div`
   label: MainGrid;
@@ -43,6 +44,7 @@ function App() {
             <Route path=':trainingId' element={<EditTraining />} />
           </Route>
           <Route path='admin' element={<AdminPage />}>
+            <Route index element={<AdminIndex />} />
             <Route path='themes' element={<ThemePage />} />
             <Route path='courses' element={<CoursePage />} />
             <Route path='coaches' element={<CoachPage />} />

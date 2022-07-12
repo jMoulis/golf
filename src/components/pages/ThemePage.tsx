@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { faTrash } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
+import { GoBackLink } from '../Admin/GoBackLink';
 import { Flexbox } from '../commons';
 import { DeleteButton } from '../commons/DeleteButton';
 import { ThemeForm } from '../Game/ScoreCard/ThemeForm/ThemeForm';
@@ -27,6 +28,7 @@ export const ThemePage = () => {
 
   return (
     <div>
+      <GoBackLink />
       ThemePage
       <List>
         {themes.map((theme) => (
