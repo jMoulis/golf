@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import React, { useEffect, useState } from 'react';
+import { theme } from '../../../style/theme';
 import { Flexbox } from '../../commons';
 import { GameHoleType } from '../../types';
 import { shotTypesByTypes } from '../ScoreCard/ShotForm/shotTypes';
@@ -8,6 +9,7 @@ import { Stat, Tag } from './stylesComponents';
 const CustomTag = styled(Tag)`
   background-color: #fff;
   font-size: 30px;
+  box-shadow: ${theme.shadows.flatButton};
 `;
 type Props = {
   holes?: Record<string, GameHoleType>;
@@ -85,7 +87,6 @@ export const ShotsStats = ({ holes }: Props) => {
     }
   }, [holes]);
 
-  console.log(stats);
   return (
     <Flexbox
       flex='1'

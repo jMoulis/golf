@@ -2,6 +2,9 @@ import styled from "@emotion/styled";
 import { theme } from "../../style/theme";
 
 export const DeleteButton = styled.button`
+display: flex;
+align-items: center;
+justify-content: center;
   border: none;
   font-size: 20px;
   margin: 0.25rem;

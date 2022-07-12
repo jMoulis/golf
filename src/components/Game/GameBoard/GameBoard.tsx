@@ -13,6 +13,7 @@ import { ScoreCard } from '../ScoreCard/ScoreCard';
 import { GameType } from '../../types';
 import { GameBoardHeader } from './GameBoardHeader';
 import { PageHeader } from '../../commons/Core/PageHeader';
+import { theme } from '../../../style/theme';
 
 export const GameBoard = () => {
   const [game, setGame] = useState<GameType | null>(null);
@@ -53,7 +54,7 @@ export const GameBoard = () => {
 
   return (
     <>
-      <PageHeader backgroundColor='linear-gradient(150deg, rgba(248,68,133,1) 30%, rgba(251,158,147,1) 97%);'>
+      <PageHeader backgroundColor={theme.headers.games.linear}>
         <GameBoardHeader holes={game?.holes} courseName={game.courseRef} />
       </PageHeader>
       <ScoreCard game={game} gameRef={gameRef.current} />

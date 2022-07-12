@@ -11,6 +11,7 @@ const Header = styled.header`
   align-items: center;
   color: ${theme.colors.blue};
   border-bottom: 1px solid ${theme.colors.separator};
+  background-color: #fff;
   & span {
     font-weight: 700;
     text-transform: uppercase;

@@ -13,10 +13,13 @@ const CustomTag = styled(Tag)`
   padding: 0;
   height: fit-content;
   width: fit-content;
+  box-shadow: unset;
 `;
 const CustomShotButton = styled(ShotButton)`
-  height: 40px;
-  width: 40px;
+  display: flex;
+  flex-direction: column;
+  height: 45px;
+  width: 45px;
   font-size: 20px;
   border-radius: 5px;
 `;
@@ -76,14 +79,24 @@ export const EvalStats = ({ holes }: Props) => {
               color={shotQualityAsObject.OK?.color}
               backgroundColor={'#fff'}>
               {shotQualityAsObject.OK?.icon}
-              {value.OK?.length}
+              <span
+                style={{
+                  fontSize: '13px',
+                }}>
+                {value.OK?.length}
+              </span>
             </CustomShotButton>
             <CustomShotButton
               type='button'
               color={shotQualityAsObject.KO?.color}
               backgroundColor={'#fff'}>
               {shotQualityAsObject.KO?.icon}
-              {value.KO?.length}
+              <span
+                style={{
+                  fontSize: '13px',
+                }}>
+                {value.KO?.length}
+              </span>
             </CustomShotButton>
           </Flexbox>
           <CustomTag

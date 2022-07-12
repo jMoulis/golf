@@ -12,6 +12,7 @@ import { ShotEvaluationForm } from '../ShotEvaluationForm/ShotEvaluationForm';
 import { Shot } from './Shot';
 import { shotTypesByTypes } from './shotTypes';
 import { useScoring } from './useScoring';
+import { DeleteButton } from '../../../commons/DeleteButton';
 
 const Root = styled.div`
   display: flex;
@@ -19,20 +20,6 @@ const Root = styled.div`
   flex: 1;
   border-radius: 3px;
   flex-wrap: wrap;
-`;
-
-const DeleteButton = styled.button<{
-  color?: string;
-  backgroundColor?: string;
-}>`
-  border: none;
-  font-size: 15px;
-  margin: 0.25rem;
-  width: 40px;
-  height: 40px;
-  color: ${({ color }) => color};
-  border-radius: 100px;
-  background-color: ${({ backgroundColor }) => backgroundColor || '#f8d7da'};
 `;
 
 type Props = {
@@ -136,10 +123,7 @@ export const Shots = ({
         game={game}
         gameRef={gameRef}
         onClose={() => setSelectedShot(null)}>
-        <DeleteButton
-          onClick={handleDelete}
-          color='#fff'
-          backgroundColor='#8C8C8C'>
+        <DeleteButton onClick={handleDelete} color='#fff'>
           <FontAwesomeIcon icon={faTrash} />
         </DeleteButton>
       </ShotEvaluationForm>

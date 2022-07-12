@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { DocumentReference } from 'firebase/firestore';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { theme } from '../../../style/theme';
 import { scoreResult } from '../../../utils/scoreUtils';
 import { Flexbox } from '../../commons';
@@ -12,10 +12,12 @@ const ListItem = styled.div<{ selected: boolean }>`
   grid-template-columns: 3.5rem 1fr;
   align-items: center;
   border: 1px solid ${({ selected }) => (selected ? '#e2e1e0' : 'transparent')};
-  background-color: ${({ selected }) => (selected ? '#e2e1e0' : 'transparent')};
+  background-color: ${({ selected }) => (selected ? '#e2e1e0' : '#fff')};
   padding: 0.25rem;
-  margin: 0 0.25rem;
-  border-radius: 5px;
+  margin: 10px;
+  border-radius: ${theme.radius.listItem};
+  box-shadow: ${theme.shadows.listItem};
+  min-height: 70px;
 `;
 
 const HoleHeader = styled.div`
@@ -34,15 +36,7 @@ const Tag = styled.div<{ scoreColor?: { bk: string; color: string } }>`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
-
-const Footer = styled.footer`
-  display: flex;
-  justify-content: space-around;
-  background-color: ${theme.colors.blueGreen};
-  padding: 0.5rem;
-  margin: 0.25rem;
-  border-radius: 3px;
+  box-shadow: ${theme.shadows.flatButton};
 `;
 
 type Props = {
@@ -62,29 +56,13 @@ export const RenderHoles = ({
   onOpenForm,
   game,
 }: Props) => {
-  const totalScore = useMemo(() => {
-    const score: any = holes.reduce(
-      (acc: any, hole: any) => acc + (hole.shots?.length || 0),
-      0,
-    );
-    const par: any = holes.reduce(
-      (acc: any, hole: any) => acc + (hole.par || 0),
-      0,
-    );
-    return {
-      score,
-      par,
-      diff: score - par,
-    };
-  }, [holes]);
-
   return (
     <li>
       {holes.map((hole) => (
         <ListItem selected={hole.ref === selectedHole?.ref} key={hole.ref}>
           <HoleHeader onClick={() => onSelectHole(hole)}>
             <Flexbox flexDirection='column'>
-              <Flexbox>
+              <Flexbox alignItems='center'>
                 <span
                   style={{
                     fontWeight: 'bold',
@@ -99,7 +77,12 @@ export const RenderHoles = ({
                   {hole.shots?.length || 0}
                 </Tag>
               </Flexbox>
-              <span style={{ fontSize: '13px', color: 'gray' }}>
+              <span
+                style={{
+                  fontSize: '13px',
+                  color: 'gray',
+                  letterSpacing: '2px',
+                }}>
                 Par {hole.par}
               </span>
             </Flexbox>
@@ -114,11 +97,6 @@ export const RenderHoles = ({
           />
         </ListItem>
       ))}
-      <Footer>
-        <span>PAR: {totalScore.par}</span>
-        <span>BRUT: {totalScore.score}</span>
-        <span>DIFF: {totalScore.diff}</span>
-      </Footer>
     </li>
   );
 };

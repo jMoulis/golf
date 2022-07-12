@@ -65,7 +65,7 @@ export const NewGame = () => {
         },
       };
       const docRef = await addDoc(collection(db, 'games'), newGame);
-      navigate(`/protected/games/list/${docRef.id}`, { replace: true });
+      navigate(`/protected/games/${docRef.id}`, { replace: true });
     } catch (e) {
       console.error('Error adding document: ', e);
     }

@@ -37,7 +37,8 @@ export const TabNavigation = ({
             key={key}
             color={selectedTab?.color}
             onClick={() => onSelectTab(tab)}>
-            {tab.label}
+            {tab.icon || null}
+            <span>{tab.label}</span>
           </Tab>
         ))}
       </Tabs>

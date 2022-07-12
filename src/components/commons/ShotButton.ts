@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { theme } from "../../style/theme";
 
 export const ShotButton = styled.button<{
   color?: string;
@@ -15,5 +16,5 @@ export const ShotButton = styled.button<{
   color: ${({ color }) => color};
   border-radius: 10px;
   background-color: ${({ backgroundColor }) => backgroundColor || "#fff"};
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  box-shadow: ${theme.shadows.flatButton};
 `;

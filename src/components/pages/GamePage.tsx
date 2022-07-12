@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { theme } from '../../style/theme';
 import { Button, Flexbox } from '../commons';
 import { PageHeader } from '../commons/Core/PageHeader';
 import { Modal } from '../commons/Modal';
@@ -14,7 +15,7 @@ export const GamePage = () => {
   const { games, onDeleteGame, selectDeleteGame, deletedGame } = useGames();
   return (
     <>
-      <PageHeader backgroundColor='linear-gradient(150deg, rgba(50,120,217,1) 30%, rgba(82,196,250,1) 97%);'>
+      <PageHeader backgroundColor={theme.headers.games.linear}>
         <Flexbox flex='1' flexDirection='column' justifyContent='space-between'>
           <Flexbox justifyContent='center'>
             <HeaderTitle>Games</HeaderTitle>

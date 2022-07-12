@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { theme } from "../../../style/theme";
 
 export const Stat = styled.span`
   margin-right: 10px;
@@ -19,4 +20,5 @@ export const Tag = styled.div<{ scoreColor?: { bk: string; color: string } }>`
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: ${theme.shadows.flatButton};
 `;

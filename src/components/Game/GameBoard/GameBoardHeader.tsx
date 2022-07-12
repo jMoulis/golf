@@ -9,6 +9,12 @@ import { useMemo, useState } from 'react';
 import { TabType } from '../../commons/TabNavigation/types';
 import { TabNavigation } from '../../commons/TabNavigation/TabNavigation';
 import { theme } from '../../../style/theme';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faArrowDown19,
+  faGolfBallTee,
+  faThumbsUp,
+} from '@fortawesome/free-solid-svg-icons';
 
 const CourseName = styled.span``;
 
@@ -23,14 +29,17 @@ export const GameBoardHeader = ({ holes, courseName }: Props) => {
       {
         label: 'Scores',
         color: theme.colors.gamePlay,
+        icon: <FontAwesomeIcon icon={faArrowDown19} />,
       },
       {
         label: 'Shots',
         color: theme.colors.gamePlay,
+        icon: <FontAwesomeIcon icon={faGolfBallTee} />,
       },
       {
         label: 'Eval',
         color: theme.colors.gamePlay,
+        icon: <FontAwesomeIcon icon={faThumbsUp} />,
       },
     ];
   }, []);

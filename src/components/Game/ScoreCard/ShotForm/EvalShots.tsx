@@ -168,7 +168,11 @@ export const EvalShots = ({
                 </Wrapper>
               );
             })}
-          <Flexbox justifyContent='flex-end'>
+          <Flexbox
+            justifyContent='flex-end'
+            style={{
+              padding: '5px',
+            }}>
             <ShotButton
               color='#fff'
               backgroundColor={theme.colors.saveButton}

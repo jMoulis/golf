@@ -1,3 +1,4 @@
+
 export const theme = {
   colors: {
     pink: 'rgba(216, 71, 165, 1)',
@@ -13,6 +14,28 @@ export const theme = {
     deleteButton: '#8C8C8C'
   },
   shadows: {
-    button: '2px 2px 7px -2px rgb(0 0 0 / 23%)'
+    button: '2px 2px 7px -2px rgb(0 0 0 / 23%)',
+    listItem: '3px 5px 11px 0px rgba(0, 0, 0, 0.23)',
+    flatButton: '0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)'
+  },
+  radius: {
+    listItem: '10px'
+  },
+  headers: {
+    games: {
+      primary: 'rgba(248,68,133,1)',
+      secondary: 'rgba(251,158,147,1)',
+      linear: 'linear-gradient(150deg, rgba(248,68,133,1) 30%, rgba(251,158,147,1) 97%)'
+    },
+    statistics: {
+      linear: 'linear-gradient(135deg, rgba(69,241,162,1) 40%, rgba(73,183,208,1) 97%)',
+      primary: 'rgba(69,241,162,1)',
+      secondary: 'rgba(73,183,208,1)'
+    },
+    trainings: {
+      linear: 'linear-gradient(150deg, rgba(50,120,217,1) 30%, rgba(82,196,250,1) 97%)',
+      primary: 'rgba(50,120,217,1)',
+      secondary: 'rgba(82,196,250,1)'
+    }
   }
 }
