@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { faSquarePlus } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../../../firebase';
 import { theme } from '../../../../style/theme';

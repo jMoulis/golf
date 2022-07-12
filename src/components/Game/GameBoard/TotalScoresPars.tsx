@@ -64,6 +64,8 @@ export const TotalScores = ({ holes }: Props) => {
 
   return (
     <Flexbox
+      flex='1'
+      justifyContent='space-around'
       styling={{
         margin: '7px',
       }}>

@@ -127,7 +127,7 @@ export const ScoreCard = ({ game, gameRef }: Props) => {
         open={open}
         onClose={toggleDrawer(false)}
         onOpen={toggleDrawer(true)}>
-        <SwipeMenuHeader title='Add a shot' onClose={() => setOpen(false)} />
+        <SwipeMenuHeader title='Add a shot' />
         <ShotForm
           gameRef={gameRef}
           onAddShot={handleAddShot}

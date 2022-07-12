@@ -1,25 +1,29 @@
 import styled from '@emotion/styled';
 import { BOTTOM_NAVBAR_HEIGHT } from '../cssConstants';
-import { theme } from '../../style/theme';
 import { Link } from 'react-router-dom';
 
 const Nav = styled.ul`
+  label: BottomNavbar;
   display: flex;
   justify-content: space-around;
   align-items: center;
-  background-color: ${theme.colors.pink};
+  background-color: #fff;
   padding-bottom: 10px;
   border-radius: 10px 10px 0 0;
   height: ${BOTTOM_NAVBAR_HEIGHT};
+  /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); */
   z-index: 1;
-  mar
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
 `;
 
 const NavItem = styled.li`
   & a,
   button {
     text-decoration: none;
-    color: #fff;
+    color: gray;
     font-size: 20px;
   }
 `;

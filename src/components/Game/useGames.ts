@@ -12,12 +12,9 @@ import {
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { app, auth } from '../../firebase';
-import { GamesList } from '../Game/GameBoard/GamesList';
 import { GamePayloadType, GameType } from '../types';
-import { Button } from '../commons';
-import { Modal } from '../commons/Modal';
 
-export const PreviousGamePage = () => {
+export const useGames = () => {
   const [games, setGames] = useState<GameType[]>([]);
   const gamesUnsubscribe = useRef<Unsubscribe | null>(null);
   const [user] = useAuthState(auth);
@@ -31,6 +28,7 @@ export const PreviousGamePage = () => {
       setDeleteGame(null);
     }
   };
+
   const getGames = useCallback(async () => {
     if (!user) return null;
     const gamesQuery = query(
@@ -69,15 +67,10 @@ export const PreviousGamePage = () => {
       }
     };
   }, [getGames]);
-
-  return (
-    <>
-      <GamesList onDeleteGame={setDeleteGame} games={games} />
-      <Modal onClose={() => setDeleteGame(null)} isOpen={Boolean(deleteGame)}>
-        <Button type='button' onClick={handleDeleteGame}>
-          Delete
-        </Button>
-      </Modal>
-    </>
-  );
-};
+  return {
+    games,
+    onDeleteGame: handleDeleteGame,
+    selectDeleteGame: setDeleteGame,
+    deletedGame: deleteGame
+  }
+}

@@ -6,21 +6,20 @@ import {
   Timestamp,
 } from 'firebase/firestore';
 import { useCallback, useEffect, useState } from 'react';
-import { app, auth } from '../../firebase';
+import { app, auth } from '../../../firebase';
 import { useNavigate } from 'react-router-dom';
-import { CourseType, ThemeType } from '../types';
+import { CourseType, ThemeType } from '../../types';
 import styled from '@emotion/styled';
-import { theme } from '../../style/theme';
-import { useThemes } from './ScoreCard/ThemeForm/useThemes';
-import { ThemeList } from './ScoreCard/ThemeForm/ThemeList';
-import { Flexbox } from '../commons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/pro-duotone-svg-icons';
+import { theme } from '../../../style/theme';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { CourseList } from './CourseList';
+import { GameThemeForm } from './GameThemeForm';
 
 const Root = styled.div`
   display: flex;
   flex-direction: column;
+  background-color: #e4e4e4;
+  flex: 1;
 `;
 
 const ButtonWrapper = styled.div`
@@ -28,39 +27,6 @@ const ButtonWrapper = styled.div`
   justify-content: center;
   flex: 1;
   align-items: center;
-`;
-
-const List = styled.ul`
-  flex: 1;
-  padding: 0.3rem;
-`;
-
-const ListItem = styled.li<{ selected: boolean }>`
-  padding: 0.5rem;
-  background-color: ${({ selected }) =>
-    selected ? theme.colors.lightBlue : 'transparent'};
-  border-radius: 3px;
-  box-shadow: 0px 3px 7px -2px rgb(0 0 0 / 25%);
-`;
-
-const ThemeTag = styled.div`
-  padding: 5px;
-  border-radius: 3px 0 0 3px;
-  background-color: ${theme.colors.lightPink};
-  margin: 5px 0;
-  display: flex;
-  align-items: center;
-`;
-
-const ThemeDeleteButton = styled.button`
-  border: none;
-  padding: 5px;
-  border-radius: 0 3px 3px 0;
-  color: #d73038;
-  background-color: #f8d7da;
-  margin: 5px 0;
-  margin-right: 5px;
-  font-size: 20px;
 `;
 
 const Button = styled.button`
@@ -71,11 +37,13 @@ const Button = styled.button`
   border: none;
 `;
 
+type StepType = 'SELECT_COURSE' | 'SELECT_THEME';
+
 export const NewGame = () => {
   const [selectedCourse, setSelectedCourse] = useState<CourseType | null>(null);
   const [courses, setCourses] = useState<CourseType[]>([]);
   const [selectedThemes, setSelectedThemes] = useState<ThemeType[]>([]);
-  const { themes, onInit } = useThemes();
+  const [step, setStep] = useState<StepType>('SELECT_COURSE');
   const [user] = useAuthState(auth);
 
   const navigate = useNavigate();
@@ -128,45 +96,26 @@ export const NewGame = () => {
   };
 
   useEffect(() => {
-    onInit();
     getCourses();
-  }, [getCourses, onInit]);
+  }, [getCourses]);
 
   return (
     <Root>
-      <List>
-        <li>
-          <span>Available courses</span>
-        </li>
-        {courses?.map((course, key) => (
-          <ListItem
-            selected={course.id === selectedCourse?.id}
-            key={key}
-            onClick={() => setSelectedCourse(course)}>
-            {course.name}
-          </ListItem>
-        ))}
-        {selectedCourse ? (
-          <>
-            <Flexbox flexWrap='wrap'>
-              {selectedThemes.map((theme) => (
-                <Flexbox key={theme.id}>
-                  <ThemeTag>{theme.type}</ThemeTag>
-                  <ThemeDeleteButton
-                    onClick={() => handleRemoveTheme(theme.id)}>
-                    <FontAwesomeIcon icon={faTrash} />
-                  </ThemeDeleteButton>
-                </Flexbox>
-              ))}
-            </Flexbox>
-            <ThemeList
-              onSelectTheme={handleSelectTheme}
-              selectedThemes={selectedThemes}
-              themes={themes}
-            />
-          </>
-        ) : null}
-      </List>
+      {step === 'SELECT_COURSE' ? (
+        <CourseList
+          courses={courses}
+          selectedCourse={selectedCourse}
+          onSelect={setSelectedCourse}
+        />
+      ) : null}
+      {step === 'SELECT_THEME' ? (
+        <GameThemeForm
+          selectedThemes={selectedThemes}
+          onRemoveTheme={handleRemoveTheme}
+          onSelectTheme={handleSelectTheme}
+        />
+      ) : null}
+
       <ButtonWrapper>
         {selectedCourse ? (
           <Button type='button' onClick={() => handleSubmit()}>

@@ -12,6 +12,7 @@ import { app } from '../../../firebase';
 import { ScoreCard } from '../ScoreCard/ScoreCard';
 import { GameType } from '../../types';
 import { GameBoardHeader } from './GameBoardHeader';
+import { PageHeader } from '../../commons/Core/PageHeader';
 
 export const GameBoard = () => {
   const [game, setGame] = useState<GameType | null>(null);
@@ -52,7 +53,9 @@ export const GameBoard = () => {
 
   return (
     <>
-      <GameBoardHeader holes={game?.holes} courseName={game.courseRef} />
+      <PageHeader backgroundColor='linear-gradient(150deg, rgba(248,68,133,1) 30%, rgba(251,158,147,1) 97%);'>
+        <GameBoardHeader holes={game?.holes} courseName={game.courseRef} />
+      </PageHeader>
       <ScoreCard game={game} gameRef={gameRef.current} />
     </>
   );

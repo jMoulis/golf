@@ -1,5 +1,5 @@
 import React from 'react';
-import { NewGame } from './Game/NewGame';
+import { NewGame } from './Game/NewGame/NewGame';
 import { Route, Routes } from 'react-router-dom';
 import { Homepage } from './pages/HomePage';
 import { Training } from './Training';
@@ -13,15 +13,13 @@ import { AdminPage } from './pages/AdminPage';
 import { ThemePage } from './pages/ThemePage';
 import { CoursePage } from './pages/CoursePage';
 import { CoachPage } from './pages/CoachPage';
-import { PreviousGamePage } from './pages/PreviousGamePage';
-import { PreviousPage } from './pages/PreviousPage';
 
 const Grid = styled.div`
+  label: MainGrid;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
-  overflow: hidden;
 `;
 
 function App() {
@@ -34,10 +32,7 @@ function App() {
           <Route path='games' element={<GameIndex />}>
             <Route index element={<GamePage />} />
             <Route path='new' element={<NewGame />} />
-            <Route path='list' element={<PreviousPage />}>
-              <Route index element={<PreviousGamePage />} />
-              <Route path=':gameId' element={<GameBoard />} />
-            </Route>
+            <Route path=':gameId' element={<GameBoard />} />
           </Route>
           <Route path='trainings' element={<Training />} />
           <Route path='admin' element={<AdminPage />}>

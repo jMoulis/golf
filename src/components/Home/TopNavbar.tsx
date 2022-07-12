@@ -1,9 +1,5 @@
 import styled from '@emotion/styled';
-import {
-  faArrowCircleLeft,
-  faArrowLeft,
-  faCaretCircleLeft,
-} from '@fortawesome/pro-duotone-svg-icons';
+import { faArrowCircleLeft } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';

@@ -3,15 +3,8 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase';
 import { BottomNavbar } from '../Home/BottomNavbar';
-import { TopNavbar } from '../Home/TopNavbar';
-import styled from '@emotion/styled';
-import { BOTTOM_NAVBAR_HEIGHT, TOP_NAVBAR_HEIGHT } from '../cssConstants';
+import { Page } from '../commons/Core/Page';
 
-const ContentWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: calc(100vh - ${TOP_NAVBAR_HEIGHT} - ${BOTTOM_NAVBAR_HEIGHT});
-`;
 export const Homepage = () => {
   const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
@@ -27,12 +20,10 @@ export const Homepage = () => {
 
   return (
     <>
-      <div>
-        <TopNavbar />
-        <ContentWrapper>
-          <Outlet />
-        </ContentWrapper>
-      </div>
+      {/* <TopNavbar /> */}
+      <Page>
+        <Outlet />
+      </Page>
       <BottomNavbar />
     </>
   );

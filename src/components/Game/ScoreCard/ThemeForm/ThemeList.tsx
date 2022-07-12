@@ -3,22 +3,22 @@ import { faSquareArrowUp } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useMemo } from 'react';
 import { theme } from '../../../../style/theme';
+import { List, ListItem } from '../../../commons/List';
 import { ThemeType } from '../../../types';
-import { ThemeForm } from './ThemeForm';
 
-const List = styled.ul`
-  max-height: 100%;
-`;
-
-const ListItem = styled.li`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-`;
 const ThemeLabel = styled.span`
   font-size: 20px;
 `;
+const CustomList = styled(List)`
+  min-height: 90vh;
+`;
+
+const CustomListItem = styled(ListItem)`
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1fr 30px;
+`;
+
 const Button = styled.button`
   background-color: transparent;
   border: none;
@@ -42,20 +42,17 @@ export const ThemeList = ({ onSelectTheme, selectedThemes, themes }: Props) => {
   }, [selectedThemes, themes]);
 
   return (
-    <List>
-      <ListItem>
-        <ThemeForm selectedTheme={null} />
-      </ListItem>
+    <CustomList>
       {availableThemes?.length
         ? availableThemes.map((theme) => (
-            <ListItem key={theme.id}>
+            <CustomListItem key={theme.id}>
               <ThemeLabel>{theme.type}</ThemeLabel>
               <Button onClick={() => onSelectTheme(theme)}>
                 <FontAwesomeIcon icon={faSquareArrowUp} />
               </Button>
-            </ListItem>
+            </CustomListItem>
           ))
         : null}
-    </List>
+    </CustomList>
   );
 };

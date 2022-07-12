@@ -1,32 +1,39 @@
 import styled from '@emotion/styled';
-import { Link } from 'react-router-dom';
-import { Flexbox } from '../commons';
+import { Button, Flexbox } from '../commons';
+import { PageHeader } from '../commons/Core/PageHeader';
+import { Modal } from '../commons/Modal';
+import { TabNavigation } from '../commons/TabNavigation/TabNavigation';
+import { GamesList } from '../Game/GameBoard/GamesList';
+import { useGames } from '../Game/useGames';
 
-const CustomLink = styled(Link)<{ backgroundColor?: string }>`
-  height: 150px;
-  width: 150px;
-  background-color: ${({ backgroundColor }) => backgroundColor};
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 10px;
-  color: #fff;
-  font-weight: bold;
-  font-size: 20px;
-  padding: 5px;
-  text-align: center;
+const HeaderTitle = styled.span`
+  text-transform: uppercase;
 `;
 
 export const GamePage = () => {
+  const { games, onDeleteGame, selectDeleteGame, deletedGame } = useGames();
   return (
-    <Flexbox justifyContent='space-around'>
-      <CustomLink backgroundColor='#3dd988' to='new'>
-        New Game
-      </CustomLink>
-      <CustomLink backgroundColor='#3D80D9' to='list'>
-        Previous games
-      </CustomLink>
-    </Flexbox>
+    <>
+      <PageHeader backgroundColor='linear-gradient(150deg, rgba(50,120,217,1) 30%, rgba(82,196,250,1) 97%);'>
+        <Flexbox flex='1' flexDirection='column' justifyContent='space-between'>
+          <Flexbox justifyContent='center'>
+            <HeaderTitle>Games</HeaderTitle>
+          </Flexbox>
+          <TabNavigation
+            tabs={[{ label: 'list' }, { label: 'stats' }]}
+            onSelectTab={() => {}}
+            selectedTab={null}
+          />
+        </Flexbox>
+      </PageHeader>
+      <GamesList onDeleteGame={selectDeleteGame} games={games} />
+      <Modal
+        onClose={() => selectDeleteGame(null)}
+        isOpen={Boolean(deletedGame)}>
+        <Button type='button' onClick={onDeleteGame}>
+          Delete
+        </Button>
+      </Modal>
+    </>
   );
 };

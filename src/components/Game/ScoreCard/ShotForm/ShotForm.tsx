@@ -8,7 +8,7 @@ import { ShotType } from '../../../../game';
 import { theme } from '../../../../style/theme';
 import { Flexbox } from '../../../commons';
 import { ShotButton } from '../../../commons/ShotButton';
-import { GameHoleType, GameType } from '../../../types';
+import { GameHoleType, GameType, ThemeType } from '../../../types';
 import { ShotEvaluationForm } from '../ShotEvaluationForm/ShotEvaluationForm';
 import { shotTypes } from './shotTypes';
 import { useScoring } from './useScoring';
@@ -59,7 +59,7 @@ export const ShotForm = ({
 }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
   const [selectedShot, setSelectedShot] = useState<ShotType | null>(null);
-  const { onAddShotScoring } = useScoring();
+  const { onAddShotScoring, onRemoveShotScoring } = useScoring();
   const [newShot, setNewShot] = useState<{
     shot: ShotType;
     hole: GameHoleType;
@@ -93,6 +93,21 @@ export const ShotForm = ({
     });
     if (payload?.updatedShot) {
       setSelectedShot(payload?.updatedShot);
+    }
+  };
+  const handleRemoveShotScoring = async (incomingTheme: ThemeType) => {
+    if (gameRef) {
+      const payload = onRemoveShotScoring({
+        theme: incomingTheme,
+        gameRef,
+        selectedShot,
+        hole,
+        game,
+      });
+
+      if (payload?.updatedShot) {
+        setSelectedShot(payload?.updatedShot as any);
+      }
     }
   };
 
@@ -159,6 +174,7 @@ export const ShotForm = ({
         onClose={handleClose}
         onOpen={() => setOpen(true)}
         onAddEvaluation={handleAddShotScoring}
+        onRemoveEvaluation={handleRemoveShotScoring}
         selectedShot={selectedShot}
         hole={hole}
         game={game}

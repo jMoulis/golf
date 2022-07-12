@@ -9,11 +9,15 @@ import { Stat, Tag } from './stylesComponents';
 
 const CustomTag = styled(Tag)`
   font-size: 15px;
+  margin: 0;
+  padding: 0;
+  height: fit-content;
+  width: fit-content;
 `;
 const CustomShotButton = styled(ShotButton)`
-  height: 30px;
-  width: 30px;
-  font-size: 15px;
+  height: 40px;
+  width: 40px;
+  font-size: 20px;
   border-radius: 5px;
 `;
 
@@ -58,6 +62,7 @@ export const EvalStats = ({ holes }: Props) => {
 
   return (
     <Flexbox
+      flex='1'
       styling={{
         marginBottom: '7px',
         marginLeft: '10px',
@@ -65,13 +70,6 @@ export const EvalStats = ({ holes }: Props) => {
       }}>
       {totalScore.map(([key, value]) => (
         <Stat key={key}>
-          <CustomTag
-            scoreColor={{
-              bk: '',
-              color: shotTypesByTypes[key]?.color,
-            }}>
-            {key}
-          </CustomTag>
           <Flexbox>
             <CustomShotButton
               type='button'
@@ -88,6 +86,13 @@ export const EvalStats = ({ holes }: Props) => {
               {value.KO?.length}
             </CustomShotButton>
           </Flexbox>
+          <CustomTag
+            scoreColor={{
+              bk: '',
+              color: shotTypesByTypes[key]?.color,
+            }}>
+            {key}
+          </CustomTag>
         </Stat>
       ))}
     </Flexbox>

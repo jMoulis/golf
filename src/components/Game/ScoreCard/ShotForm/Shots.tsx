@@ -1,12 +1,13 @@
 import styled from '@emotion/styled';
-import { faSquarePlus, faTrash } from '@fortawesome/pro-duotone-svg-icons';
+import { faSquarePlus } from '@fortawesome/pro-duotone-svg-icons';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DocumentReference, setDoc } from 'firebase/firestore';
 import { useState } from 'react';
 import { ShotType } from '../../../../game';
 import { theme } from '../../../../style/theme';
 import { ShotButton } from '../../../commons/ShotButton';
-import { GameHoleType, GameType } from '../../../types';
+import { GameHoleType, GameType, ThemeType } from '../../../types';
 import { ShotEvaluationForm } from '../ShotEvaluationForm/ShotEvaluationForm';
 import { Shot } from './Shot';
 import { shotTypesByTypes } from './shotTypes';
@@ -27,16 +28,11 @@ const DeleteButton = styled.button<{
   border: none;
   font-size: 15px;
   margin: 0.25rem;
-  width: 110px;
+  width: 40px;
   height: 40px;
   color: ${({ color }) => color};
-  border-radius: 5px;
+  border-radius: 100px;
   background-color: ${({ backgroundColor }) => backgroundColor || '#f8d7da'};
-  & span {
-    display: inline-block;
-    margin-left: 5px;
-    font-size: 15px;
-  }
 `;
 
 type Props = {
@@ -57,7 +53,8 @@ export const Shots = ({
   game,
 }: Props) => {
   const [selectedShot, setSelectedShot] = useState<ShotType | null>(null);
-  const { onAddShotScoring } = useScoring();
+  const { onAddShotScoring, onRemoveShotScoring } = useScoring();
+
   const handleAddShotScoring = async (
     evaluationValue: 'KO' | 'OK',
     evaluationType: string,
@@ -72,7 +69,20 @@ export const Shots = ({
       setSelectedShot(payload?.updatedShot);
     }
   };
-
+  const handleRemoveEval = async (incomingTheme: ThemeType) => {
+    if (gameRef) {
+      const payload = onRemoveShotScoring({
+        theme: incomingTheme,
+        gameRef,
+        selectedShot,
+        hole,
+        game,
+      });
+      if (payload?.updatedShot) {
+        setSelectedShot(payload?.updatedShot as any);
+      }
+    }
+  };
   const handleDelete = () => {
     if (selectedShot && gameRef) {
       const updatedShots = hole.shots?.filter(
@@ -118,6 +128,7 @@ export const Shots = ({
 
       <ShotEvaluationForm
         onAddEvaluation={handleAddShotScoring}
+        onRemoveEvaluation={handleRemoveEval}
         selectedShot={selectedShot}
         open={Boolean(selectedShot)}
         hole={hole}
@@ -125,9 +136,11 @@ export const Shots = ({
         game={game}
         gameRef={gameRef}
         onClose={() => setSelectedShot(null)}>
-        <DeleteButton onClick={handleDelete} color='#d73038'>
+        <DeleteButton
+          onClick={handleDelete}
+          color='#fff'
+          backgroundColor='#8C8C8C'>
           <FontAwesomeIcon icon={faTrash} />
-          <span>Delete shot</span>
         </DeleteButton>
       </ShotEvaluationForm>
     </>
