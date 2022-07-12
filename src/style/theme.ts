@@ -36,6 +36,11 @@ export const theme = {
       linear: 'linear-gradient(150deg, rgba(50,120,217,1) 30%, rgba(82,196,250,1) 97%)',
       primary: 'rgba(50,120,217,1)',
       secondary: 'rgba(82,196,250,1)'
+    },
+    admin: {
+      linear: 'linear-gradient(150deg, rgba(207,68,67,1) 30%, rgba(255,107,107,1) 97%)',
+      primary: 'rgba(207,68,67,1)',
+      secondary: 'rgba(255,107,107,1)'
     }
   }
 }

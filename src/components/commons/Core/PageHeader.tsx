@@ -13,6 +13,7 @@ export const PageHeader = styled.div<{
   min-height: 200px;
   font-size: 20px;
   color: #fff;
+  z-index: 1;
   box-shadow: 0px 7px 13px -3px rgba(190, 189, 189, 0.8);
   padding: 20px;
   ${({ styling }) => styling};

@@ -14,27 +14,27 @@ import { theme } from '../../../style/theme';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { CourseList } from './CourseList';
 import { GameThemeForm } from './GameThemeForm';
-
-const Root = styled.div`
-  display: flex;
-  flex-direction: column;
-  background-color: #e4e4e4;
-  flex: 1;
-`;
+import { ButtonPill } from '../../commons/ButtonPill';
 
 const ButtonWrapper = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   justify-content: center;
-  flex: 1;
   align-items: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem;
+  background-color: #fff;
+  box-shadow: ${theme.shadows.listItem};
+  min-height: 80px;
 `;
 
-const Button = styled.button`
-  background-color: ${theme.colors.blueGreen};
-  padding: 0.5rem 1rem;
-  border-radius: 3px;
-  font-size: 30px;
-  border: none;
+const CustomButtonPill = styled(ButtonPill)`
+  padding: 5px;
+  height: 47px;
+  margin: 0;
 `;
 
 type StepType = 'SELECT_COURSE' | 'SELECT_THEME';
@@ -100,7 +100,7 @@ export const NewGame = () => {
   }, [getCourses]);
 
   return (
-    <Root>
+    <>
       {step === 'SELECT_COURSE' ? (
         <CourseList
           courses={courses}
@@ -117,12 +117,32 @@ export const NewGame = () => {
       ) : null}
 
       <ButtonWrapper>
+        {selectedCourse && step === 'SELECT_THEME' ? (
+          <CustomButtonPill
+            onClick={() => setStep('SELECT_COURSE')}
+            backgroundColor={
+              theme.colors.deleteButton
+            }>{`Course`}</CustomButtonPill>
+        ) : (
+          <span />
+        )}
         {selectedCourse ? (
-          <Button type='button' onClick={() => handleSubmit()}>
-            New Game
-          </Button>
-        ) : null}
+          <ButtonPill type='button' onClick={() => handleSubmit()}>
+            Créer
+          </ButtonPill>
+        ) : (
+          <span />
+        )}
+        {selectedCourse && step === 'SELECT_COURSE' ? (
+          <CustomButtonPill
+            onClick={() => setStep('SELECT_THEME')}
+            backgroundColor={
+              theme.colors.deleteButton
+            }>{`Theme`}</CustomButtonPill>
+        ) : (
+          <span />
+        )}
       </ButtonWrapper>
-    </Root>
+    </>
   );
 };

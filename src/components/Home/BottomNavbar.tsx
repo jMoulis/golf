@@ -5,8 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faChartLineUp,
   faGear,
+  faGolfClub,
   faGolfFlagHole,
-  faPlayPause,
 } from '@fortawesome/pro-duotone-svg-icons';
 import { useState } from 'react';
 import { theme } from '../../style/theme';
@@ -71,7 +71,7 @@ const menus = [
     url: 'games',
     selectedColor: theme.headers.games.primary,
     label: 'Jouer',
-    icon: faPlayPause,
+    icon: faGolfClub,
   },
   {
     url: 'admin',

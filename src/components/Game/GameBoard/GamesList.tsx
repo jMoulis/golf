@@ -25,7 +25,7 @@ type Props = {
 
 export const GamesList = ({ games, onDeleteGame }: Props) => {
   const [open, setOpen] = useState(false);
-
+  console.log(games);
   const dateFormat = useRef<Intl.DateTimeFormat>(new Intl.DateTimeFormat());
   return (
     <>

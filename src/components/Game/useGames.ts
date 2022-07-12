@@ -5,6 +5,7 @@ import {
   Firestore,
   getFirestore,
   onSnapshot,
+  orderBy,
   query,
   Unsubscribe,
   where,
@@ -34,13 +35,16 @@ export const useGames = () => {
     const gamesQuery = query(
       collection(db.current, 'games'),
       where(`roles.${user.uid}`, 'in', ['owner', 'coach']),
+      orderBy('date', 'desc')
     );
+
 
     gamesUnsubscribe.current = onSnapshot(
       gamesQuery,
       (payload) => {
         const incomingGames = payload.docs.map((doc) => {
           const game = doc.data() as GamePayloadType;
+          console.log(game)
           return {
             id: doc.id,
             courseRef: game.courseRef,
@@ -53,7 +57,8 @@ export const useGames = () => {
         setGames(incomingGames);
       },
       (error) => {
-        console.error('Get games', error.code);
+        console.log(error)
+        console.error('Get games', error.message);
       },
     );
   }, [user]);
