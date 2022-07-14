@@ -1,90 +1,141 @@
 import styled from '@emotion/styled';
-import { faTrash } from '@fortawesome/pro-duotone-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-import { updateProfile } from 'firebase/auth';
-import {
-  collection,
-  doc,
-  getFirestore,
-  onSnapshot,
-  query,
-  setDoc,
-  where,
-} from 'firebase/firestore';
-import { useEffect, useState } from 'react';
+import { arrayUnion, doc, getFirestore, setDoc } from 'firebase/firestore';
+import { useEffect, useMemo } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, app } from '../../firebase';
+import { theme } from '../../style/theme';
+import { UserType } from '../types';
+import { Avatar } from '../User/Avatar';
+import { ButtonPill } from '../commons/ButtonPill';
+import { List } from '../commons/List';
 import { Flexbox } from '../commons';
-import { DeleteButton } from '../commons/DeleteButton';
-import { ThemeForm } from '../Game/ScoreCard/ThemeForm/ThemeForm';
-import { useThemes } from '../Game/ScoreCard/ThemeForm/useThemes';
-import { ThemeType } from '../types';
+import { NameTag, RoleTag } from '../User/UserStyledComponents';
+import { useUser } from '../User/useUser';
 
-const List = styled.ul``;
-const ListItem = styled.li`
-  font-size: 17px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+const CustomPillButton = styled(ButtonPill)`
+  font-size: 15px;
   padding: 5px 10px;
 `;
+const CustomList = styled(List)`
+  display: flex;
+  max-height: 100%;
+  overflow: auto;
+  padding: 10px;
+`;
+const ListItem = styled.li`
+  border-radius: 10px;
+  box-shadow: ${theme.shadows.listItem};
+  height: 200px;
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  padding-bottom: 10px;
+  justify-content: space-between;
+`;
 
-export const CoachPage = () => {
+type Props = {
+  coachControl?: { coach: UserType | null };
+  onSelect?: (coach: UserType | null) => void;
+};
+export const CoachPage = ({ coachControl, onSelect }: Props) => {
   const [user] = useAuthState(auth);
-  const [coaches, setCoaches] = useState<any>([]);
+  const { coaches, getCoaches, user: fullUser, getUser } = useUser();
+
   useEffect(() => {
     if (user) {
-      const db = getFirestore(app);
-      const themesQuery = query(
-        collection(db, 'users'),
-        where('roles', 'array-contains', 'coach'),
-      );
-      onSnapshot(
-        themesQuery,
-        (payload) => {
-          const incomingCoaches = payload.docs.map((doc) => {
-            const theme = doc.data() as ThemeType;
-            return {
-              ...theme,
-              id: doc.id,
-            };
-          });
-          setCoaches(incomingCoaches);
-        },
-        (error) => console.error(error),
-      );
+      getCoaches();
+      getUser();
     }
-  }, [user]);
+  }, [user, getCoaches, getUser]);
 
-  const handleUpdate = async () => {
-    if (!auth.currentUser) return null;
+  const handleSelectCoach = (coach: UserType) => {
+    if (!user) return null;
+    if (user.uid === coach.id) return null;
+    if (onSelect) {
+      return onSelect(coach);
+    }
     const db = getFirestore(app);
-    await setDoc(
-      doc(db, 'users', auth.currentUser.uid),
+    setDoc(
+      doc(db, 'users', user.uid),
       {
-        roles: ['coach'],
+        coaches: arrayUnion(coach),
       },
       { merge: true },
     );
   };
+
+  const handleRemoveCoach = async (coach: UserType) => {
+    if (!user) return null;
+    if (user.uid === coach.id) return null;
+
+    if (onSelect) {
+      return onSelect(null);
+    }
+
+    const db = getFirestore(app);
+
+    const updatedCoaches = (fullUser?.coaches || []).filter(
+      (userCoach) => userCoach.id !== coach.id,
+    );
+
+    await setDoc(
+      doc(db, 'users', user.uid),
+      {
+        coaches: updatedCoaches,
+      },
+      { merge: true },
+    );
+  };
+
+  const disabled = useMemo(
+    () => (coach: UserType) => {
+      if (coachControl) {
+        return fullUser?.coaches?.some(
+          (userCoach) => userCoach.id === coachControl.coach?.id,
+        );
+      }
+      return fullUser?.coaches?.some((userCoach) => userCoach.id === coach.id);
+    },
+    [fullUser, coachControl],
+  );
+
   return (
-    <div>
-      CoachPage Get list of users with role coach
-      <button onClick={handleUpdate}>Update User</button>
-      <List>
-        {coaches.map((coach: any) => (
-          <ListItem key={coach.id}>
-            <Flexbox flex='1' onClick={() => {}}>
-              <span>{coach.id}</span>
+    <>
+      <CustomList>
+        {coaches.map((coach, key) => (
+          <ListItem key={key}>
+            <Flexbox flexDirection='column' alignItems='center'>
+              <Avatar
+                user={coach}
+                Placeholder={
+                  <div
+                    style={{
+                      height: '70px',
+                      width: '70px',
+                    }}
+                  />
+                }
+              />
+              <NameTag>{coach.firstname}</NameTag>
             </Flexbox>
+            {coach.roles?.map((role, key) => (
+              <RoleTag key={key}>{role}</RoleTag>
+            ))}
+            {user?.uid !== coach.id ? (
+              <CustomPillButton
+                onClick={() =>
+                  disabled(coach)
+                    ? handleRemoveCoach(coach)
+                    : handleSelectCoach(coach)
+                }>
+                {disabled(coach) ? 'Retirer' : 'Ajouter'}
+              </CustomPillButton>
+            ) : null}
           </ListItem>
         ))}
-      </List>
-      {/* <ThemeForm
-        selectedTheme={selectedTheme}
-        onUpdate={() => setSelectedTheme(null)}
-      /> */}
-    </div>
+      </CustomList>
+    </>
   );
 };

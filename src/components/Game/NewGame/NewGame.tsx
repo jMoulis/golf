@@ -8,7 +8,7 @@ import {
 import { useCallback, useEffect, useState } from 'react';
 import { app, auth } from '../../../firebase';
 import { useNavigate } from 'react-router-dom';
-import { CourseType, ThemeType } from '../../types';
+import { CourseType, ThemeType, UserType } from '../../types';
 import styled from '@emotion/styled';
 import { theme } from '../../../style/theme';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -18,6 +18,7 @@ import { ButtonPill } from '../../commons/ButtonPill';
 import { FixedBottomToolbar } from '../../commons/FixedBottomToolbar';
 import { ListItem } from '../../commons/List';
 import { Flexbox } from '../../commons';
+import { CoachPage } from '../../pages/CoachPage';
 
 const ThemeTag = styled.div`
   background-color: ${theme.colors.blueGreen};
@@ -46,6 +47,7 @@ export const NewGame = () => {
   const [selectedThemes, setSelectedThemes] = useState<ThemeType[]>([]);
   const [step, setStep] = useState<StepType>(null);
   const [user] = useAuthState(auth);
+  const [selectedCoach, setSelectedCoach] = useState<UserType | null>(null);
 
   const navigate = useNavigate();
 
@@ -53,6 +55,7 @@ export const NewGame = () => {
     const db = getFirestore(app);
     if (!selectedCourse) return null;
     if (!user) return null;
+    if (!selectedCoach) return null;
     try {
       const newGame = {
         date: Timestamp.fromDate(new Date()),
@@ -61,8 +64,8 @@ export const NewGame = () => {
         holes: selectedCourse?.holes || {},
         userId: user.uid,
         roles: {
-          SfqfLdvgdiUXxC8x865JfxFhoys2: 'coach',
           [user.uid]: 'owner',
+          [selectedCoach?.id as string]: 'coach',
         },
       };
       const docRef = await addDoc(collection(db, 'games'), newGame);
@@ -112,8 +115,8 @@ export const NewGame = () => {
         <ListItem as='div'>
           {selectedCourse?.name}
           <Flexbox flexWrap='wrap'>
-            {selectedThemes.map((theme) => (
-              <ThemeTag onClick={() => handleRemoveTheme(theme.id)}>
+            {selectedThemes.map((theme, key) => (
+              <ThemeTag key={key} onClick={() => handleRemoveTheme(theme.id)}>
                 {theme.type}
               </ThemeTag>
             ))}
@@ -131,6 +134,10 @@ export const NewGame = () => {
         onClose={() => setStep(null)}
       />
 
+      <CoachPage
+        coachControl={{ coach: selectedCoach }}
+        onSelect={setSelectedCoach}
+      />
       <GameThemeForm
         selectedThemes={selectedThemes}
         onRemoveTheme={handleRemoveTheme}
@@ -153,7 +160,6 @@ export const NewGame = () => {
         ) : (
           <span />
         )}
-
         <CustomButtonPill
           onClick={() => setStep('SELECT_THEME')}
           backgroundColor={

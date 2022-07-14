@@ -34,6 +34,7 @@ export const useGames = () => {
     if (!user) return null;
     const gamesQuery = query(
       collection(db.current, 'games'),
+      // where('userId', '==', user.uid),
       where(`roles.${user.uid}`, 'in', ['owner', 'coach']),
       orderBy('date', 'desc')
     );

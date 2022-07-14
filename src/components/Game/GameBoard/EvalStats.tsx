@@ -67,7 +67,7 @@ export const EvalStats = ({ holes }: Props) => {
   return (
     <Flexbox
       flex='1'
-      alignItems='baseline'
+      alignItems='center'
       styling={{
         marginBottom: '7px',
         overflow: 'auto',

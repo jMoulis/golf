@@ -72,5 +72,10 @@ export type ThemeTypeInput = {
 }
 
 export type UserType = {
-  firstname: string
+  id?: string;
+  firstname?: string;
+  lastname?: string;
+  avatar?: string;
+  roles?: string[];
+  coaches?: UserType[];
 }
