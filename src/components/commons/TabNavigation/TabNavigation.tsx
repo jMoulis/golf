@@ -16,7 +16,7 @@ const Tabs = styled.div`
 
 type Props = {
   tabs: TabType[];
-  onSelectTab: (tab: TabType) => void;
+  onSelectTab: (tab: TabType, index: number) => void;
   selectedTab: TabType | null;
   children?: React.ReactNode;
 };
@@ -27,6 +27,10 @@ export const TabNavigation = ({
   onSelectTab,
   children,
 }: Props) => {
+  const handleNavigate = (incomingTab: TabType, index: number) => {
+    onSelectTab(incomingTab, index);
+  };
+
   return (
     <Root>
       {children ? children : null}
@@ -36,7 +40,7 @@ export const TabNavigation = ({
             selected={selectedTab?.label === tab.label}
             key={key}
             color={selectedTab?.color}
-            onClick={() => onSelectTab(tab)}>
+            onClick={() => handleNavigate(tab, key)}>
             {tab.icon || null}
             <span>{tab.label}</span>
           </Tab>

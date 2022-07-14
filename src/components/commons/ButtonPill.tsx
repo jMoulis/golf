@@ -17,4 +17,8 @@ export const ButtonPill = styled.button<{
   border-radius: 30px;
   background-color: ${({ backgroundColor }) =>
     backgroundColor || theme.colors.saveButton};
+  &:disabled {
+    background-color: ${theme.colors.deleteButton};
+    color: rgba(255, 255, 255, 0.5);
+  }
 `;

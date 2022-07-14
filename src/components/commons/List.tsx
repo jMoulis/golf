@@ -15,5 +15,5 @@ export const ListItem = styled.li<{ selected?: boolean }>`
   background-color: ${({ selected }) => (selected ? '#3D80D9' : '#fff')};
   padding: 10px;
   color: ${({ selected }) => selected && '#fff'};
-  box-shadow: 3px 5px 11px 0px rgba(0, 0, 0, 0.23);
+  box-shadow: ${theme.shadows.listItem};
 `;

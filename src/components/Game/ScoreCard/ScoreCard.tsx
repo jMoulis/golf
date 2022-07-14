@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ShotForm } from './ShotForm/ShotForm';
 import {
   arrayUnion,
   DocumentReference,
@@ -9,11 +8,8 @@ import {
 import styled from '@emotion/styled';
 import { GameHoleType, GameType } from '../../types';
 import { RenderHoles } from './RenderHoles';
-import { SwipeableDrawer } from '@mui/material';
-import { iOS } from '../../../utils/global.utils';
-import { SwipeMenuHeader } from '../../commons/SwipeMenuHeader';
 import { ShotType } from '../../../game';
-import { theme } from '../../../style/theme';
+import { SwipeShotForm } from '../../commons/SwipeShotForm/SwipeShotForm';
 
 const List = styled.ul`
   overflow: auto;
@@ -121,25 +117,16 @@ export const ScoreCard = ({ game, gameRef }: Props) => {
           game={game}
         />
       </List>
-      <SwipeableDrawer
-        disableBackdropTransition={!iOS}
-        disableDiscovery={iOS}
-        anchor='bottom'
+      <SwipeShotForm
+        onClose={() => setOpen(false)}
+        onOpen={() => setOpen(true)}
+        gameRef={gameRef}
+        onAddShot={handleAddShot}
+        hole={selectedHole}
+        game={game}
+        withEvaluationForm
         open={open}
-        PaperProps={{
-          style: theme.swipeable.paper,
-        }}
-        onClose={toggleDrawer(false)}
-        onOpen={toggleDrawer(true)}>
-        <SwipeMenuHeader title='Add a shot' />
-        <ShotForm
-          gameRef={gameRef}
-          onAddShot={handleAddShot}
-          hole={selectedHole}
-          onCloseDrawerParent={() => setOpen(false)}
-          game={game}
-        />
-      </SwipeableDrawer>
+      />
     </>
   );
 };

@@ -4,6 +4,7 @@ import { theme } from "../../style/theme";
 export const ShotButton = styled.button<{
   color?: string;
   backgroundColor?: string;
+  styling?: any
 }>`
   border: none;
   font-size: 30px;
@@ -17,4 +18,5 @@ export const ShotButton = styled.button<{
   border-radius: 10px;
   background-color: ${({ backgroundColor }) => backgroundColor || "#fff"};
   box-shadow: ${theme.shadows.flatButton};
+  ${({ styling }) => styling};
 `;

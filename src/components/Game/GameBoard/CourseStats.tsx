@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
-import React, { useMemo } from 'react';
+import { getCoursePar, getDiff, getScoreBrut } from '../../../utils/scoreUtils';
 import { Flexbox } from '../../commons';
-import { GameHoleType } from '../../types';
+import { GameHoleType, HoleCourseType } from '../../types';
 
 const Stat = styled.span`
   margin-right: 10px;
@@ -13,38 +13,15 @@ const Stat = styled.span`
 `;
 
 type Props = {
-  holes?: Record<string, GameHoleType>;
+  holes?: (GameHoleType | HoleCourseType)[];
 };
 
 export const CourseStats = ({ holes }: Props) => {
-  const totalScore = useMemo(() => {
-    if (!holes)
-      return {
-        par: 0,
-        score: 0,
-        diff: 0,
-      };
-    const parsedHoles = Object.values(holes);
-    const score: any = parsedHoles.reduce(
-      (acc: any, hole: any) => acc + (hole.shots?.length || 0),
-      0,
-    );
-    const par: any = parsedHoles.reduce(
-      (acc: any, hole: any) => acc + (hole.par || 0),
-      0,
-    );
-    return {
-      score,
-      par,
-      diff: score - par,
-    };
-  }, [holes]);
-
   return (
     <Flexbox>
-      <Stat>PAR: {totalScore.par}</Stat>
-      <Stat>BRUT: {totalScore.score}</Stat>
-      <Stat>DIFF: {totalScore.diff}</Stat>
+      <Stat>PAR: {getCoursePar(holes)}</Stat>
+      <Stat>BRUT: {getScoreBrut(holes)}</Stat>
+      <Stat>DIFF: {getDiff(holes)}</Stat>
     </Flexbox>
   );
 };

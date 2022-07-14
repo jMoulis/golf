@@ -88,6 +88,40 @@ export const Shots = ({
     }
   };
 
+  const handleEditShot = async (incomingShot: ShotType) => {
+    console.log(incomingShot);
+    console.log(selectedShot);
+
+    const updateShots = (prevShots: ShotType[], updatedShot: ShotType) => {
+      return prevShots.map((prevShot) => {
+        if (prevShot.id === updatedShot.id) {
+          console.log(prevShot, updatedShot);
+          return { ...prevShot, ...updatedShot };
+        }
+        return prevShot;
+      });
+    };
+    if (gameRef && selectedShot) {
+      const updatedShot = { ...selectedShot, type: incomingShot.type };
+      setSelectedShot(updatedShot);
+      const updatedShots = updateShots(hole.shots, updatedShot);
+      console.log(updatedShots);
+      await setDoc(
+        gameRef,
+        {
+          holes: {
+            [hole.ref]: {
+              shots: updatedShots,
+            },
+          },
+        },
+        {
+          merge: true,
+        },
+      );
+    }
+  };
+
   return (
     <>
       <Root>
@@ -113,6 +147,7 @@ export const Shots = ({
 
       <ShotEvaluationForm
         onAddEvaluation={handleAddShotScoring}
+        onEditShot={handleEditShot}
         onRemoveEvaluation={handleRemoveEval}
         onDeleteShot={handleDelete}
         selectedShot={selectedShot}

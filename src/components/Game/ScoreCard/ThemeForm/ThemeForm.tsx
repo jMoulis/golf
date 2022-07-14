@@ -6,6 +6,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../../../firebase';
 import { theme } from '../../../../style/theme';
 import { Flexbox } from '../../../commons';
+import { Input } from '../../../commons/Input';
 import { ShotButton } from '../../../commons/ShotButton';
 import { ThemeType, ThemeTypeInput } from '../../../types';
 import { useThemes } from './useThemes';
@@ -13,16 +14,6 @@ import { useThemes } from './useThemes';
 const Form = styled.form`
   display: flex;
   align-items: center;
-`;
-
-const Input = styled.input`
-  padding: 10px;
-  border: 1px solid ${theme.colors.blue};
-  border-radius: 3px;
-  font-size: 17px;
-  &::placeholder {
-    font-style: italic;
-  }
 `;
 
 type Props = {

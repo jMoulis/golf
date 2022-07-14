@@ -14,13 +14,14 @@ const CustomTag = styled(Tag)`
   height: fit-content;
   width: fit-content;
   box-shadow: unset;
+  white-space: nowrap;
 `;
 const CustomShotButton = styled(ShotButton)`
   display: flex;
   flex-direction: column;
-  height: 45px;
-  width: 45px;
-  font-size: 20px;
+  height: 40px;
+  width: 40px;
+  font-size: 17px;
   border-radius: 5px;
 `;
 
@@ -66,9 +67,9 @@ export const EvalStats = ({ holes }: Props) => {
   return (
     <Flexbox
       flex='1'
+      alignItems='baseline'
       styling={{
         marginBottom: '7px',
-        marginLeft: '10px',
         overflow: 'auto',
       }}>
       {totalScore.map(([key, value]) => (

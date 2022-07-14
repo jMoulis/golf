@@ -93,7 +93,6 @@ export const ShotsStats = ({ holes }: Props) => {
       justifyContent='space-around'
       styling={{
         marginBottom: '7px',
-        marginLeft: '10px',
       }}>
       {Object.keys(stats).map((key) => (
         <Stat key={key}>

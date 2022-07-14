@@ -3,7 +3,6 @@ import { theme } from '../../style/theme';
 import { Button, Flexbox } from '../commons';
 import { PageHeader } from '../commons/Core/PageHeader';
 import { Modal } from '../commons/Modal';
-import { TabNavigation } from '../commons/TabNavigation/TabNavigation';
 import { GamesList } from './GameBoard/GamesList';
 import { useGames } from './useGames';
 
@@ -16,15 +15,11 @@ export const GameIndex = () => {
   return (
     <>
       <PageHeader backgroundColor={theme.headers.games.linear}>
-        <Flexbox flex='1' flexDirection='column' justifyContent='space-between'>
+        <Flexbox flex='1' flexDirection='column'>
           <Flexbox justifyContent='center'>
             <HeaderTitle>Games</HeaderTitle>
           </Flexbox>
-          <TabNavigation
-            tabs={[{ label: 'list' }, { label: 'stats' }]}
-            onSelectTab={() => {}}
-            selectedTab={null}
-          />
+          <span>Total parties jouées: {games?.length}</span>
         </Flexbox>
       </PageHeader>
       <GamesList onDeleteGame={selectDeleteGame} games={games} />

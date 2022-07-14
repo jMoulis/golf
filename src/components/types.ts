@@ -1,24 +1,26 @@
 import { Timestamp } from "firebase/firestore";
 
+export type HoleCourseType = {
+  ref?: string;
+  number: number,
+  par?: number,
+  hcp?: number,
+  distances?: {
+    black?: number, white?: number, yellow: number, blue?: number, red?: number
+  }[]
+}
 export type CourseType = {
   id?: string,
   name: string,
-  sss: {
-    men: any,
-    women: any
+  sss?: {
+    men?: any,
+    women?: any
   },
-  slope: {
-    men: any,
-    women: any
+  slope?: {
+    men?: any,
+    women?: any
   }
-  holes: {
-    number: number,
-    par: number,
-    hcp: number,
-    distances: {
-      black?: number, white?: number, yellow: number, blue?: number, red?: number
-    }[]
-  }[]
+  holes: HoleCourseType[]
 }
 
 export type DistanceType = {

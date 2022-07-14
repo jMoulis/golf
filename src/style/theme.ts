@@ -15,7 +15,7 @@ export const theme = {
   },
   shadows: {
     button: '2px 2px 7px -2px rgb(0 0 0 / 23%)',
-    listItem: '3px 5px 11px 0px rgba(0, 0, 0, 0.23)',
+    listItem: '3px 2px 6px 0px rgba(0, 0, 0, 0.23)',
     flatButton: '0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)'
   },
   radius: {

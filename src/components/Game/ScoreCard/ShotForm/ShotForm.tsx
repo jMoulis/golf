@@ -36,10 +36,12 @@ const CustomShotButton = styled(ShotButton)`
 
 type Props = {
   hole: GameHoleType | null;
-  onAddShot: (shot: ShotType, hole: GameHoleType) => void;
+  onAddShot?: (shot: ShotType, hole: GameHoleType) => void;
   gameRef: DocumentReference | null;
   onCloseDrawerParent: () => void;
   game: GameType;
+  withEvaluationForm: boolean;
+  onEditShot?: (shot: ShotType) => void;
 };
 
 export const ShotForm = ({
@@ -48,6 +50,8 @@ export const ShotForm = ({
   gameRef,
   onCloseDrawerParent,
   game,
+  withEvaluationForm,
+  onEditShot,
 }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
   const [selectedShot, setSelectedShot] = useState<ShotType | null>(null);
@@ -67,9 +71,14 @@ export const ShotForm = ({
   };
 
   const handleSubmit = () => {
-    if (newShot) {
+    if (onEditShot && newShot) {
+      onEditShot(newShot.shot);
+      onCloseDrawerParent();
+    } else if (newShot && onAddShot) {
       onAddShot(newShot.shot, newShot.hole);
-      setOpen(true);
+      if (withEvaluationForm) {
+        setOpen(true);
+      }
     }
   };
 
@@ -152,17 +161,19 @@ export const ShotForm = ({
           </DeleteButton>
         </FixedBottomToolbar>
       </Root>
-      <ShotEvaluationForm
-        open={open}
-        gameRef={gameRef}
-        onClose={handleClose}
-        onOpen={() => setOpen(true)}
-        onAddEvaluation={handleAddShotScoring}
-        onRemoveEvaluation={handleRemoveShotScoring}
-        selectedShot={selectedShot}
-        hole={hole}
-        game={game}
-      />
+      {withEvaluationForm ? (
+        <ShotEvaluationForm
+          open={open}
+          gameRef={gameRef}
+          onClose={handleClose}
+          onOpen={() => setOpen(true)}
+          onAddEvaluation={handleAddShotScoring}
+          onRemoveEvaluation={handleRemoveShotScoring}
+          selectedShot={selectedShot}
+          hole={hole}
+          game={game}
+        />
+      ) : null}
     </>
   );
 };

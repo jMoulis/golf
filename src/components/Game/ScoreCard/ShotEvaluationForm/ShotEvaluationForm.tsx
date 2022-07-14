@@ -6,15 +6,14 @@ import React from 'react';
 import { ShotType } from '../../../../game';
 import { theme } from '../../../../style/theme';
 import { iOS } from '../../../../utils/global.utils';
-import { Flexbox } from '../../../commons';
 import { ButtonPill } from '../../../commons/ButtonPill';
 import { DeleteButton } from '../../../commons/DeleteButton';
 import { FixedBottomToolbar } from '../../../commons/FixedBottomToolbar';
-import { List, ListItem } from '../../../commons/List';
+import { List } from '../../../commons/List';
 import { SwipeMenuHeader } from '../../../commons/SwipeMenuHeader';
 import { GameHoleType, GameType, ThemeType } from '../../../types';
 import { EvalShots } from '../ShotForm/EvalShots';
-import { shotTypesByTypes } from '../ShotForm/shotTypes';
+import { ShotEvaluationFormItem } from './ShotEvaluationFormItem';
 
 type Props = {
   open: boolean;
@@ -28,6 +27,7 @@ type Props = {
   game: GameType;
   gameRef: DocumentReference | null;
   onDeleteShot?: () => void;
+  onEditShot?: (shotType: ShotType) => void;
 };
 
 export const ShotEvaluationForm = ({
@@ -42,6 +42,7 @@ export const ShotEvaluationForm = ({
   gameRef,
   onRemoveEvaluation,
   onDeleteShot,
+  onEditShot,
 }: Props) => {
   return (
     <SwipeableDrawer
@@ -62,31 +63,14 @@ export const ShotEvaluationForm = ({
           backgroundColor: '#fff',
           flex: 'unset',
         }}>
-        <ListItem
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            margin: '5px',
-          }}>
-          <Flexbox flexDirection='column'>
-            <span>{`Hole: ${hole?.number}`}</span>
-            {selectedShot ? (
-              <Flexbox>
-                <span>Type:</span>
-                <span
-                  style={{
-                    color: shotTypesByTypes[selectedShot?.type]?.color,
-                    marginLeft: '5px',
-                    fontSize: '20px',
-                  }}>
-                  {shotTypesByTypes[selectedShot?.type]?.icon}
-                </span>
-              </Flexbox>
-            ) : null}
-          </Flexbox>
+        <ShotEvaluationFormItem
+          hole={hole}
+          selectedShot={selectedShot}
+          game={game}
+          gameRef={gameRef}
+          onEditShot={onEditShot}>
           {children}
-        </ListItem>
+        </ShotEvaluationFormItem>
       </List>
       <EvalShots
         onAddEvaluation={onAddEvaluation}
@@ -94,7 +78,6 @@ export const ShotEvaluationForm = ({
         selectedShot={selectedShot}
         game={game}
         gameRef={gameRef}
-        hole={hole}
       />
       <FixedBottomToolbar>
         <ButtonPill

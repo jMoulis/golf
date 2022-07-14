@@ -2,5 +2,6 @@
 export type TabType = {
   label: string;
   color?: string;
-  icon?: any
+  icon?: any;
+  Component: JSX.Element
 }

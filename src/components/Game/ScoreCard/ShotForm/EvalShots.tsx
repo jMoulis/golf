@@ -8,10 +8,12 @@ import { ShotType } from '../../../../game';
 import { theme } from '../../../../style/theme';
 import { iOS } from '../../../../utils/global.utils';
 import { Flexbox } from '../../../commons';
+import { ButtonPill } from '../../../commons/ButtonPill';
 import { DeleteButton } from '../../../commons/DeleteButton';
+import { FixedBottomToolbar } from '../../../commons/FixedBottomToolbar';
+import { ShotButton } from '../../../commons/ShotButton';
 import { SwipeMenuHeader } from '../../../commons/SwipeMenuHeader';
-import { GameHoleType, GameType, ThemeType } from '../../../types';
-import { ThemeForm } from '../ThemeForm/ThemeForm';
+import { GameType, ThemeType } from '../../../types';
 import { ThemeList } from '../ThemeForm/ThemeList';
 import { useThemes } from '../ThemeForm/useThemes';
 import { shotQuality } from './shotQuality';
@@ -33,29 +35,20 @@ const EvalWrapper = styled.div`
   overflow: auto;
 `;
 
-const ShotButton = styled.button<{
+const CustomShotButton = styled(ShotButton)<{
   color?: string;
   selected?: boolean;
   backgroundColor?: string;
 }>`
-  border: none;
-  font-size: 30px;
   margin: 0.25rem;
   height: 40px;
   width: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   color: ${({ color, selected }) => {
     if (typeof selected === 'undefined') {
       return color;
     }
     return selected ? color : 'gray';
   }};
-  background-color: transparent;
-  background-color: ${({ backgroundColor }) => backgroundColor};
-  border-radius: 5px;
 `;
 
 type Props = {
@@ -63,7 +56,6 @@ type Props = {
   onAddEvaluation: (value: 'KO' | 'OK', type: string) => void;
   game: GameType;
   gameRef: DocumentReference | null;
-  hole: GameHoleType | null;
   onRemoveEvaluation: (theme: ThemeType) => void;
 };
 
@@ -72,7 +64,6 @@ export const EvalShots = ({
   onAddEvaluation,
   game,
   gameRef,
-  hole,
   onRemoveEvaluation,
 }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
@@ -131,12 +122,12 @@ export const EvalShots = ({
               borderBottom: `1px solid ${theme.colors.separator}`,
             }}>
             <span>Sélectionner ou créer un thème</span>
-            <ShotButton
+            <CustomShotButton
               color='#fff'
               backgroundColor={theme.colors.saveButton}
               onClick={() => setOpen(true)}>
               <FontAwesomeIcon icon={faPlus} />
-            </ShotButton>
+            </CustomShotButton>
           </Flexbox>
           {selectedShot &&
             availableShots.map((theme, key) => {
@@ -150,7 +141,7 @@ export const EvalShots = ({
                   <Flexbox>
                     {shotQuality.map((evaluationValue, evalKey) => {
                       return (
-                        <ShotButton
+                        <CustomShotButton
                           key={evalKey}
                           onClick={() =>
                             onAddEvaluation(evaluationValue.value, theme.type)
@@ -160,7 +151,7 @@ export const EvalShots = ({
                           }
                           color={evaluationValue.color}>
                           {evaluationValue.icon}
-                        </ShotButton>
+                        </CustomShotButton>
                       );
                     })}
                   </Flexbox>
@@ -183,12 +174,18 @@ export const EvalShots = ({
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}>
         <SwipeMenuHeader title='Select a theme' />
-        <ThemeForm selectedTheme={null} />
         <ThemeList
+          listStyling={{
+            maxHeight: '90vh',
+            margin: '10px',
+          }}
           onSelectTheme={handleSelectTheme}
           selectedThemes={game?.themes}
           themes={themes}
         />
+        <FixedBottomToolbar>
+          <ButtonPill onClick={() => setOpen(false)}>Enregistrer</ButtonPill>
+        </FixedBottomToolbar>
       </SwipeableDrawer>
     </>
   );

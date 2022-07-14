@@ -15,6 +15,7 @@ import {
   faGolfBallTee,
   faThumbsUp,
 } from '@fortawesome/free-solid-svg-icons';
+import { Slider } from '../../commons/Slider/Slider';
 
 const CourseName = styled.span``;
 
@@ -30,21 +31,30 @@ export const GameBoardHeader = ({ holes, courseName }: Props) => {
         label: 'Scores',
         color: theme.colors.gamePlay,
         icon: <FontAwesomeIcon icon={faArrowDown19} />,
+        Component: <TotalScores holes={holes} />,
       },
       {
         label: 'Shots',
         color: theme.colors.gamePlay,
         icon: <FontAwesomeIcon icon={faGolfBallTee} />,
+        Component: <ShotsStats holes={holes} />,
       },
       {
         label: 'Eval',
         color: theme.colors.gamePlay,
         icon: <FontAwesomeIcon icon={faThumbsUp} />,
+        Component: <EvalStats holes={holes} />,
       },
     ];
-  }, []);
+  }, [holes]);
 
   const [selectedTab, setSelectedTab] = useState<TabType | null>(tabs[0]);
+  const [tabIndex, setTabIndex] = useState<number>(0);
+
+  const handleSelectTab = (tab: TabType, index: number) => {
+    setSelectedTab(tab);
+    setTabIndex(index);
+  };
 
   return (
     <>
@@ -54,15 +64,17 @@ export const GameBoardHeader = ({ holes, courseName }: Props) => {
           padding: '5px',
         }}>
         <CourseName>{courseName}</CourseName>
-        <CourseStats holes={holes} />
+        <CourseStats holes={holes ? Object.values(holes) : []} />
       </Flexbox>
       <TabNavigation
         selectedTab={selectedTab}
         tabs={tabs}
-        onSelectTab={setSelectedTab}>
-        {selectedTab?.label === 'Scores' ? <TotalScores holes={holes} /> : null}
-        {selectedTab?.label === 'Shots' ? <ShotsStats holes={holes} /> : null}
-        {selectedTab?.label === 'Eval' ? <EvalStats holes={holes} /> : null}
+        onSelectTab={handleSelectTab}>
+        <Slider
+          width={360}
+          currentIndex={tabIndex}
+          items={tabs.map((tab) => tab.Component)}
+        />
       </TabNavigation>
     </>
   );

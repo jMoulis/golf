@@ -1,3 +1,5 @@
+import { GameHoleType, HoleCourseType } from "../components/types";
+
 export const scores = {
   pars: { bk: 'green', color: '#fff', label: 'Par' },
   birdies: { bk: '#0000e5', color: '#fff', label: 'Birdie' },
@@ -32,3 +34,27 @@ export const scoreResult = (par: number, score: number) => {
     return scores.triple;
   return { bk: 'white', color: '#000' };
 };
+
+export const getCoursePar = (holes?: (HoleCourseType | GameHoleType)[]) => {
+  if (!holes) return 0;
+  return holes.reduce(
+    (acc: any, hole: any) => acc + (hole.par || 0),
+    0,
+  );
+}
+export const getScoreBrut = (holes?: (HoleCourseType | GameHoleType)[]) => {
+  if (!holes) return 0;
+  return holes.reduce(
+    (acc: any, hole: any) => acc + (hole.shots?.length || 0),
+    0,
+  );
+}
+export const getDiff = (holes?: (HoleCourseType | GameHoleType)[]) => {
+  if (!holes) return 0;
+  return getScoreBrut(holes) - getCoursePar(holes)
+}
+
+export const getCountHoles = (holes?: (HoleCourseType | GameHoleType)[]) => {
+  if (!holes) return 0;
+  return holes.length
+}

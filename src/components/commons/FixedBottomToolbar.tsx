@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { theme } from '../../style/theme';
+import { BOTTOM_NAVBAR_HEIGHT } from '../cssConstants';
 
 export const FixedBottomToolbar = styled.div`
   display: flex;
@@ -12,5 +13,6 @@ export const FixedBottomToolbar = styled.div`
   padding: 1rem;
   background-color: #fff;
   box-shadow: ${theme.shadows.listItem};
-  min-height: 80px;
+  min-height: ${BOTTOM_NAVBAR_HEIGHT};
+  z-index: 1;
 `;
