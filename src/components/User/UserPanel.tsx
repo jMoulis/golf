@@ -10,6 +10,8 @@ import { theme } from '../../style/theme';
 import { SwipeMenuHeader } from '../commons/SwipeMenuHeader';
 import { useUser } from './useUser';
 import { UserForm } from './UserForm';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '../../firebase';
 
 const Root = styled.nav`
   flex-direction: column;
@@ -22,27 +24,19 @@ const Root = styled.nav`
 export const UserPanel = () => {
   const { onOpen, onClose, open } = useToggle();
   const { user, getUser } = useUser();
+  const [authUser] = useAuthState(auth);
 
   useEffect(() => {
-    getUser();
-  }, [getUser]);
+    if (authUser) {
+      getUser();
+    }
+  }, [getUser, authUser]);
 
   return (
     <Root>
       {user ? (
         <Flexbox flexDirection='column' onClick={onOpen} alignItems='center'>
-          <Avatar
-            user={user}
-            Placeholder={
-              <div
-                style={{
-                  height: '70px',
-                  width: '70px',
-                }}>
-                Selectionnes une photo
-              </div>
-            }
-          />
+          <Avatar user={user} />
           <Flexbox>
             <NameTag style={{ marginRight: '10px' }}>{user.firstname}</NameTag>
             <NameTag>{user.lastname}</NameTag>

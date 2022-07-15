@@ -64,6 +64,18 @@ export const CoachPage = ({ coachControl, onSelect }: Props) => {
       },
       { merge: true },
     );
+    setDoc(
+      doc(db, 'users', coach.id as string),
+      {
+        students: arrayUnion({
+          firstname: fullUser?.firstname,
+          lastname: fullUser?.lastname,
+          avatar: fullUser?.avatar,
+          id: fullUser?.id,
+        }),
+      },
+      { merge: true },
+    );
   };
 
   const handleRemoveCoach = async (coach: UserType) => {
@@ -79,11 +91,21 @@ export const CoachPage = ({ coachControl, onSelect }: Props) => {
     const updatedCoaches = (fullUser?.coaches || []).filter(
       (userCoach) => userCoach.id !== coach.id,
     );
+    const updatedStudents = (coach?.students || []).filter(
+      (coachStudent) => coachStudent.id !== fullUser?.id,
+    );
 
     await setDoc(
       doc(db, 'users', user.uid),
       {
         coaches: updatedCoaches,
+      },
+      { merge: true },
+    );
+    setDoc(
+      doc(db, 'users', coach.id as string),
+      {
+        students: updatedStudents,
       },
       { merge: true },
     );
@@ -107,17 +129,7 @@ export const CoachPage = ({ coachControl, onSelect }: Props) => {
         {coaches.map((coach, key) => (
           <ListItem key={key}>
             <Flexbox flexDirection='column' alignItems='center'>
-              <Avatar
-                user={coach}
-                Placeholder={
-                  <div
-                    style={{
-                      height: '70px',
-                      width: '70px',
-                    }}
-                  />
-                }
-              />
+              <Avatar user={coach} />
               <NameTag>{coach.firstname}</NameTag>
             </Flexbox>
             {coach.roles?.map((role, key) => (

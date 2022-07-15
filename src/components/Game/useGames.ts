@@ -35,7 +35,7 @@ export const useGames = () => {
     const gamesQuery = query(
       collection(db.current, 'games'),
       // where('userId', '==', user.uid),
-      where(`roles.${user.uid}`, 'in', ['owner', 'coach']),
+      where('users', 'array-contains', user.uid),
       orderBy('date', 'desc')
     );
 
@@ -52,6 +52,7 @@ export const useGames = () => {
             holes: {},
             themes: game.themes,
             userId: game.userId,
+            users: game.users
           };
         });
         setGames(incomingGames);

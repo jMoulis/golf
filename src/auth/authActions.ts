@@ -11,4 +11,5 @@ export const logInWithEmailAndPassword = async (email: string, password: string)
 
 export const logout = () => {
   signOut(auth);
+  window.location.reload();
 };

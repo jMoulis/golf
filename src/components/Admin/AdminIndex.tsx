@@ -15,14 +15,18 @@ const Root = styled.div`
 const Navigation = styled.nav`
   display: flex;
   justify-content: space-around;
+  flex-wrap: wrap;
 `;
 
 const NavigationCard = styled.div`
   display: flex;
   flex-direction: column;
   background-color: #fff;
-  height: 150px;
-  width: 100px;
+  height: auto;
+  flex: 1;
+  min-width: 200px;
+  max-width: 350px;
+  margin: 10px;
   border-radius: 10px;
   align-items: center;
   box-shadow: ${theme.shadows.listItem};
@@ -70,7 +74,14 @@ export const AdminIndex = (props: Props) => {
                 src={menu.img}
               />
             ) : null}
-            <span>{menu.label}</span>
+            <span
+              style={{
+                fontSize: '20px',
+                textTransform: 'uppercase',
+                fontWeight: '700',
+              }}>
+              {menu.label}
+            </span>
           </NavigationCard>
         ))}
       </Navigation>

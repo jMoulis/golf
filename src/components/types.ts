@@ -51,14 +51,16 @@ export type GamePayloadType = {
   holes: Record<string, GameHoleType>;
   themes: ThemeType[];
   userId: string;
+  users: UserType[];
 }
 
 export type GameType = {
   id: string;
   courseRef: string;
   date: Date;
-  holes: Record<string, GameHoleType>
-  themes: ThemeType[]
+  holes: Record<string, GameHoleType>;
+  themes: ThemeType[];
+  users: UserType[];
 }
 
 export type ThemeType = {
@@ -78,4 +80,5 @@ export type UserType = {
   avatar?: string;
   roles?: string[];
   coaches?: UserType[];
+  students?: UserType[];
 }

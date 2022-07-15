@@ -3,6 +3,7 @@ import { getDownloadURL, ref } from 'firebase/storage';
 import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { storage } from '../../firebase';
 import { UserType } from '../types';
+import avatarPlaceholder from '../../assets/images/avatar-placeholder.png';
 
 const Image = styled.img<{ styling?: any }>`
   border-radius: 300px;
@@ -12,19 +13,20 @@ const Image = styled.img<{ styling?: any }>`
   ${({ styling }) => styling};
 `;
 
+const Placeholder = styled.div<{ styling?: any }>`
+  border-radius: 300px;
+  height: 70px;
+  width: 70px;
+  object-fit: cover;
+  ${({ styling }) => styling};
+`;
 type Props = {
   user: UserType;
   styling?: any;
   onUploadAvatar?: (file: File) => void;
-  Placeholder: JSX.Element;
 };
 
-export const Avatar = ({
-  user,
-  styling,
-  onUploadAvatar,
-  Placeholder,
-}: Props) => {
+export const Avatar = ({ user, styling, onUploadAvatar }: Props) => {
   const [loading, setLoading] = useState<'UNSET' | 'LOADING' | 'DONE'>('UNSET');
   const [imageUrl, setImageUrl] = useState('');
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -40,6 +42,9 @@ export const Avatar = ({
   useEffect(() => {
     if (user.avatar) {
       fetchImageURL(user.avatar);
+    } else {
+      setLoading('DONE');
+      setImageUrl(avatarPlaceholder);
     }
   }, [fetchImageURL, user.avatar]);
 
@@ -54,6 +59,7 @@ export const Avatar = ({
       onUploadAvatar(file);
     }
   };
+
   return (
     <>
       {loading === 'DONE' ? (
@@ -64,7 +70,7 @@ export const Avatar = ({
           onClick={handleClick}
         />
       ) : (
-        <div onClick={handleClick}>{Placeholder}</div>
+        <Placeholder styling={styling} onClick={handleClick} />
       )}
       <input
         onChange={handleChange}

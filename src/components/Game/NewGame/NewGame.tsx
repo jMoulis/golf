@@ -55,7 +55,7 @@ export const NewGame = () => {
     const db = getFirestore(app);
     if (!selectedCourse) return null;
     if (!user) return null;
-    if (!selectedCoach) return null;
+
     try {
       const newGame = {
         date: Timestamp.fromDate(new Date()),
@@ -63,10 +63,11 @@ export const NewGame = () => {
         themes: selectedThemes,
         holes: selectedCourse?.holes || {},
         userId: user.uid,
-        roles: {
-          [user.uid]: 'owner',
-          [selectedCoach?.id as string]: 'coach',
-        },
+        // roles: {
+        //   [user.uid]: 'owner',
+        //   [selectedCoach?.id as string]: 'coach',
+        // },
+        users: selectedCoach?.id ? [user.uid, selectedCoach.id] : [user.uid],
       };
       const docRef = await addDoc(collection(db, 'games'), newGame);
       navigate(`/protected/games/${docRef.id}`, { replace: true });

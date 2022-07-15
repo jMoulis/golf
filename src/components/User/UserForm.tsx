@@ -87,15 +87,6 @@ export const UserForm = ({ user, onClose }: Props) => {
         }}
         user={user}
         onUploadAvatar={handleUploadFile}
-        Placeholder={
-          <div
-            style={{
-              height: '150px',
-              width: '150px',
-              margin: '10px 0',
-            }}
-          />
-        }
       />
 
       <Input
