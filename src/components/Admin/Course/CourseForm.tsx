@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { FormEvent, useEffect, useRef, useState } from 'react';
+import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { ButtonPill } from '../../commons/ButtonPill';
 import { FixedBottomToolbar } from '../../commons/FixedBottomToolbar';
 import { FloatingButton } from '../../commons/FloatingButton';
@@ -14,6 +14,9 @@ import Menu from '@mui/material/Menu';
 import { ShotButton } from '../../commons/ShotButton';
 import { DeleteButton } from '../../commons/DeleteButton';
 import { List, ListItem } from '../../commons/List';
+import { getCoursePar } from '../../../utils/scoreUtils';
+import { Flexbox } from '../../commons';
+import { FormInputError } from '../../commons/FormInputError';
 
 const CustomList = styled(List)`
   padding-bottom: calc(${BOTTOM_NAVBAR_HEIGHT} + ${FLOATING_HEIGHT});
@@ -42,10 +45,12 @@ export const CourseForm = ({ selectedCourse, onSubmit, onClose }: Props) => {
   const defaultForm = useRef<CourseType>({
     name: '',
     holes: [],
+    par: 0,
   });
   const [form, setForm] = useState<CourseType>({
     name: '',
     holes: [],
+    par: 0,
   });
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -66,6 +71,7 @@ export const CourseForm = ({ selectedCourse, onSubmit, onClose }: Props) => {
   }, []);
 
   const handleHoleChange = (updatedHole: HoleCourseType) => {
+    console.log(updatedHole);
     const prevHoles = form?.holes || [];
     const prevHole = prevHoles.find(
       (prevHole) => prevHole.ref === updatedHole.ref,
@@ -74,24 +80,25 @@ export const CourseForm = ({ selectedCourse, onSubmit, onClose }: Props) => {
       const updatedHoles = prevHoles.map((prevHole) =>
         prevHole.ref === updatedHole.ref ? updatedHole : prevHole,
       );
+      console.log(updatedHoles);
       setForm((prevForm) => ({
         ...prevForm,
-        holes: sortHoles(updatedHoles),
+        holes: updatedHoles,
       }));
     } else {
       const updatedHoles = [...prevHoles, updatedHole];
       setForm((prevForm) => ({
         ...prevForm,
-        holes: sortHoles(updatedHoles),
+        holes: updatedHoles,
       }));
     }
   };
 
   const handleChangeName = (event: FormEvent<HTMLInputElement>) => {
-    const { value } = event.currentTarget;
+    const { value, name } = event.currentTarget;
     setForm((prevForm) => ({
       ...prevForm,
-      name: value,
+      [name]: name === 'par' ? Number(value) : value,
     }));
   };
 
@@ -107,6 +114,7 @@ export const CourseForm = ({ selectedCourse, onSubmit, onClose }: Props) => {
 
     const newHoles: HoleCourseType[] = countHoles.map((holeId) => ({
       number: holeId,
+      ref: `hole-${holeId}`,
     }));
 
     setForm((prevForm) => ({
@@ -134,15 +142,40 @@ export const CourseForm = ({ selectedCourse, onSubmit, onClose }: Props) => {
     }));
   };
 
+  const guessedPar = useMemo(() => {
+    const par = getCoursePar(form.holes);
+    return par;
+  }, [form.holes]);
+
   return (
     <>
       <CustomList>
         <CustomListItem>
           <Input
+            name='name'
             placeholder='Nom du parcours'
             value={form?.name || ''}
             onChange={handleChangeName}
           />
+          <Flexbox alignItems='flex-end'>
+            <Flexbox flexDirection='column'>
+              <span>PAR</span>
+              <Input
+                name='par'
+                placeholder='Par'
+                value={form?.par || ''}
+                onChange={handleChangeName}
+                style={{
+                  width: '100px',
+                }}
+              />
+            </Flexbox>
+            {guessedPar !== form.par ? (
+              <FormInputError>
+                Le total des pars par trou ne correspond par au par global
+              </FormInputError>
+            ) : null}
+          </Flexbox>
         </CustomListItem>
         {form?.holes
           ? form.holes.map((hole, key) => (
@@ -169,8 +202,8 @@ export const CourseForm = ({ selectedCourse, onSubmit, onClose }: Props) => {
         <FontAwesomeIcon icon={faPlus} size='3x' />
       </FloatingButton>
       <Menu
-        id='demo-positioned-menu'
-        aria-labelledby='demo-positioned-button'
+        id='positioned-menu'
+        aria-labelledby='positioned-button'
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
@@ -201,9 +234,6 @@ export const CourseForm = ({ selectedCourse, onSubmit, onClose }: Props) => {
         <CustomShotButton onClick={() => handleAddHole(1)}>
           1 hole
         </CustomShotButton>
-        {/* <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem> */}
       </Menu>
       <FixedBottomToolbar>
         <ButtonPill disabled={!form.name} onClick={() => onSubmit(form)}>

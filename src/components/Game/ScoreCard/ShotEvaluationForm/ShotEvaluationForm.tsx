@@ -55,7 +55,7 @@ export const ShotEvaluationForm = ({
         style: theme.swipeable.paper,
       }}
       onOpen={onOpen}>
-      <SwipeMenuHeader title={`Edit shot`}></SwipeMenuHeader>
+      <SwipeMenuHeader title={`Modifier le shot`}></SwipeMenuHeader>
       <List
         style={{
           padding: '5px',

@@ -27,6 +27,9 @@ const Header = styled.header`
   border-radius: 10px 10px 0 0;
   background-color: ${theme.colors.pink};
   color: #fff;
+  & > span {
+    font-size: 20px;
+  }
 `;
 
 const Content = styled.div`
@@ -45,9 +48,10 @@ type Props = {
   isOpen: boolean;
   onClose: () => void;
   children: any;
+  title: string;
 };
 
-export const Modal = ({ isOpen, onClose, children }: Props) => {
+export const Modal = ({ isOpen, onClose, children, title }: Props) => {
   useEffect(() => {
     const closeOnEscapeKey = (e: any) =>
       e.key === 'Escape' ? onClose() : null;
@@ -64,7 +68,7 @@ export const Modal = ({ isOpen, onClose, children }: Props) => {
       <Root>
         <Content>
           <Header>
-            <span>Quality shot</span>
+            <span>{title}</span>
             <CloseButton onClick={onClose}>
               <FontAwesomeIcon icon={faRectangleXmark} />
             </CloseButton>

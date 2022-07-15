@@ -2,6 +2,7 @@ import { CourseType } from "./types";
 
 export const saconnay: CourseType = {
   name: 'Esery - Saconnay',
+  par: 72,
   sss: {
     men: {
       yellow: 70.6,

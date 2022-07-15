@@ -39,7 +39,7 @@ export const ShotEvaluationFormItem = ({
         margin: '5px',
       }}>
       <Flexbox flexDirection='column' flex='1'>
-        <span>{`Hole: ${hole?.number}`}</span>
+        <span>{`Hole: ${hole?.number} - par: ${hole?.par}`}</span>
         {selectedShot ? (
           <Flexbox flex='1' justifyContent='space-between' alignItems='center'>
             <Flexbox>
@@ -77,6 +77,7 @@ export const ShotEvaluationFormItem = ({
         open={open}
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
+        title='Modifier un shot'
       />
     </ListItem>
   );

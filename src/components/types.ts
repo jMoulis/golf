@@ -12,6 +12,8 @@ export type HoleCourseType = {
 export type CourseType = {
   id?: string,
   name: string,
+  par: number,
+  countHoles?: number,
   sss?: {
     men?: any,
     women?: any
@@ -45,22 +47,32 @@ export type GameHoleType = {
   shots: any[]
 }
 
-export type GamePayloadType = {
+export type GameStatus = 'DRAFT' | 'DONE';
+
+export enum ENUM_GAME_STATUS {
+  DRAFT = 'DRAFT',
+  DONE = 'DONE'
+}
+
+interface GameTypeCommons {
   courseRef: string;
-  date: Timestamp;
   holes: Record<string, GameHoleType>;
   themes: ThemeType[];
   userId: string;
   users: UserType[];
+  strokeBrut?: number;
+  status?: GameStatus;
+  coach?: UserTypeSummary;
+  player?: UserTypeSummary;
+}
+export interface GamePayloadType extends GameTypeCommons {
+  date: Timestamp;
 }
 
-export type GameType = {
+
+export interface GameType extends GameTypeCommons {
   id: string;
-  courseRef: string;
   date: Date;
-  holes: Record<string, GameHoleType>;
-  themes: ThemeType[];
-  users: UserType[];
 }
 
 export type ThemeType = {
@@ -81,4 +93,11 @@ export type UserType = {
   roles?: string[];
   coaches?: UserType[];
   students?: UserType[];
+}
+
+export type UserTypeSummary = {
+  id?: string;
+  firstname?: string;
+  lastname?: string;
+  avatar?: string;
 }

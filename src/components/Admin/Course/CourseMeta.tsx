@@ -1,6 +1,4 @@
 import styled from '@emotion/styled';
-import React from 'react';
-import { getCountHoles, getCoursePar } from '../../../utils/scoreUtils';
 import { Flexbox } from '../../commons';
 import { CourseType } from '../../types';
 
@@ -16,8 +14,8 @@ export const CourseMeta = ({ course }: Props) => {
   return (
     <Flexbox flexDirection='column'>
       <CourseName>{course.name}</CourseName>
-      <span>TROUS: {getCountHoles(course.holes)}</span>
-      <span>PAR: {getCoursePar(course.holes)}</span>
+      <span>TROUS: {course.countHoles}</span>
+      <span>PAR: {course.par}</span>
     </Flexbox>
   );
 };

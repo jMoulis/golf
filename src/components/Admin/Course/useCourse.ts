@@ -51,7 +51,6 @@ export const useCourse = () => {
   }, [getCourses, user]);
 
   const handleSubmit = async (course: CourseType) => {
-
     try {
       const docRef = doc(db.current, 'courses', course.name);
       const mapHoles = course.holes.reduce(
@@ -68,6 +67,8 @@ export const useCourse = () => {
       );
       setDoc(docRef, {
         name: course.name,
+        par: course.par,
+        countHoles: course.holes.length,
         holes: mapHoles,
       });
     } catch (e) {

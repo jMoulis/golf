@@ -8,7 +8,7 @@ import {
 import { useCallback, useEffect, useState } from 'react';
 import { app, auth } from '../../../firebase';
 import { useNavigate } from 'react-router-dom';
-import { CourseType, ThemeType, UserType } from '../../types';
+import { CourseType, ENUM_GAME_STATUS, ThemeType, UserType } from '../../types';
 import styled from '@emotion/styled';
 import { theme } from '../../../style/theme';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -19,24 +19,25 @@ import { FixedBottomToolbar } from '../../commons/FixedBottomToolbar';
 import { ListItem } from '../../commons/List';
 import { Flexbox } from '../../commons';
 import { CoachPage } from '../../pages/CoachPage';
+import { CourseMeta } from '../../Admin/Course/CourseMeta';
+import { ShotButton } from '../../commons/ShotButton';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { useUser } from '../../User/useUser';
 
 const ThemeTag = styled.div`
   background-color: ${theme.colors.blueGreen};
   padding: 5px;
   margin: 5px;
   border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const ButtonWrapper = styled(FixedBottomToolbar)`
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-`;
-
-const CustomButtonPill = styled(ButtonPill)`
-  padding: 5px;
-  height: 40px;
-  margin: 0;
-  font-size: 13px;
+  display: flex;
+  justify-content: center;
 `;
 
 type StepType = 'SELECT_COURSE' | 'SELECT_THEME' | null;
@@ -48,6 +49,7 @@ export const NewGame = () => {
   const [step, setStep] = useState<StepType>(null);
   const [user] = useAuthState(auth);
   const [selectedCoach, setSelectedCoach] = useState<UserType | null>(null);
+  const { getUser, user: fullUser } = useUser();
 
   const navigate = useNavigate();
 
@@ -55,7 +57,7 @@ export const NewGame = () => {
     const db = getFirestore(app);
     if (!selectedCourse) return null;
     if (!user) return null;
-
+    if (!fullUser) return null;
     try {
       const newGame = {
         date: Timestamp.fromDate(new Date()),
@@ -63,11 +65,21 @@ export const NewGame = () => {
         themes: selectedThemes,
         holes: selectedCourse?.holes || {},
         userId: user.uid,
-        // roles: {
-        //   [user.uid]: 'owner',
-        //   [selectedCoach?.id as string]: 'coach',
-        // },
+        coursePar: selectedCourse.par,
+        status: ENUM_GAME_STATUS.DRAFT,
         users: selectedCoach?.id ? [user.uid, selectedCoach.id] : [user.uid],
+        player: {
+          firstname: fullUser?.firstname,
+          lastname: fullUser?.lastname,
+          id: fullUser?.id,
+          avatar: fullUser?.avatar,
+        },
+        coach: {
+          firstname: selectedCoach?.firstname,
+          lastname: selectedCoach?.lastname,
+          id: selectedCoach?.id,
+          avatar: selectedCoach?.avatar,
+        },
       };
       const docRef = await addDoc(collection(db, 'games'), newGame);
       navigate(`/protected/games/${docRef.id}`, { replace: true });
@@ -100,9 +112,15 @@ export const NewGame = () => {
     setSelectedThemes(updatedSelectedThemes);
   };
 
+  const handleSelectCourse = (course: CourseType) => {
+    setSelectedCourse(course);
+    setStep(null);
+  };
+
   useEffect(() => {
     getCourses();
-  }, [getCourses]);
+    getUser();
+  }, [getCourses, getUser]);
 
   useEffect(() => {
     return () => {
@@ -113,25 +131,53 @@ export const NewGame = () => {
   return (
     <>
       {selectedCourse ? (
-        <ListItem as='div'>
-          {selectedCourse?.name}
+        <ListItem as='div' onClick={() => setStep('SELECT_COURSE')}>
+          <CourseMeta course={selectedCourse} />
           <Flexbox flexWrap='wrap'>
             {selectedThemes.map((theme, key) => (
-              <ThemeTag key={key} onClick={() => handleRemoveTheme(theme.id)}>
+              <ThemeTag
+                key={key}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleRemoveTheme(theme.id);
+                }}>
                 {theme.type}
               </ThemeTag>
             ))}
+            <ShotButton
+              style={{
+                height: '40px',
+                width: '40px',
+              }}
+              type='submit'
+              color='#fff'
+              onClick={(e) => {
+                e.stopPropagation();
+                setStep('SELECT_THEME');
+              }}
+              backgroundColor={theme.colors.saveButton}>
+              <FontAwesomeIcon icon={faPlus} />
+            </ShotButton>
           </Flexbox>
         </ListItem>
       ) : (
-        <ListItem as='div'>Aucun parcours n'est sélectionné</ListItem>
+        <ListItem
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            display: 'flex',
+          }}
+          onClick={() => setStep('SELECT_COURSE')}
+          as='div'>
+          Cliques pour ajouter un parcours
+        </ListItem>
       )}
 
       <CourseList
         open={step === 'SELECT_COURSE'}
         courses={courses}
         selectedCourse={selectedCourse}
-        onSelect={setSelectedCourse}
+        onSelect={handleSelectCourse}
         onClose={() => setStep(null)}
       />
 
@@ -148,24 +194,11 @@ export const NewGame = () => {
       />
 
       <ButtonWrapper>
-        <CustomButtonPill
-          onClick={() => setStep('SELECT_COURSE')}
-          backgroundColor={
-            theme.colors.deleteButton
-          }>{`Parcours`}</CustomButtonPill>
-
         {selectedCourse ? (
           <ButtonPill type='button' onClick={() => handleSubmit()}>
             Créer
           </ButtonPill>
-        ) : (
-          <span />
-        )}
-        <CustomButtonPill
-          onClick={() => setStep('SELECT_THEME')}
-          backgroundColor={
-            theme.colors.deleteButton
-          }>{`Themes`}</CustomButtonPill>
+        ) : null}
       </ButtonWrapper>
     </>
   );

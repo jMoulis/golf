@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { Flexbox } from '../../commons';
-import { GameHoleType } from '../../types';
+import { GameHoleType, GameType } from '../../types';
 import { TotalScores } from './TotalScoresPars';
 import { CourseStats } from './CourseStats';
 import { ShotsStats } from './ShotsStats';
@@ -22,9 +22,10 @@ const CourseName = styled.span``;
 type Props = {
   holes?: Record<string, GameHoleType>;
   courseName: string;
+  game: GameType;
 };
 
-export const GameBoardHeader = ({ holes, courseName }: Props) => {
+export const GameBoardHeader = ({ holes, courseName, game }: Props) => {
   const tabs: TabType[] = useMemo(() => {
     return [
       {
@@ -64,7 +65,7 @@ export const GameBoardHeader = ({ holes, courseName }: Props) => {
           padding: '5px',
         }}>
         <CourseName>{courseName}</CourseName>
-        <CourseStats holes={holes ? Object.values(holes) : []} />
+        <CourseStats game={game} holes={holes ? Object.values(holes) : []} />
       </Flexbox>
       <TabNavigation
         selectedTab={selectedTab}

@@ -42,6 +42,7 @@ export const CoursePage = () => {
   };
 
   const handleSave = (course: CourseType) => {
+    console.log(course);
     setSelectedCourse(null);
     onSave(course);
     onClose();

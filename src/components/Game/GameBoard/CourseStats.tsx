@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
-import { getCoursePar, getDiff, getScoreBrut } from '../../../utils/scoreUtils';
+import { getCoursePar, getDiff } from '../../../utils/scoreUtils';
 import { Flexbox } from '../../commons';
-import { GameHoleType, HoleCourseType } from '../../types';
+import { GameHoleType, GameType, HoleCourseType } from '../../types';
 
 const Stat = styled.span`
   margin-right: 10px;
@@ -14,13 +14,14 @@ const Stat = styled.span`
 
 type Props = {
   holes?: (GameHoleType | HoleCourseType)[];
+  game: GameType;
 };
 
-export const CourseStats = ({ holes }: Props) => {
+export const CourseStats = ({ holes, game }: Props) => {
   return (
     <Flexbox>
       <Stat>PAR: {getCoursePar(holes)}</Stat>
-      <Stat>BRUT: {getScoreBrut(holes)}</Stat>
+      <Stat>BRUT: {game.strokeBrut}</Stat>
       <Stat>DIFF: {getDiff(holes)}</Stat>
     </Flexbox>
   );

@@ -4,9 +4,9 @@ import { Route, Routes } from 'react-router-dom';
 import { Homepage } from './pages/HomePage';
 import { TrainingPage } from './pages/TrainingPage';
 import { GameBoard } from './Game/GameBoard/GameBoard';
-import { LandingPage } from './pages/LandingPage';
+import { StatPage } from './pages/StatPage';
 import styled from '@emotion/styled';
-import { GameIndex } from './Game/GameIndex';
+import { GameIndex } from './Game/GameIndex/GameIndex';
 import { GamePage } from './pages/GamePage';
 import { LoginPage } from './pages/LoginPage';
 import { AdminPage } from './pages/AdminPage';
@@ -32,7 +32,7 @@ function App() {
       <Routes>
         <Route path='/' element={<LoginPage />} />
         <Route path='protected' element={<Homepage />}>
-          <Route index element={<LandingPage />} />
+          <Route index element={<StatPage />} />
           <Route path='games' element={<GamePage />}>
             <Route index element={<GameIndex />} />
             <Route path='new' element={<NewGame />} />

@@ -7,6 +7,9 @@ export const TrainingIndex = () => {
       <PageHeader backgroundColor={theme.headers.trainings.linear}>
         Trainings
       </PageHeader>
+      <div>
+        <div>En cours de contruction... patience</div>
+      </div>
     </>
   );
 };

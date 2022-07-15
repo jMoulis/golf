@@ -55,7 +55,11 @@ export const GameBoard = () => {
   return (
     <>
       <PageHeader backgroundColor={theme.headers.games.linear}>
-        <GameBoardHeader holes={game?.holes} courseName={game.courseRef} />
+        <GameBoardHeader
+          game={game}
+          holes={game?.holes}
+          courseName={game.courseRef}
+        />
       </PageHeader>
       <ScoreCard game={game} gameRef={gameRef.current} />
     </>

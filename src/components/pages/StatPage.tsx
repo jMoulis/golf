@@ -1,12 +1,14 @@
 import { theme } from '../../style/theme';
 import { PageHeader } from '../commons/Core/PageHeader';
+import { Statistic } from '../Statistic/Statistic';
 
-export const LandingPage = () => {
+export const StatPage = () => {
   return (
     <>
       <PageHeader backgroundColor={theme.headers.statistics.linear}>
-        Landing
+        Statistiques
       </PageHeader>
+      <Statistic />
     </>
   );
 };

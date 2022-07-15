@@ -2,18 +2,22 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   arrayUnion,
   DocumentReference,
+  increment,
   setDoc,
   Unsubscribe,
 } from 'firebase/firestore';
 import styled from '@emotion/styled';
-import { GameHoleType, GameType } from '../../types';
+import { ENUM_GAME_STATUS, GameHoleType, GameType } from '../../types';
 import { RenderHoles } from './RenderHoles';
 import { ShotType } from '../../../game';
 import { SwipeShotForm } from '../../commons/SwipeShotForm/SwipeShotForm';
+import { FLOATING_HEIGHT } from '../../cssConstants';
+import { SaveMenu } from './SaveMenu';
 
 const List = styled.ul`
   overflow: auto;
   max-height: 100%;
+  padding-bottom: ${FLOATING_HEIGHT};
 `;
 
 type Props = {
@@ -54,6 +58,7 @@ export const ScoreCard = ({ game, gameRef }: Props) => {
       await setDoc(
         gameRef,
         {
+          strokeBrut: increment(1),
           holes: {
             [hole.ref]: {
               shots: arrayUnion(shot),
@@ -95,6 +100,19 @@ export const ScoreCard = ({ game, gameRef }: Props) => {
       setOpen(state);
     };
 
+  const handleValidate = async () => {
+    if (gameRef) {
+      await setDoc(
+        gameRef,
+        {
+          status: ENUM_GAME_STATUS.DONE,
+        },
+        {
+          merge: true,
+        },
+      );
+    }
+  };
   if (!game) return null;
 
   return (
@@ -126,7 +144,9 @@ export const ScoreCard = ({ game, gameRef }: Props) => {
         game={game}
         withEvaluationForm
         open={open}
+        title='Ajouter un shot'
       />
+      <SaveMenu onValidate={handleValidate} status={game.status} />
     </>
   );
 };

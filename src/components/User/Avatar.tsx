@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { getDownloadURL, ref } from 'firebase/storage';
 import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { storage } from '../../firebase';
-import { UserType } from '../types';
+import { UserType, UserTypeSummary } from '../types';
 import avatarPlaceholder from '../../assets/images/avatar-placeholder.png';
 
 const Image = styled.img<{ styling?: any }>`
@@ -21,12 +21,18 @@ const Placeholder = styled.div<{ styling?: any }>`
   ${({ styling }) => styling};
 `;
 type Props = {
-  user: UserType;
+  user: UserType | UserTypeSummary;
   styling?: any;
   onUploadAvatar?: (file: File) => void;
+  onDisplayDetail?: () => void;
 };
 
-export const Avatar = ({ user, styling, onUploadAvatar }: Props) => {
+export const Avatar = ({
+  user,
+  styling,
+  onUploadAvatar,
+  onDisplayDetail,
+}: Props) => {
   const [loading, setLoading] = useState<'UNSET' | 'LOADING' | 'DONE'>('UNSET');
   const [imageUrl, setImageUrl] = useState('');
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -48,9 +54,17 @@ export const Avatar = ({ user, styling, onUploadAvatar }: Props) => {
     }
   }, [fetchImageURL, user.avatar]);
 
-  const handleClick = () => {
+  const handleClick = (
+    event: React.MouseEvent<HTMLImageElement, MouseEvent>,
+  ) => {
+    event.stopPropagation();
+    event.preventDefault();
     if (onUploadAvatar) {
       inputRef.current?.click();
+    }
+    if (onDisplayDetail) {
+      console.log('displayDetail');
+      console.log(user);
     }
   };
   const handleChange = (event: FormEvent<HTMLInputElement>) => {

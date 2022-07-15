@@ -9,8 +9,8 @@ export const PageHeader = styled.div<{
   flex-direction: column;
   justify-content: space-between;
   background: ${({ backgroundColor }) => backgroundColor};
-  height: 200px;
-  min-height: 200px;
+  height: fit-content;
+  /* min-height: 200px; */
   font-size: 20px;
   color: #fff;
   z-index: 1;

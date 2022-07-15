@@ -4,16 +4,13 @@ import { List, ListItem } from '../../commons/List';
 import { CourseType } from '../../types';
 import { theme } from '../../../style/theme';
 import { SwipeMenuHeader } from '../../commons/SwipeMenuHeader';
-import { FixedBottomToolbar } from '../../commons/FixedBottomToolbar';
-import { ButtonPill } from '../../commons/ButtonPill';
+import { CourseMeta } from '../../Admin/Course/CourseMeta';
 
-const CustomList = styled(List)`
-  padding-bottom: 80px;
-`;
+const CustomList = styled(List)``;
 type Props = {
   courses: CourseType[];
   selectedCourse?: CourseType | null;
-  onSelect: (course: CourseType | null) => void;
+  onSelect: (course: CourseType) => void;
   open: boolean;
   onClose: () => void;
 };
@@ -43,18 +40,11 @@ export const CourseList = ({
             }}
             selected={course.id === selectedCourse?.id}
             key={key}
-            onClick={() =>
-              course.id === selectedCourse?.id
-                ? onSelect(null)
-                : onSelect(course)
-            }>
-            {course.name}
+            onClick={() => onSelect(course)}>
+            <CourseMeta course={course} />
           </ListItem>
         ))}
       </CustomList>
-      <FixedBottomToolbar>
-        <ButtonPill onClick={onClose}>Selectionner</ButtonPill>
-      </FixedBottomToolbar>
     </SwipeableDrawer>
   );
 };

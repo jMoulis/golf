@@ -7,6 +7,9 @@ export const FloatingButton = styled.button<{
 }>`
   background-color: ${({ backgroundColor }) => backgroundColor || '#fff'};
   border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 20rem;
   height: 60px;
   width: 60px;

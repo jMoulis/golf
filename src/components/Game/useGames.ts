@@ -47,12 +47,8 @@ export const useGames = () => {
           const game = doc.data() as GamePayloadType;
           return {
             id: doc.id,
-            courseRef: game.courseRef,
+            ...game,
             date: game.date?.toDate(),
-            holes: {},
-            themes: game.themes,
-            userId: game.userId,
-            users: game.users
           };
         });
         setGames(incomingGames);

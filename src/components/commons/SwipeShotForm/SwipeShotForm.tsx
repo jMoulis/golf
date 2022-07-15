@@ -1,6 +1,5 @@
 import { SwipeableDrawer } from '@mui/material';
 import { DocumentReference } from 'firebase/firestore';
-import React from 'react';
 import { ShotType } from '../../../game';
 import { theme } from '../../../style/theme';
 import { iOS } from '../../../utils/global.utils';
@@ -18,6 +17,7 @@ type Props = {
   hole: GameHoleType | null;
   game: GameType;
   withEvaluationForm: boolean;
+  title: string;
 };
 
 export const SwipeShotForm = ({
@@ -30,6 +30,7 @@ export const SwipeShotForm = ({
   onEditShot,
   game,
   withEvaluationForm,
+  title,
 }: Props) => {
   return (
     <SwipeableDrawer
@@ -42,7 +43,7 @@ export const SwipeShotForm = ({
         style: theme.swipeable.paper,
       }}
       onOpen={onOpen}>
-      <SwipeMenuHeader title='Edit shot type' />
+      <SwipeMenuHeader title={title} />
       <ShotForm
         gameRef={gameRef}
         onAddShot={onAddShot}

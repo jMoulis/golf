@@ -1,37 +1,38 @@
 import { GameHoleType, HoleCourseType } from "../components/types";
 
-export const scores = {
+export const scoresConfig = {
   pars: { bk: 'green', color: '#fff', label: 'Par' },
   birdies: { bk: '#0000e5', color: '#fff', label: 'Birdie' },
   eagles: { bk: '#ff8c19', color: '#fff', label: 'Eagle' },
   boggeys: { bk: '#a8a8a8', color: '#000', label: 'Boggey' },
   double: { bk: '#6F6F6F', color: '#fff', label: 'Double Boggey' },
   triple: { bk: '#323232', color: '#fff', label: 'Triple boggey +' }
-}
+};
+
 export const scoreResult = (par: number, score: number) => {
   // No score
   if (score === 0) return { bk: 'white', color: '#000', label: '' };
   // All in one
   if (score === 1) return { bk: 'red', color: '#fff', label: 'All in one' };
   // Par
-  if (par === score) return scores.pars;
+  if (par === score) return scoresConfig.pars;
   if (score === par - 3)
-    return scores.eagles;
+    return scoresConfig.eagles;
   // Eagle
   if (score === par - 2)
-    return scores.eagles;
+    return scoresConfig.eagles;
   // Birdie
   if (score === par - 1)
-    return scores.birdies;
+    return scoresConfig.birdies;
   // Boggey
   if (score === par + 1)
-    return scores.boggeys;
+    return scoresConfig.boggeys;
   // DoubleBoggey
   if (score === par + 2)
-    return scores.double;
+    return scoresConfig.double;
   // More
   if (score > par + 2)
-    return scores.triple;
+    return scoresConfig.triple;
   return { bk: 'white', color: '#000' };
 };
 
@@ -42,7 +43,7 @@ export const getCoursePar = (holes?: (HoleCourseType | GameHoleType)[]) => {
     0,
   );
 }
-export const getScoreBrut = (holes?: (HoleCourseType | GameHoleType)[]) => {
+export const getScoreBrut = (holes?: GameHoleType[]) => {
   if (!holes) return 0;
   return holes.reduce(
     (acc: any, hole: any) => acc + (hole.shots?.length || 0),
@@ -51,10 +52,61 @@ export const getScoreBrut = (holes?: (HoleCourseType | GameHoleType)[]) => {
 }
 export const getDiff = (holes?: (HoleCourseType | GameHoleType)[]) => {
   if (!holes) return 0;
-  return getScoreBrut(holes) - getCoursePar(holes)
+  return getScoreBrut(holes as GameHoleType[]) - getCoursePar(holes)
 }
 
 export const getCountHoles = (holes?: (HoleCourseType | GameHoleType)[]) => {
   if (!holes) return 0;
   return holes.length
+}
+
+export const getHolesScores = (holes?: GameHoleType[]) => {
+  if (!holes) return {
+    eagles: 0,
+    birdies: 0,
+    pars: 0,
+    boggeys: 0,
+    double: 0,
+    triple: 0,
+  };
+  const pars = holes.reduce(
+    (acc: number, hole: GameHoleType) =>
+      hole.par === hole.shots?.length ? (acc += 1) : acc,
+    0,
+  );
+  const birdies = holes.reduce(
+    (acc: number, hole: GameHoleType) =>
+      hole.par - 1 === hole.shots?.length ? (acc += 1) : acc,
+    0,
+  );
+  const eagles = holes.reduce(
+    (acc: number, hole: GameHoleType) =>
+      hole.shots?.length && hole.shots?.length <= hole.par - 2
+        ? (acc += 1)
+        : acc,
+    0,
+  );
+  const boggeys = holes.reduce(
+    (acc: number, hole: GameHoleType) =>
+      hole.par + 1 === hole.shots?.length ? (acc += 1) : acc,
+    0,
+  );
+  const double = holes.reduce(
+    (acc: number, hole: GameHoleType) =>
+      hole.par + 2 === hole.shots?.length ? (acc += 1) : acc,
+    0,
+  );
+  const triple = holes.reduce(
+    (acc: number, hole: GameHoleType) =>
+      hole.shots?.length >= hole.par + 3 ? (acc += 1) : acc,
+    0,
+  );
+  return {
+    eagles,
+    birdies,
+    pars,
+    boggeys,
+    double,
+    triple,
+  };
 }

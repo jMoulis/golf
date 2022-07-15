@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { scores } from '../../../utils/scoreUtils';
+import { scoresConfig } from '../../../utils/scoreUtils';
 import { Flexbox } from '../../commons';
 import { GameHoleType } from '../../types';
 import { Stat, Tag } from './stylesComponents';
@@ -73,7 +73,9 @@ export const TotalScores = ({ holes }: Props) => {
       }}>
       {Object.keys(stats).map((key) => (
         <Stat key={key}>
-          <Tag scoreColor={(scores as any)[key]}>{(stats as any)[key]}</Tag>
+          <Tag scoreColor={(scoresConfig as any)[key]}>
+            {(stats as any)[key]}
+          </Tag>
           <span>{key}</span>
         </Stat>
       ))}

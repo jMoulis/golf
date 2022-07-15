@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { faSquarePlus } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { DocumentReference, setDoc } from 'firebase/firestore';
+import { DocumentReference, increment, setDoc } from 'firebase/firestore';
 import { useState } from 'react';
 import { ShotType } from '../../../../game';
 import { theme } from '../../../../style/theme';
@@ -76,6 +76,7 @@ export const Shots = ({
       setDoc(
         gameRef,
         {
+          strokeBrut: increment(-1),
           holes: {
             [hole.ref]: {
               shots: updatedShots,
