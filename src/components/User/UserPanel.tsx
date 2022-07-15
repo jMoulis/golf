@@ -38,8 +38,10 @@ export const UserPanel = () => {
         <Flexbox flexDirection='column' onClick={onOpen} alignItems='center'>
           <Avatar user={user} />
           <Flexbox>
-            <NameTag style={{ marginRight: '10px' }}>{user.firstname}</NameTag>
-            <NameTag>{user.lastname}</NameTag>
+            <NameTag style={{ marginRight: '10px', color: '#fff' }}>
+              {user.firstname}
+            </NameTag>
+            <NameTag style={{ color: '#fff' }}>{user.lastname}</NameTag>
           </Flexbox>
         </Flexbox>
       ) : null}

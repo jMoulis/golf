@@ -12,7 +12,7 @@ export const ThemePage = () => {
   return (
     <ThemeList
       listStyling={{
-        maxHeight: '90vh',
+        maxHeight: '80vh',
         margin: '10px',
       }}
       onDeleteTheme={onDeleteTheme}

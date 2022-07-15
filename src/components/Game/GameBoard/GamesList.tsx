@@ -39,10 +39,10 @@ export const GamesList = ({ games, onDeleteGame }: Props) => {
                 padding: '0.5rem',
               }}>
               <Link to={`${game.id}`}>
-                <div>
-                  <span>{game.courseRef}</span>
-                  <div>{dateFormat.current.format(game.date)}</div>
-                </div>
+                <Flexbox flexDirection='column'>
+                  <span style={{ fontWeight: 'bold' }}>{game.courseRef}</span>
+                  <span>{dateFormat.current.format(game.date)}</span>
+                </Flexbox>
               </Link>
               <DeleteButton type='button' onClick={() => onDeleteGame(game)}>
                 <FontAwesomeIcon icon={faTrash} />

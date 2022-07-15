@@ -2,9 +2,9 @@ import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
 import { ENUM_MENU_COMPONENT } from './enum';
 import { AdminDrawer } from './AdminDrawer';
-import GolfCourseImage from '../../assets/images/golf-course.png';
+import GolfCourseImage from '../../assets/images/golf-field.png';
 import GolfCoachImage from '../../assets/images/golf-coach.png';
-import GolfEvalImage from '../../assets/images/golf-eval.png';
+import GolfThemeImage from '../../assets/images/golf-theme.png';
 
 import { theme } from '../../style/theme';
 import { AdminMenuType } from './types';
@@ -26,6 +26,7 @@ const NavigationCard = styled.div`
   flex: 1;
   min-width: 200px;
   max-width: 350px;
+  padding: 10px;
   margin: 10px;
   border-radius: 10px;
   align-items: center;
@@ -40,7 +41,7 @@ export const AdminIndex = (props: Props) => {
       {
         label: 'Thèmatiques',
         component: ENUM_MENU_COMPONENT.THEMES,
-        img: GolfEvalImage,
+        img: GolfThemeImage,
       },
       {
         label: 'Parcours',
@@ -65,10 +66,12 @@ export const AdminIndex = (props: Props) => {
             {menu.img ? (
               <img
                 style={{
-                  flex: 1,
-                  borderRadius: '10px 10px 0 0',
+                  borderRadius: '300px',
                   objectFit: 'cover',
                   objectPosition: 'center',
+                  height: '100px',
+                  width: '100px',
+                  boxShadow: theme.shadows.flatButton,
                 }}
                 alt={menu.label}
                 src={menu.img}

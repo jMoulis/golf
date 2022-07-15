@@ -8,6 +8,7 @@ import { useGames } from './useGames';
 
 const HeaderTitle = styled.span`
   text-transform: uppercase;
+  color: #fff;
 `;
 
 export const GameIndex = () => {
@@ -19,7 +20,6 @@ export const GameIndex = () => {
           <Flexbox justifyContent='center'>
             <HeaderTitle>Games</HeaderTitle>
           </Flexbox>
-          <span>Total parties jouées: {games?.length}</span>
         </Flexbox>
       </PageHeader>
       <GamesList onDeleteGame={selectDeleteGame} games={games} />

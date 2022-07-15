@@ -9,22 +9,36 @@ import { theme } from '../../style/theme';
 import { AdminMenuType } from './types';
 
 const Header = styled.header<{ backgroundImage?: string }>`
+  position: relative;
   display: flex;
   align-items: center;
   padding: 10px 0;
   box-shadow: ${theme.shadows.listItem};
+  z-index: 1;
+  height: 100px;
+`;
+const Background = styled.div<{ backgroundImage?: string }>`
+  position: absolute;
   background: #fff;
   background-image: url('${({ backgroundImage }) => backgroundImage}');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  z-index: 1;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  filter: blur(2px);
 `;
+
 const HeaderTitle = styled.span`
   font-size: 20px;
   font-weight: 700;
   text-transform: uppercase;
+  z-index: 1;
+  color: #fff;
 `;
+
 const ContentWrapper = styled.div`
   max-height: 100%;
   overflow: auto;
@@ -51,11 +65,12 @@ export const AdminDrawer = ({ onClose, selectedMenu }: Props) => {
         },
       }}
       anchor='right'>
-      <Header backgroundImage={selectedMenu?.img}>
-        <DeleteButton onClick={onClose}>
+      <Header>
+        <DeleteButton style={{ zIndex: '1' }} onClick={onClose}>
           <FontAwesomeIcon icon={faArrowLeft} />
         </DeleteButton>
         <HeaderTitle>{selectedMenu?.label}</HeaderTitle>
+        <Background backgroundImage={selectedMenu?.img} />
       </Header>
       <ContentWrapper>
         {selectedMenu?.component

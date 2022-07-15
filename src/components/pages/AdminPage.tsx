@@ -15,6 +15,7 @@ const Content = styled.div`
 const HeaderTitle = styled.span`
   text-align: center;
   text-transform: uppercase;
+  color: #fff;
 `;
 
 export const AdminPage = () => {
