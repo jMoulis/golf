@@ -7,7 +7,7 @@ import { Flexbox } from '../../commons';
 import { ButtonPill } from '../../commons/ButtonPill';
 import { DeleteButton } from '../../commons/DeleteButton';
 import { Modal } from '../../commons/Modal';
-import { GamesList } from '../GameBoard/GamesList';
+import { GamesList } from '../GameBoard/GamesList/GamesList';
 import { useGames } from '../useGames';
 import { GameIndexHeader } from './GameIndexHeader';
 

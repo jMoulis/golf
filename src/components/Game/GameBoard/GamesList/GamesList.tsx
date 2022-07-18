@@ -3,23 +3,27 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import {
   faCheckCircle,
   faFilePen,
+  faGrid,
   faTrash,
 } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SwipeableDrawer } from '@mui/material';
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { theme } from '../../../style/theme';
-import { iOS } from '../../../utils/global.utils';
-import { Flexbox } from '../../commons';
-import { DeleteButton } from '../../commons/DeleteButton';
-import { FloatingButton } from '../../commons/FloatingButton';
-import { List, ListItem } from '../../commons/List';
-import { SwipeMenuHeader } from '../../commons/SwipeMenuHeader';
-import { BOTTOM_NAVBAR_HEIGHT } from '../../cssConstants';
-import { ENUM_GAME_STATUS, GameStatus, GameType } from '../../types';
-import { Avatar } from '../../User/Avatar';
-import { NewGame } from '../NewGame/NewGame';
+import { theme } from '../../../../style/theme';
+import { iOS } from '../../../../utils/global.utils';
+import { Flexbox } from '../../../commons';
+import { DeleteButton } from '../../../commons/DeleteButton';
+import { FloatingButton } from '../../../commons/FloatingButton';
+import { List, ListItem } from '../../../commons/List';
+import { SwipeMenuHeader } from '../../../commons/SwipeMenuHeader';
+import { BOTTOM_NAVBAR_HEIGHT } from '../../../cssConstants';
+import { ENUM_GAME_STATUS, GameStatus, GameType } from '../../../types';
+import { Avatar } from '../../../User/Avatar';
+import { NewGame } from '../../NewGame/NewGame';
+import { CourseStats } from '../CourseStats';
+import { Score } from './Score';
+import { ScoreTableDrawer } from './ScoreTableDrawer';
 
 const Status = styled.span<{ status?: GameStatus }>`
   position: absolute;
@@ -39,6 +43,7 @@ type Props = {
 
 export const GamesList = ({ games, onDeleteGame }: Props) => {
   const [open, setOpen] = useState(false);
+  const [selectedGame, setSelectedGame] = useState<GameType | null>(null);
 
   const dateFormat = useRef<Intl.DateTimeFormat>(new Intl.DateTimeFormat());
   return (
@@ -57,6 +62,11 @@ export const GamesList = ({ games, onDeleteGame }: Props) => {
                 <Flexbox flexDirection='column'>
                   <span style={{ fontWeight: 'bold' }}>{game.courseRef}</span>
                   <span>{dateFormat.current.format(game.date)}</span>
+                  <CourseStats
+                    game={game}
+                    holes={game.holes ? Object.values(game.holes) : []}
+                  />
+                  <Score holes={game.holes ? Object.values(game.holes) : []} />
                   <Flexbox>
                     {game.coach ? (
                       <Avatar
@@ -90,9 +100,19 @@ export const GamesList = ({ games, onDeleteGame }: Props) => {
                   </Status>
                 </Flexbox>
               </Link>
-              <DeleteButton type='button' onClick={() => onDeleteGame(game)}>
-                <FontAwesomeIcon icon={faTrash} />
-              </DeleteButton>
+              <Flexbox flexDirection='column'>
+                <DeleteButton
+                  type='button'
+                  onClick={() => setSelectedGame(game)}
+                  style={{
+                    backgroundColor: theme.colors.blue,
+                  }}>
+                  <FontAwesomeIcon icon={faGrid} />
+                </DeleteButton>
+                <DeleteButton type='button' onClick={() => onDeleteGame(game)}>
+                  <FontAwesomeIcon icon={faTrash} />
+                </DeleteButton>
+              </Flexbox>
             </Flexbox>
           </ListItem>
         ))}
@@ -118,6 +138,13 @@ export const GamesList = ({ games, onDeleteGame }: Props) => {
         <SwipeMenuHeader title='Create game' />
         <NewGame />
       </SwipeableDrawer>
+
+      <ScoreTableDrawer
+        open={Boolean(selectedGame)}
+        onClose={() => setSelectedGame(null)}
+        onOpen={() => {}}
+        game={selectedGame}
+      />
     </>
   );
 };

@@ -110,3 +110,58 @@ export const getHolesScores = (holes?: GameHoleType[]) => {
     triple,
   };
 }
+
+export const scoresByType = (holes?: GameHoleType[]) => {
+  if (holes) {
+
+    // Find how many par;
+    const pars = holes.reduce(
+      (acc: number, hole: GameHoleType) =>
+        hole.par === hole.shots?.length ? (acc += 1) : acc,
+      0,
+    );
+    const birdies = holes.reduce(
+      (acc: number, hole: GameHoleType) =>
+        hole.par - 1 === hole.shots?.length ? (acc += 1) : acc,
+      0,
+    );
+    const eagles = holes.reduce(
+      (acc: number, hole: GameHoleType) =>
+        hole.shots?.length && hole.shots?.length <= hole.par - 2
+          ? (acc += 1)
+          : acc,
+      0,
+    );
+    const boggeys = holes.reduce(
+      (acc: number, hole: GameHoleType) =>
+        hole.par + 1 === hole.shots?.length ? (acc += 1) : acc,
+      0,
+    );
+    const double = holes.reduce(
+      (acc: number, hole: GameHoleType) =>
+        hole.par + 2 === hole.shots?.length ? (acc += 1) : acc,
+      0,
+    );
+    const triple = holes.reduce(
+      (acc: number, hole: GameHoleType) =>
+        hole.shots?.length >= hole.par + 3 ? (acc += 1) : acc,
+      0,
+    );
+    return {
+      eagles,
+      birdies,
+      pars,
+      boggeys,
+      double,
+      triple,
+    };
+  }
+  return {
+    eagles: 0,
+    birdies: 0,
+    pars: 0,
+    boggeys: 0,
+    double: 0,
+    triple: 0,
+  };
+}
