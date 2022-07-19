@@ -66,7 +66,11 @@ export const GamesList = ({ games, onDeleteGame }: Props) => {
                     game={game}
                     holes={game.holes ? Object.values(game.holes) : []}
                   />
-                  <Score holes={game.holes ? Object.values(game.holes) : []} />
+                  <Flexbox justifyContent='space-around'>
+                    <Score
+                      holes={game.holes ? Object.values(game.holes) : []}
+                    />
+                  </Flexbox>
                   <Flexbox>
                     {game.coach ? (
                       <Avatar

@@ -63,8 +63,6 @@ export const Avatar = ({
       inputRef.current?.click();
     }
     if (onDisplayDetail) {
-      console.log('displayDetail');
-      console.log(user);
     }
   };
   const handleChange = (event: FormEvent<HTMLInputElement>) => {

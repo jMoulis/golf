@@ -54,7 +54,6 @@ export const useGames = () => {
         setGames(incomingGames);
       },
       (error) => {
-        console.log(error)
         console.error('Get games', error.message);
       },
     );

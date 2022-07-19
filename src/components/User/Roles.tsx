@@ -33,7 +33,6 @@ export const Roles = ({ selectedRoles, onEdit }: Props) => {
     onEdit(updatedRoles);
   };
   const handleAddRole = (role: string) => {
-    console.log(role);
     const existingRole = selectedRoles.find((prevRole) => prevRole === role);
     if (!existingRole) {
       onEdit([...selectedRoles, role]);

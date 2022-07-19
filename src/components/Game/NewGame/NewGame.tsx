@@ -74,12 +74,14 @@ export const NewGame = () => {
           id: fullUser?.id,
           avatar: fullUser?.avatar,
         },
-        coach: {
-          firstname: selectedCoach?.firstname,
-          lastname: selectedCoach?.lastname,
-          id: selectedCoach?.id,
-          avatar: selectedCoach?.avatar,
-        },
+        coach: selectedCoach
+          ? {
+              firstname: selectedCoach?.firstname,
+              lastname: selectedCoach?.lastname,
+              id: selectedCoach?.id,
+              avatar: selectedCoach?.avatar,
+            }
+          : {},
       };
       const docRef = await addDoc(collection(db, 'games'), newGame);
       navigate(`/protected/games/${docRef.id}`, { replace: true });

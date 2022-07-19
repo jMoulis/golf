@@ -11,7 +11,7 @@ export const scoresConfig = {
 
 export const scoreResult = (par: number, score: number) => {
   // No score
-  if (score === 0) return { bk: 'white', color: '#000', label: '' };
+  if (score === 0) return { bk: '', color: '#000', label: '' };
   // All in one
   if (score === 1) return { bk: 'red', color: '#fff', label: 'All in one' };
   // Par
@@ -33,7 +33,7 @@ export const scoreResult = (par: number, score: number) => {
   // More
   if (score > par + 2)
     return scoresConfig.triple;
-  return { bk: 'white', color: '#000' };
+  return { bk: '', color: '#000' };
 };
 
 export const getCoursePar = (holes?: (HoleCourseType | GameHoleType)[]) => {

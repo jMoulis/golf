@@ -4,6 +4,7 @@ import { theme } from '../../../../style/theme';
 import { iOS } from '../../../../utils/global.utils';
 import { SwipeMenuHeader } from '../../../commons/SwipeMenuHeader';
 import { GameType } from '../../../types';
+import { RenderHolesTable } from '../../RenderHolesTable';
 
 type Props = {
   open: boolean;
@@ -13,7 +14,6 @@ type Props = {
 };
 
 export const ScoreTableDrawer = ({ open, onOpen, onClose, game }: Props) => {
-  console.log(game);
   return (
     <SwipeableDrawer
       disableBackdropTransition={!iOS}
@@ -26,11 +26,10 @@ export const ScoreTableDrawer = ({ open, onOpen, onClose, game }: Props) => {
       }}
       onOpen={onOpen}>
       <SwipeMenuHeader title='Summary' />
-      <div>
-        <span>Export</span>
-        <span>Share</span>
-      </div>
-      <span>Table</span>
+      <RenderHolesTable
+        game={game}
+        holes={game?.holes ? Object.values(game.holes) : []}
+      />
     </SwipeableDrawer>
   );
 };

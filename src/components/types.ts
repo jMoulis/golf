@@ -1,13 +1,16 @@
 import { Timestamp } from "firebase/firestore";
 
 export type HoleCourseType = {
-  ref?: string;
+  ref: string;
   number: number,
-  par?: number,
-  hcp?: number,
+  par: number,
+  hcp: number,
   distances?: {
     black?: number, white?: number, yellow: number, blue?: number, red?: number
   }[]
+}
+export interface GameHoleType extends HoleCourseType {
+  shots: any[]
 }
 export type CourseType = {
   id?: string,
@@ -40,12 +43,6 @@ export type CourseHoleType = {
   distances: DistanceType[]
 }
 
-export type GameHoleType = {
-  ref: string;
-  number: number;
-  par: number;
-  shots: any[]
-}
 
 export type GameStatus = 'DRAFT' | 'DONE';
 

@@ -1,168 +1,144 @@
 import styled from '@emotion/styled';
 import React, { useMemo } from 'react';
-import { theme } from '../../style/theme';
+import { scoreResult } from '../../utils/scoreUtils';
+import { GameHoleType } from '../types';
 
 const Table = styled.div`
   min-width: 100%;
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
+  grid-template-columns: repeat(11, 1fr);
   margin-bottom: 1rem;
+  grid-gap: 5px 0;
+  padding: 10px;
 `;
 
-const TableCell = styled.div<{
-  selected?: boolean;
-}>`
+const TableCell = styled.div<{ backgroundColor?: string; color?: string }>`
   text-align: center;
-  border: ${({ selected }) =>
-    selected ? `1px solid ${theme.colors.blue}` : '1px solid transparent'};
+  background-color: ${({ backgroundColor }) => backgroundColor};
+  color: ${({ color }) => color};
+  border: 1px solid transparent;
   border-top: 0;
-  font-size: 0.9rem;
+  font-size: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2px;
+  border-radius: 3px;
+  margin: 0 3px;
 `;
 
-const TableHeadCell = styled.div<{
-  selected?: boolean;
-}>`
+const TableHeadCell = styled.div`
   text-align: center;
-  border: ${({ selected }) =>
-    selected ? `1px solid ${theme.colors.blue}` : '1px solid transparent'};
+  border: 1px solid transparent;
   border-bottom: 0;
 `;
 
-const Tag = styled.div<{ scoreColor?: { bk: string; color: string } }>`
-  background-color: ${({ scoreColor }) => scoreColor?.bk};
-  color: ${({ scoreColor }) => scoreColor?.color};
-  border-radius: 3px;
-  font-size: 1rem;
-  height: 30px;
-  width: 30px;
+const RowHeader = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+`;
+
+const Title = styled.div`
+  font-weight: bold;
+  padding: 0 10px;
+  padding-top: 10px;
+  font-size: 20px;
 `;
 
 type Props = {
-  holes: any[];
-  onSelectHole: (hole: any) => void;
-  shots: any;
-  selectedHole: any;
+  holes: GameHoleType[];
+  title: string;
 };
 
-export const RenderNine = ({
-  holes,
-  onSelectHole,
-  shots,
-  selectedHole,
-}: Props) => {
-  const scoreResult = (par: number, score: number) => {
-    // No score
-    if (score === 0) return { bk: 'white', color: '#000' };
-    // All in one
-    if (score === 1) return { bk: 'red', color: '#fff' };
-    // Par
-    if (par === score) return { bk: 'green', color: '#fff' };
-    if (score === par - 3)
+export const RenderNine = ({ holes, title }: Props) => {
+  const sortedholes = useMemo(() => {
+    return holes ? holes.sort((a, b) => a.number - b.number) : [];
+  }, [holes]);
+
+  const scoreByHole = useMemo(() => {
+    const payload: any = sortedholes.reduce((acc, hole: any) => {
       return {
-        bk: '#9999f4',
-        color: '#fff',
+        ...acc,
+        [hole.number]: scoreResult(hole.par, hole.shots?.length),
       };
-    // Eagle
-    if (score === par - 2) return { bk: '#ff8c19', color: '#fff' };
-    // Birdie
-    if (score === par - 1) return { bk: '#0000e5', color: '#fff' };
-    // Boggey
-    if (score === par + 1) return { bk: '#a8a8a8', color: '#000' };
-    // DoubleBoggey
-    if (score === par + 2) return { bk: '#6F6F6F', color: '#fff' };
-    // More
-    if (score > par + 2) return { bk: '#323232', color: '#fff' };
-    return { bk: 'white', color: '#000' };
-  };
-  const totalScore: { holeRef: string; score: number }[] = useMemo(() => {
-    const scores: { holeRef: string; score: number }[] = [];
-    holes.reduce((acc: any, hole: any) => {
-      const score = acc + (shots[hole.ref]?.length || 0);
-      scores.push({ holeRef: hole.ref, score });
-      return score;
-    }, 0);
-    return scores;
-  }, [holes, shots]);
+    }, {});
+    return payload;
+  }, [sortedholes]);
+
+  const totalScore = useMemo(() => {
+    const payload =
+      sortedholes
+        .reduce(
+          (acc: any, hole) => (hole.shots ? [...acc, hole.shots] : acc),
+          [],
+        )
+        .flat().length || 0;
+    return payload;
+  }, [sortedholes]);
 
   if (!holes?.length) return null;
+
   return (
-    <Table>
-      {holes.map((hole: any, key) => (
-        <TableHeadCell
-          key={key}
-          onClick={() => onSelectHole(hole)}
-          selected={hole.ref === selectedHole?.ref}
+    <>
+      <Title>
+        {title} - Par {sortedholes.reduce((acc, hole) => acc + hole.par, 0)}
+      </Title>
+      <Table>
+        <RowHeader
           style={{
-            borderTopLeftRadius: '3px',
-            borderTopRightRadius: '3px',
+            fontWeight: 'bold',
           }}>
-          {hole.number}
-        </TableHeadCell>
-      ))}
-      <div
-        style={{
-          width: '20px',
-        }}>
-        Total
-      </div>
-
-      {holes.map((hole: any, key) => (
-        <TableCell
-          key={key}
-          style={{
-            borderBottom: 0,
-            borderTop: 0,
-          }}
-          selected={hole.ref === selectedHole?.ref}>
-          {hole.par}
-        </TableCell>
-      ))}
-      <TableCell>
-        {holes.reduce((acc: any, hole: any) => acc + hole.par, 0)}
-      </TableCell>
-
-      {holes.map((hole: any, key) => (
-        <TableCell
-          key={key}
-          selected={hole.ref === selectedHole?.ref}
-          onClick={() => onSelectHole(hole)}
-          style={{
-            borderBottom: 0,
-            borderTop: 0,
-          }}>
-          <Tag scoreColor={scoreResult(hole.par, shots[hole.ref]?.length || 0)}>
-            {shots[hole.ref]?.length || 0}
-          </Tag>
-        </TableCell>
-      ))}
-      <TableCell>
-        {holes.reduce(
-          (acc: any, hole: any) => acc + (shots[hole.ref]?.length || 0),
-          0,
-        )}
-      </TableCell>
-
-      {totalScore.map((total, key) => {
-        return (
-          <TableCell
+          TROU
+        </RowHeader>
+        {sortedholes.map((hole: any, key) => (
+          <TableHeadCell
             key={key}
-            selected={total.holeRef === selectedHole?.ref}
-            // onClick={() => onSelectHole(hole)}
             style={{
-              borderBottomLeftRadius: '3px',
-              borderBottomRightRadius: '3px',
+              fontWeight: 'bold',
             }}>
-            {total.score}
-          </TableCell>
-        );
-      })}
-    </Table>
+            {hole.number}
+          </TableHeadCell>
+        ))}
+        <span />
+        <RowHeader>PAR</RowHeader>
+        {sortedholes.map((hole: any, key) => (
+          <TableCell key={key}>{hole.par}</TableCell>
+        ))}
+        <TableCell>
+          {sortedholes.reduce((acc: any, hole) => acc + hole.par, 0)}
+        </TableCell>
+
+        <RowHeader>HCP</RowHeader>
+        {sortedholes.map((hole: any, key) => (
+          <TableCell key={key}>{hole.hcp}</TableCell>
+        ))}
+        <span />
+        <RowHeader
+          style={{
+            fontWeight: 'bold',
+          }}>
+          BRUT
+        </RowHeader>
+        {sortedholes.map((hole, key) => {
+          return (
+            <TableCell
+              key={key}
+              backgroundColor={(scoreByHole as any)?.[hole.number]?.bk}
+              color={(scoreByHole as any)?.[hole.number]?.color}
+              style={{
+                fontWeight: 'bold',
+              }}>
+              {hole.shots?.length || '-'}
+            </TableCell>
+          );
+        })}
+        <TableCell
+          style={{
+            fontWeight: 'bold',
+          }}>
+          {totalScore || '-'}
+        </TableCell>
+      </Table>
+    </>
   );
 };

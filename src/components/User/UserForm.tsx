@@ -51,7 +51,6 @@ export const UserForm = ({ user, onClose }: Props) => {
   }, [user]);
 
   const handleEditRoles = (roles: string[]) => {
-    console.log(roles);
     setForm((prevForm) => ({
       ...prevForm,
       roles,

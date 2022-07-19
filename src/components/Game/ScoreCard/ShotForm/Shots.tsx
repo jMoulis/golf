@@ -90,13 +90,9 @@ export const Shots = ({
   };
 
   const handleEditShot = async (incomingShot: ShotType) => {
-    console.log(incomingShot);
-    console.log(selectedShot);
-
     const updateShots = (prevShots: ShotType[], updatedShot: ShotType) => {
       return prevShots.map((prevShot) => {
         if (prevShot.id === updatedShot.id) {
-          console.log(prevShot, updatedShot);
           return { ...prevShot, ...updatedShot };
         }
         return prevShot;
@@ -106,7 +102,6 @@ export const Shots = ({
       const updatedShot = { ...selectedShot, type: incomingShot.type };
       setSelectedShot(updatedShot);
       const updatedShots = updateShots(hole.shots, updatedShot);
-      console.log(updatedShots);
       await setDoc(
         gameRef,
         {

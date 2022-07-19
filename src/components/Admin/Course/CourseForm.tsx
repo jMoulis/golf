@@ -71,7 +71,6 @@ export const CourseForm = ({ selectedCourse, onSubmit, onClose }: Props) => {
   }, []);
 
   const handleHoleChange = (updatedHole: HoleCourseType) => {
-    console.log(updatedHole);
     const prevHoles = form?.holes || [];
     const prevHole = prevHoles.find(
       (prevHole) => prevHole.ref === updatedHole.ref,
@@ -80,7 +79,7 @@ export const CourseForm = ({ selectedCourse, onSubmit, onClose }: Props) => {
       const updatedHoles = prevHoles.map((prevHole) =>
         prevHole.ref === updatedHole.ref ? updatedHole : prevHole,
       );
-      console.log(updatedHoles);
+
       setForm((prevForm) => ({
         ...prevForm,
         holes: updatedHoles,
@@ -115,6 +114,8 @@ export const CourseForm = ({ selectedCourse, onSubmit, onClose }: Props) => {
     const newHoles: HoleCourseType[] = countHoles.map((holeId) => ({
       number: holeId,
       ref: `hole-${holeId}`,
+      par: 0,
+      hcp: 0,
     }));
 
     setForm((prevForm) => ({
