@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react"
+import { useCallback, useState } from "react";
 
 export const useToggle = () => {
   const [open, setOpen] = useState(false);
@@ -8,6 +8,6 @@ export const useToggle = () => {
   return {
     open,
     onOpen: handleOpen,
-    onClose: handleClose
-  }
-}
+    onClose: handleClose,
+  };
+};

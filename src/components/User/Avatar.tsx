@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { getDownloadURL, ref } from 'firebase/storage';
+import { getDownloadURL, ref, updateMetadata } from 'firebase/storage';
 import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { storage } from '../../firebase';
 import { UserType, UserTypeSummary } from '../types';
@@ -40,7 +40,23 @@ export const Avatar = ({
   const fetchImageURL = useCallback(async (userAvatar: string) => {
     setLoading('LOADING');
     const storageRef = ref(storage, userAvatar);
+    console.log(storageRef);
     const downloadedUrl = await getDownloadURL(storageRef);
+    const newMetadata = {
+      cacheControl: 'public,max-age=300',
+      contentType: 'image/jpeg',
+    };
+
+    // // Update metadata properties
+    // updateMetadata(storageRef, newMetadata)
+    //   .then((metadata) => {
+    //     console.log(metadata);
+    //     // Updated metadata for 'images/forest.jpg' is returned in the Promise
+    //   })
+    //   .catch((error) => {
+    //     // Uh-oh, an error occurred!
+    //   });
+
     setImageUrl(downloadedUrl);
     setLoading('DONE');
   }, []);
