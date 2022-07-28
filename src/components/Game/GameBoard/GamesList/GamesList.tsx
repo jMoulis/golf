@@ -4,7 +4,7 @@ import {
   faCheckCircle,
   faFilePen,
   faGrid,
-  faTrash,
+  faTrash
 } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SwipeableDrawer } from '@mui/material';
@@ -44,29 +44,30 @@ type Props = {
 export const GamesList = ({ games, onDeleteGame }: Props) => {
   const [open, setOpen] = useState(false);
   const [selectedGame, setSelectedGame] = useState<GameType | null>(null);
-
   const dateFormat = useRef<Intl.DateTimeFormat>(new Intl.DateTimeFormat());
+
   return (
     <>
       <CustomList>
         {games.map((game) => (
           <ListItem key={game.id}>
             <Flexbox
-              justifyContent='space-between'
-              alignItems='center'
+              justifyContent="space-between"
+              alignItems="center"
               styling={{
                 padding: '0.5rem',
-                position: 'relative',
-              }}>
+                position: 'relative'
+              }}
+            >
               <Link to={`${game.id}`}>
-                <Flexbox flexDirection='column'>
+                <Flexbox flexDirection="column">
                   <span style={{ fontWeight: 'bold' }}>{game.courseRef}</span>
                   <span>{dateFormat.current.format(game.date)}</span>
                   <CourseStats
                     game={game}
                     holes={game.holes ? Object.values(game.holes) : []}
                   />
-                  <Flexbox justifyContent='space-around'>
+                  <Flexbox justifyContent="space-around">
                     <Score
                       holes={game.holes ? Object.values(game.holes) : []}
                     />
@@ -76,7 +77,7 @@ export const GamesList = ({ games, onDeleteGame }: Props) => {
                       <Avatar
                         styling={{
                           width: '30px',
-                          height: '30px',
+                          height: '30px'
                         }}
                         onDisplayDetail={() => {}}
                         user={game.coach}
@@ -86,7 +87,7 @@ export const GamesList = ({ games, onDeleteGame }: Props) => {
                       <Avatar
                         styling={{
                           width: '30px',
-                          height: '30px',
+                          height: '30px'
                         }}
                         user={game.player}
                         onDisplayDetail={() => {}}
@@ -104,16 +105,17 @@ export const GamesList = ({ games, onDeleteGame }: Props) => {
                   </Status>
                 </Flexbox>
               </Link>
-              <Flexbox flexDirection='column'>
+              <Flexbox flexDirection="column">
                 <DeleteButton
-                  type='button'
+                  type="button"
                   onClick={() => setSelectedGame(game)}
                   style={{
-                    backgroundColor: theme.colors.blue,
-                  }}>
+                    backgroundColor: theme.colors.blue
+                  }}
+                >
                   <FontAwesomeIcon icon={faGrid} />
                 </DeleteButton>
-                <DeleteButton type='button' onClick={() => onDeleteGame(game)}>
+                <DeleteButton type="button" onClick={() => onDeleteGame(game)}>
                   <FontAwesomeIcon icon={faTrash} />
                 </DeleteButton>
               </Flexbox>
@@ -122,9 +124,10 @@ export const GamesList = ({ games, onDeleteGame }: Props) => {
         ))}
         <FloatingButton
           onClick={() => setOpen(true)}
-          backgroundColor='#000'
-          color='#fff'>
-          <FontAwesomeIcon icon={faPlus} size='3x' />
+          backgroundColor="#000"
+          color="#fff"
+        >
+          <FontAwesomeIcon icon={faPlus} size="3x" />
         </FloatingButton>
       </CustomList>
       <SwipeableDrawer
@@ -132,14 +135,15 @@ export const GamesList = ({ games, onDeleteGame }: Props) => {
         disableDiscovery={iOS}
         PaperProps={{
           style: {
-            height: '90vh',
-          },
+            height: '90vh'
+          }
         }}
-        anchor='bottom'
+        anchor="bottom"
         open={open}
         onClose={() => setOpen(false)}
-        onOpen={() => setOpen(true)}>
-        <SwipeMenuHeader title='Create game' />
+        onOpen={() => setOpen(true)}
+      >
+        <SwipeMenuHeader title="Create game" />
         <NewGame />
       </SwipeableDrawer>
 

@@ -1,7 +1,3 @@
-import React from 'react';
-
-type Props = {};
-
-export const EditTraining = (props: Props) => {
+export const EditTraining = () => {
   return <div>EditTraining</div>;
 };

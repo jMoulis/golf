@@ -78,7 +78,6 @@ export const LoginPage = () => {
       return;
     }
     if (user) navigate('/protected');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, loading]);
 
   const handleLogin = (event: FormEvent<HTMLFormElement>) => {
@@ -94,21 +93,21 @@ export const LoginPage = () => {
         style={{
           backgroundImage: `url('${AppLogo}')`,
           backgroundSize: 'cover',
-          backgroundPosition: 'right',
+          backgroundPosition: 'right'
         }}
       />
       <Form onSubmit={handleLogin}>
-        <Flexbox flexDirection='column'>
-          <Flexbox flexDirection='column' alignItems='center'>
+        <Flexbox flexDirection="column">
+          <Flexbox flexDirection="column" alignItems="center">
             <span>Bienvenu à</span>
             <Title>Golf training</Title>
           </Flexbox>
           <InputWrapper>
             <Input
-              type='text'
+              type="text"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder='E-mail Address'
+              placeholder="E-mail Address"
             />
           </InputWrapper>
           <InputWrapper>
@@ -116,15 +115,15 @@ export const LoginPage = () => {
               type={open ? 'text' : 'password'}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder='Password'
+              placeholder="Password"
             />
             <ShowPassword onClick={() => (open ? onClose() : onOpen())}>
               {open ? 'masquer' : 'afficher'}
             </ShowPassword>
           </InputWrapper>
         </Flexbox>
-        <Flexbox flexDirection='column' alignItems='center'>
-          <ButtonPill type='submit'>{`S'identifier`}</ButtonPill>
+        <Flexbox flexDirection="column" alignItems="center">
+          <ButtonPill type="submit">{`S'identifier`}</ButtonPill>
           <span
             style={{
               marginTop: '20px',
@@ -132,7 +131,7 @@ export const LoginPage = () => {
               width: '100px',
               height: '2px',
               borderRadius: '10rem',
-              backgroundColor: '#000',
+              backgroundColor: '#000'
             }}
           />
           <p>Nouveau? Vous souhaitez tester golf training?</p>

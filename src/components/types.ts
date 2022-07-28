@@ -64,6 +64,7 @@ interface GameTypeCommons {
   status?: GameStatus;
   coach?: UserTypeSummary;
   player?: UserTypeSummary;
+  scoreCardPDF?: string;
 }
 export interface GamePayloadType extends GameTypeCommons {
   date: Timestamp;

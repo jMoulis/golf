@@ -13,7 +13,6 @@ export const Homepage = () => {
     if (!user) {
       navigate('/');
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, loading]);
 
   if (loading) return null;

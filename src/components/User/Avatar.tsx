@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { getDownloadURL, ref, updateMetadata } from 'firebase/storage';
+import { getDownloadURL, ref } from 'firebase/storage';
 import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { storage } from '../../firebase';
 import { UserType, UserTypeSummary } from '../types';
@@ -27,12 +27,7 @@ type Props = {
   onDisplayDetail?: () => void;
 };
 
-export const Avatar = ({
-  user,
-  styling,
-  onUploadAvatar,
-  onDisplayDetail,
-}: Props) => {
+export const Avatar = ({ user, styling, onUploadAvatar }: Props) => {
   const [loading, setLoading] = useState<'UNSET' | 'LOADING' | 'DONE'>('UNSET');
   const [imageUrl, setImageUrl] = useState('');
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -40,13 +35,7 @@ export const Avatar = ({
   const fetchImageURL = useCallback(async (userAvatar: string) => {
     setLoading('LOADING');
     const storageRef = ref(storage, userAvatar);
-    console.log(storageRef);
     const downloadedUrl = await getDownloadURL(storageRef);
-    const newMetadata = {
-      cacheControl: 'public,max-age=300',
-      contentType: 'image/jpeg',
-    };
-
     // // Update metadata properties
     // updateMetadata(storageRef, newMetadata)
     //   .then((metadata) => {
@@ -71,14 +60,12 @@ export const Avatar = ({
   }, [fetchImageURL, user.avatar]);
 
   const handleClick = (
-    event: React.MouseEvent<HTMLImageElement, MouseEvent>,
+    event: React.MouseEvent<HTMLImageElement, MouseEvent>
   ) => {
     event.stopPropagation();
     event.preventDefault();
     if (onUploadAvatar) {
       inputRef.current?.click();
-    }
-    if (onDisplayDetail) {
     }
   };
   const handleChange = (event: FormEvent<HTMLInputElement>) => {
@@ -103,7 +90,7 @@ export const Avatar = ({
       <input
         onChange={handleChange}
         ref={inputRef}
-        type='file'
+        type="file"
         style={{ display: 'none' }}
       />
     </>

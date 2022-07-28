@@ -33,26 +33,24 @@ const NavigationCard = styled.div`
   box-shadow: ${theme.shadows.listItem};
 `;
 
-type Props = {};
-
-export const AdminIndex = (props: Props) => {
+export const AdminIndex = () => {
   const menus: AdminMenuType[] = useMemo(() => {
     return [
       {
         label: 'Thèmatiques',
         component: ENUM_MENU_COMPONENT.THEMES,
-        img: GolfThemeImage,
+        img: GolfThemeImage
       },
       {
         label: 'Parcours',
         component: ENUM_MENU_COMPONENT.COURSES,
-        img: GolfCourseImage,
+        img: GolfCourseImage
       },
       {
         label: 'Coaches',
         component: ENUM_MENU_COMPONENT.COACHES,
-        img: GolfCoachImage,
-      },
+        img: GolfCoachImage
+      }
     ];
   }, []);
 
@@ -71,7 +69,7 @@ export const AdminIndex = (props: Props) => {
                   objectPosition: 'center',
                   height: '100px',
                   width: '100px',
-                  boxShadow: theme.shadows.flatButton,
+                  boxShadow: theme.shadows.flatButton
                 }}
                 alt={menu.label}
                 src={menu.img}
@@ -81,8 +79,9 @@ export const AdminIndex = (props: Props) => {
               style={{
                 fontSize: '20px',
                 textTransform: 'uppercase',
-                fontWeight: '700',
-              }}>
+                fontWeight: '700'
+              }}
+            >
               {menu.label}
             </span>
           </NavigationCard>

@@ -7,12 +7,14 @@ import {
   onSnapshot,
   orderBy,
   query,
+  setDoc,
   Unsubscribe,
   where,
 } from 'firebase/firestore';
+import { deleteObject, ref } from 'firebase/storage';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { app, auth } from '../../firebase';
+import { app, auth, storage } from '../../firebase';
 import { GamePayloadType, GameType } from '../types';
 
 export const useGames = () => {
@@ -24,8 +26,14 @@ export const useGames = () => {
 
   const handleDeleteGame = () => {
     if (db.current && deleteGame) {
+      console.log(deleteGame);
       const deleteRef = doc(db.current, 'games', deleteGame.id);
-      deleteDoc(deleteRef);
+      deleteDoc(deleteRef).then(() => {
+        if (deleteGame.scoreCardPDF) {
+          const fileRef = ref(storage, deleteGame.scoreCardPDF);
+          deleteObject(fileRef);
+        }
+      });
       setDeleteGame(null);
     }
   };
@@ -68,10 +76,23 @@ export const useGames = () => {
       }
     };
   }, [getGames]);
+
+  const handleUpdateGame = async (gameID: string, value: any) => {
+    const gameRef = doc(db.current, 'games', gameID);
+    await setDoc(
+      gameRef,
+      value,
+      {
+        merge: true,
+      },
+    );
+  }
+
   return {
     games,
     onDeleteGame: handleDeleteGame,
     selectDeleteGame: setDeleteGame,
+    onEditGame: handleUpdateGame,
     deletedGame: deleteGame
   }
 }

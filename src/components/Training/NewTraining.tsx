@@ -1,5 +1,3 @@
-type Props = {};
-
-export const NewTraining = (props: Props) => {
+export const NewTraining = () => {
   return <div>NewTraining</div>;
 };
