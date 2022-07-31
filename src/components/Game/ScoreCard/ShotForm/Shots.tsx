@@ -42,7 +42,7 @@ export const Shots = ({
 
   const handleAddShotScoring = async (
     evaluationValue: 'KO' | 'OK',
-    evaluationType: string,
+    evaluationType: string
   ) => {
     const payload = onAddShotScoring({
       evaluation: { type: evaluationType, value: evaluationValue },
@@ -54,6 +54,7 @@ export const Shots = ({
       setSelectedShot(payload?.updatedShot);
     }
   };
+
   const handleRemoveEval = async (incomingTheme: ThemeType) => {
     if (gameRef) {
       const payload = onRemoveShotScoring({
@@ -68,10 +69,11 @@ export const Shots = ({
       }
     }
   };
+
   const handleDelete = () => {
     if (selectedShot && gameRef) {
       const updatedShots = hole.shots?.filter(
-        (shot) => shot.id !== selectedShot.id,
+        (shot) => shot.id !== selectedShot.id
       );
       setDoc(
         gameRef,
@@ -83,7 +85,7 @@ export const Shots = ({
             },
           },
         },
-        { merge: true },
+        { merge: true }
       );
       setSelectedShot(null);
     }
@@ -113,7 +115,7 @@ export const Shots = ({
         },
         {
           merge: true,
-        },
+        }
       );
     }
   };

@@ -41,9 +41,10 @@ export const getScoreBrut = (holes?: GameHoleType[]) => {
     0
   );
 };
-export const getDiff = (holes?: (HoleCourseType | GameHoleType)[]) => {
-  if (!holes) return 0;
-  return getScoreBrut(holes as GameHoleType[]) - getCoursePar(holes);
+export const getDiff = (holes?: (GameHoleType)[]) => {
+  const activeHoles = holes?.filter((hole) => hole.shots?.length);
+  if (!activeHoles) return 0;
+  return getScoreBrut(activeHoles) - getCoursePar(activeHoles);
 };
 
 export const getCountHoles = (holes?: (HoleCourseType | GameHoleType)[]) => {

@@ -22,7 +22,7 @@ export const CourseStats = ({ holes, game }: Props) => {
     <Flexbox>
       <Stat>PAR: {getCoursePar(holes)}</Stat>
       <Stat>BRUT: {game.strokeBrut}</Stat>
-      <Stat>DIFF: {getDiff(holes)}</Stat>
+      <Stat>DIFF: {getDiff(holes as GameHoleType[])}</Stat>
     </Flexbox>
   );
 };

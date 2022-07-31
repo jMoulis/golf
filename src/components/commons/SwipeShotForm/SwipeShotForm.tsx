@@ -16,7 +16,6 @@ type Props = {
   onEditShot?: (shot: ShotType) => void;
   hole: GameHoleType | null;
   game: GameType;
-  withEvaluationForm: boolean;
   title: string;
 };
 
@@ -29,20 +28,20 @@ export const SwipeShotForm = ({
   onAddShot,
   onEditShot,
   game,
-  withEvaluationForm,
   title,
 }: Props) => {
   return (
     <SwipeableDrawer
       disableBackdropTransition={!iOS}
       disableDiscovery={iOS}
-      anchor='bottom'
+      anchor="bottom"
       open={open}
       onClose={onClose}
       PaperProps={{
         style: theme.swipeable.paper,
       }}
-      onOpen={onOpen}>
+      onOpen={onOpen}
+    >
       <SwipeMenuHeader title={title} />
       <ShotForm
         gameRef={gameRef}
@@ -51,7 +50,7 @@ export const SwipeShotForm = ({
         hole={hole}
         onCloseDrawerParent={onClose}
         game={game}
-        withEvaluationForm={withEvaluationForm}
+        withEvaluationForm={false}
       />
     </SwipeableDrawer>
   );

@@ -78,13 +78,15 @@ export const ShotForm = ({
       onAddShot(newShot.shot, newShot.hole);
       if (withEvaluationForm) {
         setOpen(true);
+      } else {
+        onCloseDrawerParent();
       }
     }
   };
 
   const handleAddShotScoring = async (
     evaluationValue: 'KO' | 'OK',
-    evaluationType: string,
+    evaluationType: string
   ) => {
     const payload = onAddShotScoring({
       evaluation: { type: evaluationType, value: evaluationValue },
@@ -131,21 +133,22 @@ export const ShotForm = ({
 
   return (
     <>
-      <Root flexDirection='column'>
+      <Root flexDirection="column">
         <Wrapper>
           {shotTypes.map((shot, key) =>
             classicShots.includes(shot.type) ? (
               <CustomShotButton
-                type='button'
+                type="button"
                 key={key}
                 onClick={() => handleAddShot({ type: shot.type }, hole)}
                 color={selectedShot?.type === shot?.type ? '#fff' : shot?.color}
                 backgroundColor={
                   selectedShot?.type === shot?.type ? theme.colors.blue : '#fff'
-                }>
+                }
+              >
                 {shot?.icon}
               </CustomShotButton>
-            ) : null,
+            ) : null
           )}
         </Wrapper>
         <FixedBottomToolbar>
@@ -156,7 +159,8 @@ export const ShotForm = ({
               width: '50px',
             }}
             onClick={handleClose}
-            color='#d73038'>
+            color="#d73038"
+          >
             <FontAwesomeIcon icon={faTrash} />
           </DeleteButton>
         </FixedBottomToolbar>

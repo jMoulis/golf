@@ -42,7 +42,6 @@ export const useGames = () => {
     if (!user) return null;
     const gamesQuery = query(
       collection(db.current, 'games'),
-      // where('userId', '==', user.uid),
       where('users', 'array-contains', user.uid),
       orderBy('date', 'desc')
     );

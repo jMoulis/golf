@@ -67,7 +67,7 @@ export const ScoreCard = ({ game, gameRef }: Props) => {
         },
         {
           merge: true,
-        },
+        }
       );
     }
   };
@@ -109,7 +109,7 @@ export const ScoreCard = ({ game, gameRef }: Props) => {
         },
         {
           merge: true,
-        },
+        }
       );
     }
   };
@@ -142,9 +142,8 @@ export const ScoreCard = ({ game, gameRef }: Props) => {
         onAddShot={handleAddShot}
         hole={selectedHole}
         game={game}
-        withEvaluationForm
         open={open}
-        title='Ajouter un shot'
+        title="Ajouter un shot"
       />
       <SaveMenu onValidate={handleValidate} status={game.status} />
     </>

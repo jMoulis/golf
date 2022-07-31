@@ -1,17 +1,15 @@
-import { Link } from 'react-router-dom';
+import React from 'react';
 import { theme } from '../../style/theme';
 import { PageHeader } from '../commons/Core/PageHeader';
+import { PelzList } from '../Training/Pelz/PelzList';
 
-export const TrainingIndex = () => {
+export const PelzPage = () => {
   return (
     <>
       <PageHeader backgroundColor={theme.headers.trainings.linear}>
-        Trainings
+        Test pelz
       </PageHeader>
-      <div>
-        <div>En cours de contruction... patience</div>
-        <Link to="pelz">Pelz</Link>
-      </div>
+      <PelzList />
     </>
   );
 };

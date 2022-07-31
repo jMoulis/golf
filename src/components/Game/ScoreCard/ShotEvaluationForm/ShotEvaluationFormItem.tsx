@@ -37,11 +37,12 @@ export const ShotEvaluationFormItem = ({
         alignItems: 'center',
         justifyContent: 'space-between',
         margin: '5px',
-      }}>
-      <Flexbox flexDirection='column' flex='1'>
+      }}
+    >
+      <Flexbox flexDirection="column" flex="1">
         <span>{`Hole: ${hole?.number} - par: ${hole?.par}`}</span>
         {selectedShot ? (
-          <Flexbox flex='1' justifyContent='space-between' alignItems='center'>
+          <Flexbox flex="1" justifyContent="space-between" alignItems="center">
             <Flexbox>
               <span>Type:</span>
               <span
@@ -49,7 +50,8 @@ export const ShotEvaluationFormItem = ({
                   color: shotTypesByTypes[selectedShot?.type]?.color,
                   marginLeft: '5px',
                   fontSize: '20px',
-                }}>
+                }}
+              >
                 {shotTypesByTypes[selectedShot?.type]?.icon}
               </span>
             </Flexbox>
@@ -61,7 +63,8 @@ export const ShotEvaluationFormItem = ({
               }}
               onClick={() => setOpen(true)}
               backgroundColor={theme.colors.saveButton}
-              color='#fff'>
+              color="#fff"
+            >
               <FontAwesomeIcon icon={faPenToSquare} />
             </ShotButton>
           </Flexbox>
@@ -73,11 +76,10 @@ export const ShotEvaluationFormItem = ({
         onEditShot={onEditShot}
         hole={hole}
         game={game}
-        withEvaluationForm={false}
         open={open}
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
-        title='Modifier un shot'
+        title="Modifier un shot"
       />
     </ListItem>
   );
