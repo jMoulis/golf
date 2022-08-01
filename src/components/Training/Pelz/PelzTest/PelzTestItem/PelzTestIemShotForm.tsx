@@ -10,9 +10,10 @@ import { PelzTestShot } from '../../types';
 import { scoreMappingColor } from '../../utils';
 
 const CustomShotButton = styled(ShotButton)`
-  height: 50px;
-  width: 50px;
-  font-size: 40px;
+  height: auto;
+  width: unset;
+  font-size: 25px;
+  margin: 0;
 `;
 type Props = {
   shot: PelzTestShot;

@@ -4,7 +4,7 @@ import { PelzType } from '../types';
 
 const Root = styled.div`
   overflow: auto;
-  height: calc(100% - 155px - 70px);
+  height: calc(100% - 155px - 50px);
 `;
 
 type Props = {
