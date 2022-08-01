@@ -10,10 +10,6 @@ export type PelzTestType = {
   id: string;
   shots: PelzTestShot[];
   order: number;
-  description: {
-    averagePoint: number;
-    explanation: string
-  }
 }
 
 type Pelz = {
@@ -35,4 +31,19 @@ export interface PelzPayload extends Pelz {
 export interface PelzTestInput extends Pelz {
   date: Timestamp;
   userId: string
+}
+
+export type TestDescriptionType = {
+  instructions: {
+    title: string;
+    detail?: string;
+  };
+  averagePoint?: number;
+  scoring: string[];
+  image: string;
+}
+export type TestMapDescriptionType = {
+  [key: string]: {
+    [key: string]: TestDescriptionType;
+  };
 }

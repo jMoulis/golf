@@ -1,9 +1,21 @@
 import { useEffect, useState } from 'react';
-import { ENUM_PELZ_THEME } from './enums';
+import { ENUM_PELZ_THEME } from '../../enums';
 import { PelzTestIemShotForm } from './PelzTestIemShotForm';
-import { PelzTestShot, PelzTestType } from './types';
-import { usePelz } from './usePelz';
-import { calculatePelzHCPByTest } from './utils';
+import { TestItemShotHeader } from './TestItemShotHeader';
+import { PelzTestShot, PelzTestType } from '../../types';
+import { usePelz } from '../../usePelz';
+import styled from '@emotion/styled';
+import { theme } from '../../../../../style/theme';
+
+const Root = styled.div`
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5px;
+  padding: 10px;
+  background-color: #fff;
+  margin: 10px;
+  box-shadow: ${theme.shadows.listItem};
+`;
 
 type Props = {
   test: PelzTestType;
@@ -35,39 +47,11 @@ export const PelzTestItemForm = ({ test, pelzID, pelzTheme }: Props) => {
   };
 
   return (
-    <>
-      <span
-        style={{
-          whiteSpace: 'nowrap',
-          gridColumn: '1 / 6',
-          display: 'block',
-          padding: '5px',
-        }}
-      >
-        {test.id}
-        <span>TOTAL</span>
-        <span>
-          {form.shots.reduce((acc: number, shot) => acc + shot.value, 0)}
-        </span>
-        <span>HCP</span>
-        <span>
-          {calculatePelzHCPByTest(
-            form.id,
-            form.shots.reduce((acc: number, shot) => acc + shot.value, 0),
-            pelzTheme
-          )}
-        </span>
-        <span>Average</span>
-        {form.description.averagePoint}
-      </span>
-
+    <Root>
+      <TestItemShotHeader form={form} theme={pelzTheme} />
       {form.shots.map((shot, key) => (
         <PelzTestIemShotForm key={key} shot={shot} onEditShot={handleChange} />
       ))}
-      {/*
-      {buildArrayFromNumber(7).map((id) => (
-        <span key={id} />
-      ))} */}
-    </>
+    </Root>
   );
 };

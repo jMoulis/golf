@@ -1,11 +1,11 @@
 import { Unsubscribe } from "firebase/auth";
 import { addDoc, collection, deleteDoc, doc, Firestore, getFirestore, onSnapshot, orderBy, query, setDoc, Timestamp, where } from "firebase/firestore";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { app, auth } from "../../../firebase";
 import { ENUM_PELZ_THEME } from "./enums";
 import { PelzPayload, PelzTestInput, PelzType } from "./types";
-import { buildDefaultTest, sortTestsObjects } from "./utils";
+import { buildDefaultTest, getGlobalHCP, sortTestsObjects } from "./utils";
 
 export const usePelz = () => {
   const COLLECTION = 'pelz';
@@ -51,7 +51,7 @@ export const usePelz = () => {
     const defaultTest: PelzTestInput = {
       theme,
       date: Timestamp.fromDate(date),
-      tests: buildDefaultTest(),
+      tests: buildDefaultTest(theme),
       userId: user.uid,
     }
 
@@ -93,12 +93,21 @@ export const usePelz = () => {
       deleteDoc(deleteRef);
     }
   }
+  const globalStat = useMemo(() => (pelz: PelzType | null) => {
+    if (!pelz)
+      return {
+        hcp: 0,
+        total: 0,
+      };
+    return getGlobalHCP(pelz.theme, pelz.tests);
+  }, []);
 
   return {
     pelzs,
     loadTests,
     createTest,
     onEditPelz: handleEditPelz,
-    onDeletePelz: handleDeletePelz
+    onDeletePelz: handleDeletePelz,
+    globalStat
   }
 }
