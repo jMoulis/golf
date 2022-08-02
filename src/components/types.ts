@@ -32,6 +32,13 @@ export type CourseType = {
   holes: HoleCourseType[];
 };
 
+export type CoursePayloadType = {
+  id?: string;
+  name: string;
+  par: number;
+  countHoles?: number;
+  holes: Record<string, HoleCourseType>;
+}
 export type DistanceType = {
   black?: string;
   white?: string;
@@ -59,7 +66,7 @@ interface GameTypeCommons {
   holes: Record<string, GameHoleType>;
   themes: ThemeType[];
   userId: string;
-  users: UserType[];
+  users: string[];
   strokeBrut?: number;
   status?: GameStatus;
   coach?: UserTypeSummary;

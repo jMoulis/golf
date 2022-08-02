@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 import { scoresConfig } from '../../../utils/scoreUtils';
 import { Flexbox } from '../../commons';
-import { GameHoleType } from '../../types';
+import { GameHoleType, HoleCourseType } from '../../types';
 import { Stat, Tag } from './stylesComponents';
 
 type Props = {
-  holes?: Record<string, GameHoleType>;
+  holes?: Record<string, GameHoleType | HoleCourseType>;
 };
 
 export const TotalScores = ({ holes }: Props) => {
@@ -16,34 +16,34 @@ export const TotalScores = ({ holes }: Props) => {
       const pars = parsedHoles.reduce(
         (acc: number, hole: GameHoleType) =>
           hole.par === hole.shots?.length ? (acc += 1) : acc,
-        0,
+        0
       );
       const birdies = parsedHoles.reduce(
         (acc: number, hole: GameHoleType) =>
           hole.par - 1 === hole.shots?.length ? (acc += 1) : acc,
-        0,
+        0
       );
       const eagles = parsedHoles.reduce(
         (acc: number, hole: GameHoleType) =>
           hole.shots?.length && hole.shots?.length <= hole.par - 2
             ? (acc += 1)
             : acc,
-        0,
+        0
       );
       const boggeys = parsedHoles.reduce(
         (acc: number, hole: GameHoleType) =>
           hole.par + 1 === hole.shots?.length ? (acc += 1) : acc,
-        0,
+        0
       );
       const double = parsedHoles.reduce(
         (acc: number, hole: GameHoleType) =>
           hole.par + 2 === hole.shots?.length ? (acc += 1) : acc,
-        0,
+        0
       );
       const triple = parsedHoles.reduce(
         (acc: number, hole: GameHoleType) =>
           hole.shots?.length >= hole.par + 3 ? (acc += 1) : acc,
-        0,
+        0
       );
       return {
         eagles,
@@ -66,11 +66,12 @@ export const TotalScores = ({ holes }: Props) => {
 
   return (
     <Flexbox
-      flex='1'
-      justifyContent='space-around'
+      flex="1"
+      justifyContent="space-around"
       styling={{
         margin: '7px',
-      }}>
+      }}
+    >
       {Object.keys(stats).map((key) => (
         <Stat key={key}>
           <Tag scoreColor={(scoresConfig as any)[key]}>

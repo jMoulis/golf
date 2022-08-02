@@ -1,126 +1,58 @@
 import styled from '@emotion/styled';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import {
-  faCheckCircle,
-  faFilePen,
-  faGrid,
-  faTrash
-} from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SwipeableDrawer } from '@mui/material';
-import { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { theme } from '../../../../style/theme';
 import { iOS } from '../../../../utils/global.utils';
-import { Flexbox } from '../../../commons';
-import { DeleteButton } from '../../../commons/DeleteButton';
 import { FloatingButton } from '../../../commons/FloatingButton';
-import { List, ListItem } from '../../../commons/List';
+import { List } from '../../../commons/List';
 import { SwipeMenuHeader } from '../../../commons/SwipeMenuHeader';
 import { BOTTOM_NAVBAR_HEIGHT } from '../../../cssConstants';
-import { ENUM_GAME_STATUS, GameStatus, GameType } from '../../../types';
-import { Avatar } from '../../../User/Avatar';
+import { GameType } from '../../../types';
+import { DeleteModal } from '../../GameIndex/DeleteModal';
 import { NewGame } from '../../NewGame/NewGame';
-import { CourseStats } from '../CourseStats';
-import { Score } from './Score';
-import { ScoreTableDrawer } from './ScoreTableDrawer';
+import { useGames } from '../../useGames';
+import { GameBoard } from '../GameBoard';
+import { GameListItem } from './GameListItem';
 
-const Status = styled.span<{ status?: GameStatus }>`
-  position: absolute;
-  top: -20px;
-  left: -17px;
-  font-size: 20px;
-  color: ${({ status }) =>
-    status === ENUM_GAME_STATUS.DONE ? 'green' : theme.colors.saveButton};
-`;
 const CustomList = styled(List)`
   padding-bottom: calc(${BOTTOM_NAVBAR_HEIGHT});
 `;
 type Props = {
-  games: GameType[];
-  onDeleteGame: (game: GameType) => void;
+  userId: string;
 };
 
-export const GamesList = ({ games, onDeleteGame }: Props) => {
+export const GamesList = ({ userId }: Props) => {
+  const { games, getGames, selectDeleteGame, deletedGame, onDeleteGame } =
+    useGames();
   const [open, setOpen] = useState(false);
   const [selectedGame, setSelectedGame] = useState<GameType | null>(null);
-  const dateFormat = useRef<Intl.DateTimeFormat>(new Intl.DateTimeFormat());
+
+  const handleSubmitNewGame = (newGame: GameType) => {
+    setSelectedGame(newGame);
+    setOpen(false);
+  };
+
+  const handleDeleteGame = () => {
+    onDeleteGame();
+    setSelectedGame(null);
+  };
+
+  useEffect(() => {
+    getGames(userId);
+  }, [userId]);
 
   return (
     <>
       <CustomList>
-        {games.map((game) => (
-          <ListItem key={game.id}>
-            <Flexbox
-              justifyContent="space-between"
-              alignItems="center"
-              styling={{
-                padding: '0.5rem',
-                position: 'relative'
-              }}
-            >
-              <Link to={`${game.id}`}>
-                <Flexbox flexDirection="column">
-                  <span style={{ fontWeight: 'bold' }}>{game.courseRef}</span>
-                  <span>{dateFormat.current.format(game.date)}</span>
-                  <CourseStats
-                    game={game}
-                    holes={game.holes ? Object.values(game.holes) : []}
-                  />
-                  <Flexbox justifyContent="space-around">
-                    <Score
-                      holes={game.holes ? Object.values(game.holes) : []}
-                    />
-                  </Flexbox>
-                  <Flexbox>
-                    {game.coach ? (
-                      <Avatar
-                        styling={{
-                          width: '30px',
-                          height: '30px'
-                        }}
-                        onDisplayDetail={() => {}}
-                        user={game.coach}
-                      />
-                    ) : null}
-                    {game.player ? (
-                      <Avatar
-                        styling={{
-                          width: '30px',
-                          height: '30px'
-                        }}
-                        user={game.player}
-                        onDisplayDetail={() => {}}
-                      />
-                    ) : null}
-                  </Flexbox>
-                  <Status status={game.status}>
-                    <FontAwesomeIcon
-                      icon={
-                        game.status === ENUM_GAME_STATUS.DONE
-                          ? faCheckCircle
-                          : faFilePen
-                      }
-                    />
-                  </Status>
-                </Flexbox>
-              </Link>
-              <Flexbox flexDirection="column">
-                <DeleteButton
-                  type="button"
-                  onClick={() => setSelectedGame(game)}
-                  style={{
-                    backgroundColor: theme.colors.blue
-                  }}
-                >
-                  <FontAwesomeIcon icon={faGrid} />
-                </DeleteButton>
-                <DeleteButton type="button" onClick={() => onDeleteGame(game)}>
-                  <FontAwesomeIcon icon={faTrash} />
-                </DeleteButton>
-              </Flexbox>
-            </Flexbox>
-          </ListItem>
+        {games.map((game, key) => (
+          <GameListItem
+            key={key}
+            game={game}
+            onSelectDeleteGame={selectDeleteGame}
+            onSelectGame={setSelectedGame}
+          />
         ))}
         <FloatingButton
           onClick={() => setOpen(true)}
@@ -130,28 +62,31 @@ export const GamesList = ({ games, onDeleteGame }: Props) => {
           <FontAwesomeIcon icon={faPlus} size="3x" />
         </FloatingButton>
       </CustomList>
+
       <SwipeableDrawer
         disableBackdropTransition={!iOS}
         disableDiscovery={iOS}
         PaperProps={{
-          style: {
-            height: '90vh'
-          }
+          style: theme.swipeable.paper,
         }}
         anchor="bottom"
         open={open}
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
       >
-        <SwipeMenuHeader title="Create game" />
-        <NewGame />
+        <SwipeMenuHeader title="Nouvelle partie" />
+        <NewGame onSubmit={handleSubmitNewGame} />
       </SwipeableDrawer>
 
-      <ScoreTableDrawer
+      <DeleteModal
+        onClose={() => selectDeleteGame(null)}
+        deletedGame={deletedGame}
+        onDeleteGame={handleDeleteGame}
+      />
+      <GameBoard
         open={Boolean(selectedGame)}
+        gameID={selectedGame?.id || null}
         onClose={() => setSelectedGame(null)}
-        onOpen={() => {}}
-        game={selectedGame}
       />
     </>
   );

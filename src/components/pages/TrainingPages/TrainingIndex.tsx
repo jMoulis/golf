@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
-import { theme } from '../../style/theme';
-import { Flexbox } from '../commons';
-import { PageHeader } from '../commons/Core/PageHeader';
+import { theme } from '../../../style/theme';
+import { Flexbox } from '../../commons';
+import { PageHeader } from '../../commons/Core/PageHeader';
 
 const Root = styled(Flexbox)`
   margin: 10px;
@@ -17,6 +17,7 @@ const TrainingTile = styled(Flexbox)`
   align-items: center;
   justify-content: center;
   font-size: 25px;
+  margin: 10px;
 `;
 
 export const TrainingIndex = () => {
@@ -28,6 +29,9 @@ export const TrainingIndex = () => {
       <Root>
         <Link to="pelz">
           <TrainingTile>Pelz</TrainingTile>
+        </Link>
+        <Link to="session">
+          <TrainingTile>Sessions</TrainingTile>
         </Link>
       </Root>
     </>

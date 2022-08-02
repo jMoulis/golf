@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   arrayUnion,
+  doc,
   DocumentReference,
+  getFirestore,
   increment,
   setDoc,
   Unsubscribe,
@@ -11,20 +13,27 @@ import { ENUM_GAME_STATUS, GameHoleType, GameType } from '../../types';
 import { RenderHoles } from './RenderHoles';
 import { ShotType } from '../../../game';
 import { SwipeShotForm } from '../../commons/SwipeShotForm/SwipeShotForm';
-import { FLOATING_HEIGHT } from '../../cssConstants';
 import { SaveMenu } from './SaveMenu';
+import { app } from '../../../firebase';
 
 const List = styled.ul`
   overflow: auto;
   max-height: 100%;
-  padding-bottom: ${FLOATING_HEIGHT};
 `;
 
 type Props = {
   game?: GameType;
   gameRef: DocumentReference | null;
+  onClose: () => void;
 };
-export const ScoreCard = ({ game, gameRef }: Props) => {
+
+export const ScoreCard = ({ game, onClose }: Props) => {
+  const gameRef = useMemo(() => {
+    if (!game?.id) return null;
+    const db = getFirestore(app);
+    return doc(db, 'games', game.id);
+  }, [game?.id]);
+
   const [selectedHole, setSelectedHole] = useState<GameHoleType | null>(null);
   const shotUnsubscribeRef = useRef<Unsubscribe | null>(null);
   const [open, setOpen] = useState<boolean>(false);
@@ -113,6 +122,7 @@ export const ScoreCard = ({ game, gameRef }: Props) => {
       );
     }
   };
+
   if (!game) return null;
 
   return (
@@ -145,7 +155,11 @@ export const ScoreCard = ({ game, gameRef }: Props) => {
         open={open}
         title="Ajouter un shot"
       />
-      <SaveMenu onValidate={handleValidate} status={game.status} />
+      <SaveMenu
+        onClose={onClose}
+        onValidate={handleValidate}
+        status={game.status}
+      />
     </>
   );
 };

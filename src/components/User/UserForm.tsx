@@ -3,7 +3,7 @@ import { faSignOut } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ref, uploadBytes } from 'firebase/storage';
 import { FormEvent, useEffect, useState } from 'react';
-import { logout } from '../../auth/authActions';
+import { useAuthAction } from '../../auth/useAuthAction';
 import { storage } from '../../firebase';
 import { theme } from '../../style/theme';
 import { ButtonPill } from '../commons/ButtonPill';
@@ -33,6 +33,7 @@ type Props = {
 
 export const UserForm = ({ user, onClose }: Props) => {
   const { editUser } = useUser();
+  const { logout } = useAuthAction();
   const [form, setForm] = useState<UserType>({
     firstname: '',
     lastname: '',
@@ -47,6 +48,7 @@ export const UserForm = ({ user, onClose }: Props) => {
   };
 
   useEffect(() => {
+    console.log(user);
     setForm(user);
   }, [user]);
 
@@ -71,6 +73,10 @@ export const UserForm = ({ user, onClose }: Props) => {
     });
   };
 
+  const handleLogout = () => {
+    onClose();
+    logout();
+  };
   const handleSubmit = () => {
     editUser(form);
     onClose();
@@ -93,21 +99,23 @@ export const UserForm = ({ user, onClose }: Props) => {
           margin: '5px 0',
         }}
         onChange={handleInputChange}
-        name='firstname'
+        name="firstname"
         value={form?.firstname || ''}
+        placeholder="Prénom"
       />
       <Input
         style={{
           margin: '5px 0',
         }}
         onChange={handleInputChange}
-        name='lastname'
+        name="lastname"
         value={form?.lastname || ''}
+        placeholder="Nom de famille"
       />
       <Roles selectedRoles={form.roles || []} onEdit={handleEditRoles} />
       <FixedBottomToolbar>
         <ButtonPill onClick={handleSubmit}>ENREGISTRER</ButtonPill>
-        <DeleteButton onClick={logout}>
+        <DeleteButton onClick={handleLogout}>
           <FontAwesomeIcon icon={faSignOut} />
         </DeleteButton>
       </FixedBottomToolbar>

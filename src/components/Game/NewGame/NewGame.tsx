@@ -7,8 +7,13 @@ import {
 } from 'firebase/firestore';
 import { useCallback, useEffect, useState } from 'react';
 import { app, auth } from '../../../firebase';
-import { useNavigate } from 'react-router-dom';
-import { CourseType, ENUM_GAME_STATUS, ThemeType, UserType } from '../../types';
+import {
+  CoursePayloadType,
+  ENUM_GAME_STATUS,
+  GameType,
+  ThemeType,
+  UserType,
+} from '../../types';
 import styled from '@emotion/styled';
 import { theme } from '../../../style/theme';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -18,7 +23,7 @@ import { ButtonPill } from '../../commons/ButtonPill';
 import { FixedBottomToolbar } from '../../commons/FixedBottomToolbar';
 import { ListItem } from '../../commons/List';
 import { Flexbox } from '../../commons';
-import { CoachPage } from '../../pages/CoachPage';
+import { CoachPage } from '../../pages/AdminPages/CoachPage';
 import { CourseMeta } from '../../Admin/Course/CourseMeta';
 import { ShotButton } from '../../commons/ShotButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -42,16 +47,18 @@ const ButtonWrapper = styled(FixedBottomToolbar)`
 
 type StepType = 'SELECT_COURSE' | 'SELECT_THEME' | null;
 
-export const NewGame = () => {
-  const [selectedCourse, setSelectedCourse] = useState<CourseType | null>(null);
-  const [courses, setCourses] = useState<CourseType[]>([]);
+type Props = {
+  onSubmit: (game: GameType) => void;
+};
+export const NewGame = ({ onSubmit }: Props) => {
+  const [selectedCourse, setSelectedCourse] =
+    useState<CoursePayloadType | null>(null);
+  const [courses, setCourses] = useState<CoursePayloadType[]>([]);
   const [selectedThemes, setSelectedThemes] = useState<ThemeType[]>([]);
   const [step, setStep] = useState<StepType>(null);
   const [user] = useAuthState(auth);
   const [selectedCoach, setSelectedCoach] = useState<UserType | null>(null);
-  const { getUser, user: fullUser } = useUser();
-
-  const navigate = useNavigate();
+  const { user: fullUser } = useUser();
 
   const handleSubmit = async () => {
     const db = getFirestore(app);
@@ -59,8 +66,9 @@ export const NewGame = () => {
     if (!user) return null;
     if (!fullUser) return null;
     try {
+      const date = new Date();
       const newGame = {
-        date: Timestamp.fromDate(new Date()),
+        date: Timestamp.fromDate(date),
         courseRef: selectedCourse.id,
         themes: selectedThemes,
         holes: selectedCourse?.holes || {},
@@ -84,7 +92,17 @@ export const NewGame = () => {
           : {},
       };
       const docRef = await addDoc(collection(db, 'games'), newGame);
-      navigate(`/protected/games/${docRef.id}`, { replace: true });
+
+      const gameSubmit: GameType = {
+        ...newGame,
+        date,
+        id: docRef.id,
+        courseRef: newGame.courseRef as string,
+        holes: newGame.holes as any,
+      };
+      console.log(gameSubmit);
+      onSubmit(gameSubmit);
+      // navigate(`/protected/games/${docRef.id}`, { replace: true });
     } catch (e) {
       console.error('Error adding document: ', e);
     }
@@ -94,7 +112,7 @@ export const NewGame = () => {
     const db = getFirestore(app);
     const querySnapshot = await getDocs(collection(db, 'courses'));
     const payload = querySnapshot.docs.map((doc) => {
-      const course = doc.data() as CourseType;
+      const course = doc.data() as CoursePayloadType;
       return {
         id: doc.id,
         ...course,
@@ -109,20 +127,19 @@ export const NewGame = () => {
 
   const handleRemoveTheme = (themeID: string) => {
     const updatedSelectedThemes = selectedThemes.filter(
-      (prevTheme) => prevTheme.id !== themeID,
+      (prevTheme) => prevTheme.id !== themeID
     );
     setSelectedThemes(updatedSelectedThemes);
   };
 
-  const handleSelectCourse = (course: CourseType) => {
+  const handleSelectCourse = (course: CoursePayloadType) => {
     setSelectedCourse(course);
     setStep(null);
   };
 
   useEffect(() => {
     getCourses();
-    getUser();
-  }, [getCourses, getUser]);
+  }, [getCourses]);
 
   useEffect(() => {
     return () => {
@@ -133,16 +150,17 @@ export const NewGame = () => {
   return (
     <>
       {selectedCourse ? (
-        <ListItem as='div' onClick={() => setStep('SELECT_COURSE')}>
+        <ListItem as="div" onClick={() => setStep('SELECT_COURSE')}>
           <CourseMeta course={selectedCourse} />
-          <Flexbox flexWrap='wrap'>
+          <Flexbox flexWrap="wrap">
             {selectedThemes.map((theme, key) => (
               <ThemeTag
                 key={key}
                 onClick={(e) => {
                   e.stopPropagation();
                   handleRemoveTheme(theme.id);
-                }}>
+                }}
+              >
                 {theme.type}
               </ThemeTag>
             ))}
@@ -151,13 +169,14 @@ export const NewGame = () => {
                 height: '40px',
                 width: '40px',
               }}
-              type='submit'
-              color='#fff'
+              type="submit"
+              color="#fff"
               onClick={(e) => {
                 e.stopPropagation();
                 setStep('SELECT_THEME');
               }}
-              backgroundColor={theme.colors.saveButton}>
+              backgroundColor={theme.colors.saveButton}
+            >
               <FontAwesomeIcon icon={faPlus} />
             </ShotButton>
           </Flexbox>
@@ -170,7 +189,8 @@ export const NewGame = () => {
             display: 'flex',
           }}
           onClick={() => setStep('SELECT_COURSE')}
-          as='div'>
+          as="div"
+        >
           Cliques pour ajouter un parcours
         </ListItem>
       )}
@@ -197,7 +217,7 @@ export const NewGame = () => {
 
       <ButtonWrapper>
         {selectedCourse ? (
-          <ButtonPill type='button' onClick={() => handleSubmit()}>
+          <ButtonPill type="button" onClick={() => handleSubmit()}>
             Créer
           </ButtonPill>
         ) : null}

@@ -59,11 +59,7 @@ export const Avatar = ({ user, styling, onUploadAvatar }: Props) => {
     }
   }, [fetchImageURL, user.avatar]);
 
-  const handleClick = (
-    event: React.MouseEvent<HTMLImageElement, MouseEvent>
-  ) => {
-    event.stopPropagation();
-    event.preventDefault();
+  const handleClick = () => {
     if (onUploadAvatar) {
       inputRef.current?.click();
     }

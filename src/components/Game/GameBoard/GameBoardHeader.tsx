@@ -60,17 +60,19 @@ export const GameBoardHeader = ({ holes, courseName, game }: Props) => {
   return (
     <>
       <Flexbox
-        flexDirection='column'
+        flexDirection="column"
         styling={{
           padding: '5px',
-        }}>
+        }}
+      >
         <CourseName>{courseName}</CourseName>
         <CourseStats game={game} holes={holes ? Object.values(holes) : []} />
       </Flexbox>
       <TabNavigation
         selectedTab={selectedTab}
         tabs={tabs}
-        onSelectTab={handleSelectTab}>
+        onSelectTab={handleSelectTab}
+      >
         <Slider
           width={360}
           currentIndex={tabIndex}

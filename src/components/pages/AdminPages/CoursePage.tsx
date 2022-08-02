@@ -1,17 +1,17 @@
 import styled from '@emotion/styled';
 import { SwipeableDrawer } from '@mui/material';
 import { useState } from 'react';
-import { useToggle } from '../../hooks/useToggle';
-import { theme } from '../../style/theme';
-import { CourseForm } from '../Admin/Course/CourseForm';
-import { CourseListItem } from '../Admin/Course/CourseListItem';
-import { useCourse } from '../Admin/Course/useCourse';
-import { ButtonPill } from '../commons/ButtonPill';
-import { FixedBottomToolbar } from '../commons/FixedBottomToolbar';
-import { List } from '../commons/List';
-import { SwipeMenuHeader } from '../commons/SwipeMenuHeader';
-import { BOTTOM_NAVBAR_HEIGHT } from '../cssConstants';
-import { CourseType } from '../types';
+import { useToggle } from '../../../hooks/useToggle';
+import { theme } from '../../../style/theme';
+import { CourseForm } from '../../Admin/Course/CourseForm';
+import { CourseListItem } from '../../Admin/Course/CourseListItem';
+import { useCourse } from '../../Admin/Course/useCourse';
+import { ButtonPill } from '../../commons/ButtonPill';
+import { FixedBottomToolbar } from '../../commons/FixedBottomToolbar';
+import { List } from '../../commons/List';
+import { SwipeMenuHeader } from '../../commons/SwipeMenuHeader';
+import { BOTTOM_NAVBAR_HEIGHT } from '../../cssConstants';
+import { CourseType } from '../../types';
 
 const CustomList = styled(List)<{ styling?: any }>`
   max-height: 100%;
@@ -60,13 +60,14 @@ export const CoursePage = () => {
         ))}
       </CustomList>
       <SwipeableDrawer
-        anchor='bottom'
+        anchor="bottom"
         PaperProps={{
           style: theme.swipeable.paper,
         }}
         onClose={onClose}
         onOpen={() => {}}
-        open={open}>
+        open={open}
+      >
         <SwipeMenuHeader
           title={selectedCourse ? 'Modifier parcours' : 'Nouveau parcours'}
         />

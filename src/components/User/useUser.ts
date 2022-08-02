@@ -1,27 +1,48 @@
-import { collection, doc, getFirestore, onSnapshot, query, setDoc, Unsubscribe, where } from "firebase/firestore";
+import { collection, doc, getDoc, getFirestore, onSnapshot, query, setDoc, Unsubscribe, where } from "firebase/firestore";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { getUserContext, signInAction, useAuthDispatch } from "../../auth/authContext";
 import { app, auth } from "../../firebase";
 import { UserType } from "../types";
 
-export const useUser = () => {
-  const [authUser] = useAuthState(auth);
-  const [user, setUser] = useState<UserType | null>(null);
+export const useUser: () => {
+  getConnectedUser: () => Promise<null | undefined>;
+  fetchOneUser: (userID: string) => Promise<UserType | null>;
+  user: UserType | null;
+  coaches: UserType[];
+  getCoaches: () => void;
+  editUser: (user: UserType) => null | undefined;
+} = () => {
+  const dispatch = useAuthDispatch();
+  const [userSystem] = useAuthState(auth);
   const [coaches, setCoaches] = useState<UserType[]>([]);
-  const usersUnsbuscribe = useRef<Unsubscribe | null>(null);
+  const coachesSubscribe = useRef<Unsubscribe | null>(null);
   const userUnsbuscribe = useRef<Unsubscribe | null>(null);
+  const user = getUserContext();
 
-  const getUser = useCallback(async () => {
-    if (!authUser) return null;
-    if (!user) {
-      const db = getFirestore(app);
-      const docRef = doc(db, 'users', authUser.uid);
-      userUnsbuscribe.current = onSnapshot(docRef, (snap) => {
-        const payloadUser: any = snap.data();
-        setUser({ ...payloadUser, id: snap.id } || null);
-      }, (error) => console.error('GetUser', error));
+  const getConnectedUser = useCallback(async () => {
+    if (!userSystem) return null;
+    const db = getFirestore(app);
+    const docRef = doc(db, 'users', userSystem.uid);
+    onSnapshot(docRef, (snap) => {
+      const payloadUser: any = snap.data();
+      if (payloadUser) {
+        dispatch(signInAction(payloadUser));
+      } else {
+        dispatch(signInAction({ id: userSystem.uid }))
+      }
+    }, (error) => console.error('GetUser', error));
+  }, [userSystem]);
+
+  const fetchOneUser = useCallback(async (userId: string) => {
+    const db = getFirestore(app);
+    const docRef = doc(db, 'users', userId);
+    const snap = await getDoc(docRef);
+    if (snap.exists()) {
+      return { id: snap.id, ...snap.data() }
     }
-  }, [authUser, user]);
+    return null;
+  }, []);
 
   const getCoaches = useCallback(() => {
     const db = getFirestore(app);
@@ -29,7 +50,7 @@ export const useUser = () => {
       collection(db, 'users'),
       where('roles', 'array-contains', 'coach'),
     );
-    usersUnsbuscribe.current = onSnapshot(
+    coachesSubscribe.current = onSnapshot(
       userQuery,
       (payload) => {
         const incomingCoaches = payload.docs.map((doc) => {
@@ -46,13 +67,14 @@ export const useUser = () => {
   }, []);
 
   useEffect(() => {
-    const unsubscribeUsers = usersUnsbuscribe.current;
+    const unsubscribeUsers = coachesSubscribe.current;
     return () => {
       if (unsubscribeUsers) {
         unsubscribeUsers();
       }
     };
   }, []);
+
   useEffect(() => {
     const unsubscribeUser = userUnsbuscribe.current;
     return () => {
@@ -73,10 +95,11 @@ export const useUser = () => {
   }, []);
 
   return {
-    getUser,
+    getConnectedUser,
     user,
     coaches,
     getCoaches,
-    editUser
+    editUser,
+    fetchOneUser
   }
 }

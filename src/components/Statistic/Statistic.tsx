@@ -21,5 +21,15 @@ export const Statistic = () => {
   //   console.log(brut);
   // }, [games]);
 
+  /**
+   * getTotalStats
+   * pars/birdies...
+   * putts
+   * fairWays
+   * Regul
+   * Stroke by course type
+   *
+   * Get stat by courseRef
+   */
   return <div>En cours de contruction... patience</div>;
 };

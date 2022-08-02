@@ -6,20 +6,19 @@ import { BottomNavbar } from '../Home/BottomNavbar';
 import { Page } from '../commons/Core/Page';
 
 export const Homepage = () => {
-  const [user, loading] = useAuthState(auth);
+  const [userSystem, loading] = useAuthState(auth);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user) {
+    if (!userSystem) {
       navigate('/');
     }
-  }, [user, loading]);
+  }, [userSystem, loading]);
 
   if (loading) return null;
 
   return (
     <>
-      {/* <TopNavbar /> */}
       <Page>
         <Outlet />
       </Page>

@@ -1,23 +1,25 @@
-import React from 'react';
-import { NewGame } from './Game/NewGame/NewGame';
+import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Homepage } from './pages/HomePage';
-import { TrainingPage } from './pages/TrainingPage';
-import { GameBoard } from './Game/GameBoard/GameBoard';
+import { TrainingPage } from './pages/TrainingPages/TrainingPage';
 import { StatPage } from './pages/StatPage';
 import styled from '@emotion/styled';
-import { GameIndex } from './Game/GameIndex/GameIndex';
-import { GamePage } from './pages/GamePage';
+import { GamePage } from './pages/GamePages/GamePage';
 import { LoginPage } from './pages/LoginPage';
-import { AdminPage } from './pages/AdminPage';
-import { ThemePage } from './pages/ThemePage';
-import { CoursePage } from './pages/CoursePage';
-import { CoachPage } from './pages/CoachPage';
-import { TrainingIndex } from './Training/TrainingIndex';
-import { NewTraining } from './Training/NewTraining';
-import { EditTraining } from './Training/EditTraining';
-import { AdminIndex } from './Admin/AdminIndex';
-import { PelzPage } from './pages/PelzPage';
+import { AdminPage } from './pages/AdminPages/AdminPage';
+import { ThemePage } from './pages/AdminPages/ThemePage';
+import { CoursePage } from './pages/AdminPages/CoursePage';
+import { CoachPage } from './pages/AdminPages/CoachPage';
+import { TrainingIndex } from './pages/TrainingPages/TrainingIndex';
+import { AdminIndex } from './pages/AdminPages/AdminIndex';
+import { PelzPage } from './pages/TrainingPages/PelzPages/PelzPage';
+import { useUser } from './User/useUser';
+import { PelzCoachStudentPage } from './pages/TrainingPages/PelzPages/PelzCoachStudentPage';
+import { GameCoachStudentPage } from './pages/GameCoachStudentPage';
+import { theme } from '../style/theme';
+import { CoachIndex } from './pages/commonPages/CoachIndex';
+import { SessionPage } from './pages/TrainingPages/SessionPages/SessionPage';
+import { SessionCoachStudentPage } from './pages/TrainingPages/SessionPages/SessionCoachStudentPage';
 
 const Grid = styled.div`
   label: MainGrid;
@@ -28,6 +30,14 @@ const Grid = styled.div`
 `;
 
 function App() {
+  const { user, getConnectedUser } = useUser();
+
+  useEffect(() => {
+    if (!user) {
+      getConnectedUser();
+    }
+  }, [user, getConnectedUser]);
+
   return (
     <Grid>
       <Routes>
@@ -35,15 +45,43 @@ function App() {
         <Route path="protected" element={<Homepage />}>
           <Route index element={<StatPage />} />
           <Route path="games" element={<GamePage />}>
-            <Route index element={<GameIndex />} />
-            <Route path="new" element={<NewGame />} />
-            <Route path=":gameId" element={<GameBoard />} />
+            <Route
+              index
+              element={
+                <CoachIndex
+                  title="Mes parties"
+                  headerTheme={theme.headers.games.linear}
+                />
+              }
+            />
+            <Route path=":userId" element={<GameCoachStudentPage />} />
           </Route>
           <Route path="trainings" element={<TrainingPage />}>
             <Route index element={<TrainingIndex />} />
-            <Route path="new" element={<NewTraining />} />
-            <Route path=":trainingId" element={<EditTraining />} />
-            <Route path="pelz" element={<PelzPage />} />
+            <Route path="pelz" element={<PelzPage />}>
+              <Route
+                index
+                element={
+                  <CoachIndex
+                    title="Mes tests"
+                    headerTheme={theme.headers.trainings.linear}
+                  />
+                }
+              />
+              <Route path=":userId" element={<PelzCoachStudentPage />} />
+            </Route>
+            <Route path="session" element={<SessionPage />}>
+              <Route
+                index
+                element={
+                  <CoachIndex
+                    title="Mes sessions"
+                    headerTheme={theme.headers.trainings.linear}
+                  />
+                }
+              />
+              <Route path=":userId" element={<SessionCoachStudentPage />} />
+            </Route>
           </Route>
           <Route path="admin" element={<AdminPage />}>
             <Route index element={<AdminIndex />} />

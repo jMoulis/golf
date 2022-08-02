@@ -18,14 +18,15 @@ export const ScoreTableDrawer = ({ open, onOpen, onClose, game }: Props) => {
     <SwipeableDrawer
       disableBackdropTransition={!iOS}
       disableDiscovery={iOS}
-      anchor='bottom'
+      anchor="bottom"
       open={open}
       onClose={onClose}
       PaperProps={{
         style: theme.swipeable.paper,
       }}
-      onOpen={onOpen}>
-      <SwipeMenuHeader title='Summary' />
+      onOpen={onOpen}
+    >
+      <SwipeMenuHeader title="Résumé" />
       <RenderHolesTable
         game={game}
         holes={game?.holes ? Object.values(game.holes) : []}

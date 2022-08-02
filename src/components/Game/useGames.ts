@@ -26,7 +26,6 @@ export const useGames = () => {
 
   const handleDeleteGame = () => {
     if (db.current && deleteGame) {
-      console.log(deleteGame);
       const deleteRef = doc(db.current, 'games', deleteGame.id);
       deleteDoc(deleteRef).then(() => {
         if (deleteGame.scoreCardPDF) {
@@ -38,10 +37,11 @@ export const useGames = () => {
     }
   };
 
-  const getGames = useCallback(async () => {
+  const getGames = useCallback(async (userId: string) => {
     if (!user) return null;
     const gamesQuery = query(
       collection(db.current, 'games'),
+      where('userId', '==', userId),
       where('users', 'array-contains', user.uid),
       orderBy('date', 'desc')
     );
@@ -67,7 +67,6 @@ export const useGames = () => {
   }, [user]);
 
   useEffect(() => {
-    getGames();
     const unsubscribeGames = gamesUnsubscribe.current;
     return () => {
       if (unsubscribeGames) {
@@ -78,6 +77,7 @@ export const useGames = () => {
 
   const handleUpdateGame = async (gameID: string, value: any) => {
     const gameRef = doc(db.current, 'games', gameID);
+
     await setDoc(
       gameRef,
       value,
@@ -92,6 +92,7 @@ export const useGames = () => {
     onDeleteGame: handleDeleteGame,
     selectDeleteGame: setDeleteGame,
     onEditGame: handleUpdateGame,
-    deletedGame: deleteGame
+    deletedGame: deleteGame,
+    getGames
   }
 }

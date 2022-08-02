@@ -23,7 +23,6 @@ export const useCourse = () => {
         const incomingGames = payload.docs.map((doc) => {
           const course = doc.data() as CourseType;
           const holes = sortHoles(course.holes);
-
           return {
             id: doc.id,
             ...course,

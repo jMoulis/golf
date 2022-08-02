@@ -30,7 +30,7 @@ export interface PelzPayload extends Pelz {
 
 export interface PelzTestInput extends Pelz {
   date: Timestamp;
-  userId: string
+  userId: string;
 }
 
 export type TestDescriptionType = {

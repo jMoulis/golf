@@ -3,6 +3,7 @@ import { addDoc, collection, deleteDoc, doc, Firestore, getFirestore, onSnapshot
 import { useCallback, useMemo, useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { app, auth } from "../../../firebase";
+import { useUser } from "../../User/useUser";
 import { ENUM_PELZ_THEME } from "./enums";
 import { PelzPayload, PelzTestInput, PelzType } from "./types";
 import { buildDefaultTest, getGlobalHCP, sortTestsObjects } from "./utils";
@@ -12,22 +13,22 @@ export const usePelz = () => {
   const [pelzs, setPelzs] = useState<PelzType[]>([]);
   const gamesUnsubscribe = useRef<Unsubscribe | null>(null);
   const [user] = useAuthState(auth);
+  const { user: fullUser } = useUser();
 
   const db = useRef<Firestore>(getFirestore(app));
 
-  const getTests = useCallback(async () => {
+  const getTests = useCallback(async (userId: string) => {
     if (!user) return null;
 
     const gamesQuery = query(
       collection(db.current, COLLECTION),
-      where('userId', '==', user.uid),
+      where('userId', '==', userId),
       orderBy('date', 'desc')
     );
 
     gamesUnsubscribe.current = onSnapshot(
       gamesQuery,
       (payload) => {
-
         const incomingPelz = payload.docs.map((doc) => {
           const pelz = doc.data() as PelzPayload;
           return {
@@ -47,15 +48,15 @@ export const usePelz = () => {
 
   const createTest = useCallback(async (theme: ENUM_PELZ_THEME) => {
     if (!user) return null;
-    const date = new Date()
+    if (!fullUser) return null;
+
+    const date = new Date();
     const defaultTest: PelzTestInput = {
       theme,
       date: Timestamp.fromDate(date),
       tests: buildDefaultTest(theme),
       userId: user.uid,
     }
-
-
     const docRef = await addDoc(
       collection(db.current, COLLECTION),
       defaultTest,
@@ -66,10 +67,10 @@ export const usePelz = () => {
       date
     }
     return newPelz
-  }, []);
+  }, [fullUser]);
 
-  const loadTests = useCallback(() => {
-    getTests();
+  const loadTests = useCallback((userId: string) => {
+    getTests(userId);
     const unsubscribeGames = gamesUnsubscribe.current;
     return () => {
       if (unsubscribeGames) {

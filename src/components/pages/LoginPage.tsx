@@ -1,6 +1,6 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { logInWithEmailAndPassword } from '../../auth/authActions';
+import { useAuthAction } from '../../auth/useAuthAction';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase';
 import styled from '@emotion/styled';
@@ -70,14 +70,16 @@ export const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [user, loading] = useAuthState(auth);
   const { open, onOpen, onClose } = useToggle();
-
+  const { logInWithEmailAndPassword } = useAuthAction();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (loading) {
       return;
     }
-    if (user) navigate('/protected');
+    if (user) {
+      navigate('/protected');
+    }
   }, [user, loading]);
 
   const handleLogin = (event: FormEvent<HTMLFormElement>) => {
@@ -93,7 +95,7 @@ export const LoginPage = () => {
         style={{
           backgroundImage: `url('${AppLogo}')`,
           backgroundSize: 'cover',
-          backgroundPosition: 'right'
+          backgroundPosition: 'right',
         }}
       />
       <Form onSubmit={handleLogin}>
@@ -131,7 +133,7 @@ export const LoginPage = () => {
               width: '100px',
               height: '2px',
               borderRadius: '10rem',
-              backgroundColor: '#000'
+              backgroundColor: '#000',
             }}
           />
           <p>Nouveau? Vous souhaitez tester golf training?</p>

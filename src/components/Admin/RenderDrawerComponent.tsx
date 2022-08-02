@@ -1,6 +1,6 @@
-import { CoachPage } from '../pages/CoachPage';
-import { CoursePage } from '../pages/CoursePage';
-import { ThemePage } from '../pages/ThemePage';
+import { CoachPage } from '../pages/AdminPages/CoachPage';
+import { CoursePage } from '../pages/AdminPages/CoursePage';
+import { ThemePage } from '../pages/AdminPages/ThemePage';
 import { ENUM_MENU_COMPONENT } from './enum';
 
 export const RenderDrawerComponent = {

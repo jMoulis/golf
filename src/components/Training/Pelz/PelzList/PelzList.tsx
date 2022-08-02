@@ -13,7 +13,10 @@ import { PelzType } from '../types';
 import { usePelz } from '../usePelz';
 import { theme } from '../../../../style/theme';
 
-export const PelzList = () => {
+type Props = {
+  userId: string;
+};
+export const PelzList = ({ userId }: Props) => {
   const { loadTests, pelzs, createTest } = usePelz();
   const [selectedPelz, setSelectedPelz] = useState<PelzType | null>(null);
 
@@ -37,7 +40,7 @@ export const PelzList = () => {
   const handleClose = () => setSelectedPelz(null);
 
   useEffect(() => {
-    loadTests();
+    loadTests(userId);
   }, [loadTests]);
 
   return (

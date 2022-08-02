@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom';
 
-export const GamePage = () => {
+export const PelzCoachPage = () => {
   return <Outlet />;
 };

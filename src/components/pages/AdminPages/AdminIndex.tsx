@@ -1,13 +1,13 @@
 import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
-import { ENUM_MENU_COMPONENT } from './enum';
-import { AdminDrawer } from './AdminDrawer';
-import GolfCourseImage from '../../assets/images/golf-field.png';
-import GolfCoachImage from '../../assets/images/golf-coach.png';
-import GolfThemeImage from '../../assets/images/golf-theme.png';
+import { ENUM_MENU_COMPONENT } from '../../Admin/enum';
+import { AdminDrawer } from '../../Admin/AdminDrawer';
+import GolfCourseImage from '../../../assets/images/golf-field.png';
+import GolfCoachImage from '../../../assets/images/golf-coach.png';
+import GolfThemeImage from '../../../assets/images/golf-theme.png';
 
-import { theme } from '../../style/theme';
-import { AdminMenuType } from './types';
+import { theme } from '../../../style/theme';
+import { AdminMenuType } from '../../Admin/types';
 
 const Root = styled.div`
   margin: 10px;
@@ -39,18 +39,18 @@ export const AdminIndex = () => {
       {
         label: 'Thèmatiques',
         component: ENUM_MENU_COMPONENT.THEMES,
-        img: GolfThemeImage
+        img: GolfThemeImage,
       },
       {
         label: 'Parcours',
         component: ENUM_MENU_COMPONENT.COURSES,
-        img: GolfCourseImage
+        img: GolfCourseImage,
       },
       {
         label: 'Coaches',
         component: ENUM_MENU_COMPONENT.COACHES,
-        img: GolfCoachImage
-      }
+        img: GolfCoachImage,
+      },
     ];
   }, []);
 
@@ -69,7 +69,7 @@ export const AdminIndex = () => {
                   objectPosition: 'center',
                   height: '100px',
                   width: '100px',
-                  boxShadow: theme.shadows.flatButton
+                  boxShadow: theme.shadows.flatButton,
                 }}
                 alt={menu.label}
                 src={menu.img}
@@ -79,7 +79,7 @@ export const AdminIndex = () => {
               style={{
                 fontSize: '20px',
                 textTransform: 'uppercase',
-                fontWeight: '700'
+                fontWeight: '700',
               }}
             >
               {menu.label}

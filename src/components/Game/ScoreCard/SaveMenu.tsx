@@ -3,7 +3,6 @@ import { faEllipsisV, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Menu } from '@mui/material';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { theme } from '../../../style/theme';
 import { FloatingButton } from '../../commons/FloatingButton';
 import { ShotButton } from '../../commons/ShotButton';
@@ -32,12 +31,12 @@ const CustomShotButton = styled(ShotButton)`
 type Props = {
   onValidate: () => void;
   status?: GameStatus;
+  onClose: () => void;
 };
 
-export const SaveMenu = ({ onValidate, status }: Props) => {
+export const SaveMenu = ({ onValidate, status, onClose }: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const navigate = useNavigate();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -49,12 +48,12 @@ export const SaveMenu = ({ onValidate, status }: Props) => {
 
   const handleSaveDraft = () => {
     setAnchorEl(null);
-    navigate('/protected/games');
+    onClose();
   };
   const handleSubmit = () => {
     onValidate();
     setAnchorEl(null);
-    navigate('/protected/games');
+    onClose();
   };
 
   return (
@@ -65,12 +64,13 @@ export const SaveMenu = ({ onValidate, status }: Props) => {
           fontSize: '40px',
           backgroundColor: open ? theme.colors.saveButton : '#0000E5',
           color: '#fff',
-        }}>
+        }}
+      >
         <FontAwesomeIcon icon={open ? faTimes : faEllipsisV} />
       </FloatingButton>
       <Menu
-        id='positioned-menu'
-        aria-labelledby='positioned-button'
+        id="positioned-menu"
+        aria-labelledby="positioned-button"
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
@@ -91,7 +91,8 @@ export const SaveMenu = ({ onValidate, status }: Props) => {
         }}
         MenuListProps={{
           'aria-labelledby': 'basic-button',
-        }}>
+        }}
+      >
         <Wrapper>
           <Title>Sauvegarder</Title>
           {status !== ENUM_GAME_STATUS.DONE ? (
