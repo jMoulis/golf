@@ -11,13 +11,15 @@ import {
   Unsubscribe,
   where,
 } from 'firebase/firestore';
-import { deleteObject, ref } from 'firebase/storage';
+
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { app, auth, storage } from '../../firebase';
+import { app, auth } from '../../firebase';
+import { useFileStorage } from '../../hooks/useFileStorage';
 import { GamePayloadType, GameType } from '../types';
 
 export const useGames = () => {
+  const { deleteFile } = useFileStorage();
   const [games, setGames] = useState<GameType[]>([]);
   const gamesUnsubscribe = useRef<Unsubscribe | null>(null);
   const [user] = useAuthState(auth);
@@ -29,8 +31,7 @@ export const useGames = () => {
       const deleteRef = doc(db.current, 'games', deleteGame.id);
       deleteDoc(deleteRef).then(() => {
         if (deleteGame.scoreCardPDF) {
-          const fileRef = ref(storage, deleteGame.scoreCardPDF);
-          deleteObject(fileRef);
+          deleteFile(deleteGame.scoreCardPDF)
         }
       });
       setDeleteGame(null);
@@ -77,7 +78,6 @@ export const useGames = () => {
 
   const handleUpdateGame = async (gameID: string, value: any) => {
     const gameRef = doc(db.current, 'games', gameID);
-
     await setDoc(
       gameRef,
       value,

@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import React from 'react';
 import { ShotType } from '../../../../game';
 import { Flexbox } from '../../../commons';
-import { ShotButton } from '../../../commons/ShotButton';
+import { ShotButton } from '../../../commons/Buttons/ShotButton';
 
 const Dot = styled.div<{ status: boolean }>`
   height: 14px;
@@ -26,7 +26,7 @@ type Props = {
 
 export const Shot = ({ typedShot, shot, onSelectShot }: Props) => {
   return (
-    <Flexbox flexDirection='column' styling={{ position: 'relative' }}>
+    <Flexbox flexDirection="column" styling={{ position: 'relative' }}>
       <ShotButton color={typedShot?.color} onClick={() => onSelectShot(shot)}>
         {typedShot?.icon}
       </ShotButton>
@@ -37,7 +37,8 @@ export const Shot = ({ typedShot, shot, onSelectShot }: Props) => {
           left: 0,
           right: 0,
           justifyContent: 'space-around',
-        }}>
+        }}
+      >
         {Object.keys(shot.themes || {})
           .sort()
           .map((key) => {

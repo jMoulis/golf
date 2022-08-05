@@ -19,13 +19,13 @@ import { theme } from '../../../style/theme';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { CourseList } from './CourseList';
 import { GameThemeForm } from './GameThemeForm';
-import { ButtonPill } from '../../commons/ButtonPill';
+import { ButtonPill } from '../../commons/Buttons/ButtonPill';
 import { FixedBottomToolbar } from '../../commons/FixedBottomToolbar';
 import { ListItem } from '../../commons/List';
 import { Flexbox } from '../../commons';
 import { CoachPage } from '../../pages/AdminPages/CoachPage';
 import { CourseMeta } from '../../Admin/Course/CourseMeta';
-import { ShotButton } from '../../commons/ShotButton';
+import { ShotButton } from '../../commons/Buttons/ShotButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useUser } from '../../User/useUser';
@@ -100,9 +100,8 @@ export const NewGame = ({ onSubmit }: Props) => {
         courseRef: newGame.courseRef as string,
         holes: newGame.holes as any,
       };
-      console.log(gameSubmit);
+
       onSubmit(gameSubmit);
-      // navigate(`/protected/games/${docRef.id}`, { replace: true });
     } catch (e) {
       console.error('Error adding document: ', e);
     }

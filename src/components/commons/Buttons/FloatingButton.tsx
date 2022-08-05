@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { BOTTOM_NAVBAR_HEIGHT } from '../cssConstants';
+import { BOTTOM_NAVBAR_HEIGHT } from '../../cssConstants';
 
 export const FloatingButton = styled.button<{
   backgroundColor?: string;
@@ -13,6 +13,8 @@ export const FloatingButton = styled.button<{
   border-radius: 20rem;
   height: 60px;
   width: 60px;
+  min-height: 60px;
+  min-width: 60px;
   position: fixed;
   box-shadow: 3px 5px 11px 0px rgba(0, 0, 0, 0.23);
   bottom: calc(${BOTTOM_NAVBAR_HEIGHT} + 10px);

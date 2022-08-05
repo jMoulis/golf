@@ -1,12 +1,11 @@
 import styled from '@emotion/styled';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import {
   faSquareArrowDown,
   faSquareArrowUp,
 } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { theme } from '../../../../style/theme';
-import { DeleteButton } from '../../../commons/DeleteButton';
+import { DeleteButton } from '../../../commons/Buttons/DeleteButton';
 import { List, ListItem } from '../../../commons/List';
 import { ThemeType } from '../../../types';
 import { ThemeForm } from './ThemeForm';
@@ -65,9 +64,10 @@ export const ThemeList = ({
           {onSelectTheme ? (
             <Button
               selected={selectedThemes.some(
-                (selectedTheme) => selectedTheme.id === theme.id,
+                (selectedTheme) => selectedTheme.id === theme.id
               )}
-              onClick={() => onSelectTheme(theme)}>
+              onClick={() => onSelectTheme(theme)}
+            >
               <FontAwesomeIcon icon={faSquareArrowUp} />
             </Button>
           ) : null}
@@ -78,9 +78,7 @@ export const ThemeList = ({
             </Button>
           ) : null}
           {onDeleteTheme ? (
-            <DeleteButton onClick={() => onDeleteTheme(theme.id)}>
-              <FontAwesomeIcon icon={faTrash} />
-            </DeleteButton>
+            <DeleteButton onClick={() => onDeleteTheme(theme.id)} />
           ) : null}
         </CustomListItem>
       ))}

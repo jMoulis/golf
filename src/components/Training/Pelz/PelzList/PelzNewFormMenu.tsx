@@ -3,8 +3,8 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Menu } from '@mui/material';
 import React, { useState } from 'react';
-import { FloatingButton } from '../../../commons/FloatingButton';
-import { ShotButton } from '../../../commons/ShotButton';
+import { FloatingButton } from '../../../commons/Buttons/FloatingButton';
+import { ShotButton } from '../../../commons/Buttons/ShotButton';
 import { ENUM_PELZ_THEME } from '../enums';
 
 const CustomShotButton = styled(ShotButton)`

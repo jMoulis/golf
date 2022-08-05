@@ -8,7 +8,7 @@ import { RenderNine } from './RenderNine';
 import { RenderTotal } from './ScoreCard/RenderTotal';
 import { FixedBottomToolbar } from '../commons/FixedBottomToolbar';
 import { useExportPdfGame } from './ScoreCard/useExportPdfGame';
-import { ButtonPill } from '../commons/ButtonPill';
+import { ButtonPill } from '../commons/Buttons/ButtonPill';
 
 type Props = {
   holes: GameHoleType[];

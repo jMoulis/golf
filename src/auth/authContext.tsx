@@ -69,7 +69,7 @@ function useAuthDispatch() {
   return context.dispatch;
 }
 
-function getUserContext() {
+function useUserContext() {
   const context = useContext(AuthContext);
   if (context === undefined) {
     throw new Error('useFullUserAuth must be used within a AuthProvider');
@@ -77,4 +77,4 @@ function getUserContext() {
   return context.state.fullUser;
 }
 
-export { AuthProvider, useAuthContext, useAuthDispatch, getUserContext };
+export { AuthProvider, useAuthContext, useAuthDispatch, useUserContext };

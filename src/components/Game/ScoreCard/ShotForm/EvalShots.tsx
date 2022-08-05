@@ -8,10 +8,10 @@ import { ShotType } from '../../../../game';
 import { theme } from '../../../../style/theme';
 import { iOS } from '../../../../utils/global.utils';
 import { Flexbox } from '../../../commons';
-import { ButtonPill } from '../../../commons/ButtonPill';
-import { DeleteButton } from '../../../commons/DeleteButton';
+import { ButtonPill } from '../../../commons/Buttons/ButtonPill';
+import { DeleteButton } from '../../../commons/Buttons/DeleteButton';
 import { FixedBottomToolbar } from '../../../commons/FixedBottomToolbar';
-import { ShotButton } from '../../../commons/ShotButton';
+import { ShotButton } from '../../../commons/Buttons/ShotButton';
 import { SwipeMenuHeader } from '../../../commons/SwipeMenuHeader';
 import { GameType, ThemeType } from '../../../types';
 import { ThemeList } from '../ThemeForm/ThemeList';
@@ -83,7 +83,7 @@ export const EvalShots = ({
         },
         {
           merge: true,
-        },
+        }
       );
     }
   };
@@ -100,7 +100,7 @@ export const EvalShots = ({
       return acc;
     }, []);
     const filteredGameThemes = (game?.themes || []).filter(
-      (theme) => !selectedShot?.themes?.[theme.type],
+      (theme) => !selectedShot?.themes?.[theme.type]
     );
     return [...shotThemes, ...filteredGameThemes];
   }, [selectedShot?.themes, game?.themes, themes]);
@@ -108,24 +108,27 @@ export const EvalShots = ({
   return (
     <>
       <Flexbox
-        flexDirection='column'
+        flexDirection="column"
         style={{
           backgroundColor: theme.colors.backgroundPage,
           maxHeight: 'calc(100% - 240px)',
-        }}>
+        }}
+      >
         <EvalWrapper>
           <Flexbox
-            justifyContent='space-between'
-            alignItems='center'
+            justifyContent="space-between"
+            alignItems="center"
             style={{
               padding: '5px',
               borderBottom: `1px solid ${theme.colors.separator}`,
-            }}>
+            }}
+          >
             <span>Sélectionner ou créer un thème</span>
             <CustomShotButton
-              color='#fff'
+              color="#fff"
               backgroundColor={theme.colors.saveButton}
-              onClick={() => setOpen(true)}>
+              onClick={() => setOpen(true)}
+            >
               <FontAwesomeIcon icon={faPlus} />
             </CustomShotButton>
           </Flexbox>
@@ -149,15 +152,14 @@ export const EvalShots = ({
                           selected={
                             selectedEvaluationValue === evaluationValue.value
                           }
-                          color={evaluationValue.color}>
+                          color={evaluationValue.color}
+                        >
                           {evaluationValue.icon}
                         </CustomShotButton>
                       );
                     })}
                   </Flexbox>
-                  <DeleteButton onClick={() => handleRemoveTheme(theme)}>
-                    <FontAwesomeIcon icon={faTrash} />
-                  </DeleteButton>
+                  <DeleteButton onClick={() => handleRemoveTheme(theme)} />
                 </Wrapper>
               );
             })}
@@ -166,14 +168,15 @@ export const EvalShots = ({
       <SwipeableDrawer
         disableBackdropTransition={!iOS}
         disableDiscovery={iOS}
-        anchor='bottom'
+        anchor="bottom"
         open={open}
         PaperProps={{
           style: theme.swipeable.paper,
         }}
         onClose={() => setOpen(false)}
-        onOpen={() => setOpen(true)}>
-        <SwipeMenuHeader title='Select a theme' />
+        onOpen={() => setOpen(true)}
+      >
+        <SwipeMenuHeader title="Select a theme" />
         <ThemeList
           listStyling={{
             maxHeight: '90vh',

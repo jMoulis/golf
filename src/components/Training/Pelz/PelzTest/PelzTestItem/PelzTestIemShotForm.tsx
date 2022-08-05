@@ -3,7 +3,7 @@ import { SwipeableDrawer } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { iOS } from '../../../../../utils/global.utils';
 import { Flexbox } from '../../../../commons';
-import { ShotButton } from '../../../../commons/ShotButton';
+import { ShotButton } from '../../../../commons/Buttons/ShotButton';
 import { SwipeMenuHeader } from '../../../../commons/SwipeMenuHeader';
 import { buildArrayFromNumber } from '../../testsMatrix';
 import { PelzTestShot } from '../../types';

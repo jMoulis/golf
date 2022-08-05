@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { Outlet } from 'react-router-dom';
 import { theme } from '../../../../style/theme';
 import { PageHeader } from '../../../commons/Core/PageHeader';
-import { SessionList } from '../../../Training/Session/SessionList';
+import { SessionList } from '../../../Training/Session/SessionList/SessionList';
 import { useUser } from '../../../User/useUser';
 
 export const SessionPage = () => {

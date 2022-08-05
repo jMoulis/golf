@@ -1,8 +1,6 @@
 import styled from '@emotion/styled';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { theme } from '../../../style/theme';
-import { DeleteButton } from '../../commons/DeleteButton';
+import { DeleteButton } from '../../commons/Buttons/DeleteButton';
 import { ListItem } from '../../commons/List';
 import { CourseType } from '../../types';
 import { CourseMeta } from './CourseMeta';
@@ -31,9 +29,8 @@ export const CourseListItem = ({ course, onSelect, onDelete }: Props) => {
         onClick={(event) => {
           event.stopPropagation();
           onDelete(course.id as string);
-        }}>
-        <FontAwesomeIcon icon={faTrash} />
-      </DeleteButton>
+        }}
+      />
     </CustomListItem>
   );
 };

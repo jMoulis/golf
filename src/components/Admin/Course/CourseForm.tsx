@@ -2,17 +2,17 @@ import styled from '@emotion/styled';
 import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
-import { ButtonPill } from '../../commons/ButtonPill';
+import { ButtonPill } from '../../commons/Buttons/ButtonPill';
 import { FixedBottomToolbar } from '../../commons/FixedBottomToolbar';
-import { FloatingButton } from '../../commons/FloatingButton';
+import { FloatingButton } from '../../commons/Buttons/FloatingButton';
 import { Input } from '../../commons/Input';
 import { BOTTOM_NAVBAR_HEIGHT, FLOATING_HEIGHT } from '../../cssConstants';
 import { CourseType, HoleCourseType } from '../../types';
 import { HoleForm } from './HoleForm';
 import { sortHoles } from './utils';
 import Menu from '@mui/material/Menu';
-import { ShotButton } from '../../commons/ShotButton';
-import { DeleteButton } from '../../commons/DeleteButton';
+import { ShotButton } from '../../commons/Buttons/ShotButton';
+import { DeleteButton } from '../../commons/Buttons/DeleteButton';
 import { List, ListItem } from '../../commons/List';
 import { getCoursePar } from '../../../utils/scoreUtils';
 import { Flexbox } from '../../commons';
@@ -73,11 +73,11 @@ export const CourseForm = ({ selectedCourse, onSubmit, onClose }: Props) => {
   const handleHoleChange = (updatedHole: HoleCourseType) => {
     const prevHoles = form?.holes || [];
     const prevHole = prevHoles.find(
-      (prevHole) => prevHole.ref === updatedHole.ref,
+      (prevHole) => prevHole.ref === updatedHole.ref
     );
     if (prevHole) {
       const updatedHoles = prevHoles.map((prevHole) =>
-        prevHole.ref === updatedHole.ref ? updatedHole : prevHole,
+        prevHole.ref === updatedHole.ref ? updatedHole : prevHole
       );
 
       setForm((prevForm) => ({
@@ -108,7 +108,7 @@ export const CourseForm = ({ selectedCourse, onSubmit, onClose }: Props) => {
 
     const countHoles = Array.from(
       { length: countHole },
-      (_, index) => index + getLastNumber,
+      (_, index) => index + getLastNumber
     );
 
     const newHoles: HoleCourseType[] = countHoles.map((holeId) => ({
@@ -135,7 +135,7 @@ export const CourseForm = ({ selectedCourse, onSubmit, onClose }: Props) => {
 
   const handleDeleteHole = (holeRef?: string) => {
     const updatedHoles = sortHoles(
-      form.holes.filter((prevHole) => prevHole.ref !== holeRef),
+      form.holes.filter((prevHole) => prevHole.ref !== holeRef)
     );
     setForm((prevForm) => ({
       ...prevForm,
@@ -153,17 +153,17 @@ export const CourseForm = ({ selectedCourse, onSubmit, onClose }: Props) => {
       <CustomList>
         <CustomListItem>
           <Input
-            name='name'
-            placeholder='Nom du parcours'
+            name="name"
+            placeholder="Nom du parcours"
             value={form?.name || ''}
             onChange={handleChangeName}
           />
-          <Flexbox alignItems='flex-end'>
-            <Flexbox flexDirection='column'>
+          <Flexbox alignItems="flex-end">
+            <Flexbox flexDirection="column">
               <span>PAR</span>
               <Input
-                name='par'
-                placeholder='Par'
+                name="par"
+                placeholder="Par"
                 value={form?.par || ''}
                 onChange={handleChangeName}
                 style={{
@@ -193,18 +193,19 @@ export const CourseForm = ({ selectedCourse, onSubmit, onClose }: Props) => {
 
       <FloatingButton
         // onClick={handleAddHole}
-        backgroundColor='#000'
-        id='demo-positioned-button'
+        backgroundColor="#000"
+        id="demo-positioned-button"
         aria-controls={open ? 'demo-positioned-menu' : undefined}
-        aria-haspopup='true'
+        aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
-        color='#fff'>
-        <FontAwesomeIcon icon={faPlus} size='3x' />
+        color="#fff"
+      >
+        <FontAwesomeIcon icon={faPlus} size="3x" />
       </FloatingButton>
       <Menu
-        id='positioned-menu'
-        aria-labelledby='positioned-button'
+        id="positioned-menu"
+        aria-labelledby="positioned-button"
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
@@ -225,7 +226,8 @@ export const CourseForm = ({ selectedCourse, onSubmit, onClose }: Props) => {
         }}
         MenuListProps={{
           'aria-labelledby': 'basic-button',
-        }}>
+        }}
+      >
         <CustomShotButton onClick={() => handleAddHole(9)}>
           9 holes
         </CustomShotButton>
@@ -240,9 +242,7 @@ export const CourseForm = ({ selectedCourse, onSubmit, onClose }: Props) => {
         <ButtonPill disabled={!form.name} onClick={() => onSubmit(form)}>
           ENREGISTRER
         </ButtonPill>
-        <DeleteButton onClick={onClose}>
-          <FontAwesomeIcon icon={faTimes} />
-        </DeleteButton>
+        <DeleteButton onClick={onClose} icon={faTimes} />
       </FixedBottomToolbar>
     </>
   );

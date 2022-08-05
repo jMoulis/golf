@@ -1,12 +1,10 @@
-import { faArrowLeft } from '@fortawesome/pro-duotone-svg-icons';
 import { SwipeableDrawer } from '@mui/material';
-import { DeleteButton } from '../commons/DeleteButton';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled from '@emotion/styled';
 import { RenderDrawerComponent } from './RenderDrawerComponent';
 import { BOTTOM_NAVBAR_HEIGHT } from '../cssConstants';
 import { theme } from '../../style/theme';
 import { AdminMenuType } from './types';
+import { NavigationButton } from '../commons/Buttons/NavigationButton';
 
 const Header = styled.header<{ backgroundImage?: string }>`
   position: relative;
@@ -64,11 +62,10 @@ export const AdminDrawer = ({ onClose, selectedMenu }: Props) => {
           minWidth: '100vw',
         },
       }}
-      anchor='right'>
+      anchor="right"
+    >
       <Header>
-        <DeleteButton style={{ zIndex: '1' }} onClick={onClose}>
-          <FontAwesomeIcon icon={faArrowLeft} />
-        </DeleteButton>
+        <NavigationButton buttonStyle={{ zIndex: '1' }} onClick={onClose} />
         <HeaderTitle>{selectedMenu?.label}</HeaderTitle>
         <Background backgroundImage={selectedMenu?.img} />
       </Header>

@@ -1,9 +1,8 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Flexbox } from '../../commons';
-import { ButtonPill } from '../../commons/ButtonPill';
-import { DeleteButton } from '../../commons/DeleteButton';
+import { ButtonPill } from '../../commons/Buttons/ButtonPill';
+import { DeleteButton } from '../../commons/Buttons/DeleteButton';
 import { Modal } from '../../commons/Modal';
 import styled from '@emotion/styled';
 import { theme } from '../../../style/theme';
@@ -48,9 +47,7 @@ export const DeleteModal = ({ deletedGame, onClose, onDeleteGame }: Props) => {
           <ButtonPill type="button" onClick={onDeleteGame}>
             Supprimer
           </ButtonPill>
-          <DeleteButton type="button" onClick={onClose}>
-            <FontAwesomeIcon icon={faTimes} />
-          </DeleteButton>
+          <DeleteButton type="button" onClick={onClose} icon={faTimes} />
         </Footer>
       </Flexbox>
     </Modal>

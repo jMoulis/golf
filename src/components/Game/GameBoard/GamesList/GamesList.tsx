@@ -5,7 +5,7 @@ import { SwipeableDrawer } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { theme } from '../../../../style/theme';
 import { iOS } from '../../../../utils/global.utils';
-import { FloatingButton } from '../../../commons/FloatingButton';
+import { FloatingButton } from '../../../commons/Buttons/FloatingButton';
 import { List } from '../../../commons/List';
 import { SwipeMenuHeader } from '../../../commons/SwipeMenuHeader';
 import { BOTTOM_NAVBAR_HEIGHT } from '../../../cssConstants';

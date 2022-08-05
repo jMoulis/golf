@@ -11,6 +11,8 @@ export const theme = {
     handleBar: "#8c8c8c",
     separator: "#e8e8e8",
     deleteButton: "#8C8C8C",
+    success: '#4BB543',
+    error: '#FF9494'
   },
   shadows: {
     button: "2px 2px 7px -2px rgb(0 0 0 / 23%)",

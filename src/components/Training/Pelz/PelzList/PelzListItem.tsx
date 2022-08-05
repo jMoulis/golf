@@ -3,7 +3,8 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRef } from 'react';
 import { Flexbox } from '../../../commons';
-import { DeleteButton } from '../../../commons/DeleteButton';
+import { DateDisplay } from '../../../commons/DateDisplay';
+import { DeleteButton } from '../../../commons/Buttons/DeleteButton';
 import { ListItem } from '../../../commons/List';
 import { PelzType } from '../types';
 import { usePelz } from '../usePelz';
@@ -20,11 +21,7 @@ const Title = styled.span`
 const Value = styled.span`
   display: inline-block;
 `;
-const DateValue = styled.span`
-  font-size: 14px;
-  margin-left: 5px;
-  font-style: italic;
-`;
+
 const Theme = styled.span`
   font-weight: 700;
 `;
@@ -44,7 +41,9 @@ export const PelzListItem = ({ pelz, onSelect }: Props) => {
         <Pelz onClick={() => onSelect(pelz)}>
           <Flexbox alignItems="center">
             <Theme>{pelz.theme}</Theme>
-            <DateValue>{`- ${dateFormat.current.format(pelz.date)}`}</DateValue>
+            <DateDisplay margin="5px">{`- ${dateFormat.current.format(
+              pelz.date
+            )}`}</DateDisplay>
           </Flexbox>
           <Flexbox>
             <Flexbox
@@ -62,9 +61,7 @@ export const PelzListItem = ({ pelz, onSelect }: Props) => {
             </Flexbox>
           </Flexbox>
         </Pelz>
-        <DeleteButton type="button" onClick={() => onDeletePelz(pelz.id)}>
-          <FontAwesomeIcon icon={faTrash} />
-        </DeleteButton>
+        <DeleteButton type="button" onClick={() => onDeletePelz(pelz.id)} />
       </Flexbox>
     </ListItem>
   );

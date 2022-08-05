@@ -14,7 +14,6 @@ export const GamePage = () => {
 
   if (!user?.id) return null;
 
-  console.log(isCoach);
   return (
     <>
       {!isCoach ? (

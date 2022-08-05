@@ -49,7 +49,6 @@ export const GameBoard = ({ open, onClose, gameID }: Props) => {
   };
 
   useEffect(() => {
-    console.log(gameID);
     if (gameID) {
       fetchGame(gameID);
     }
@@ -58,7 +57,6 @@ export const GameBoard = ({ open, onClose, gameID }: Props) => {
   useEffect(() => {
     const shotUnsub = holeUnsubscribe.current;
     return () => {
-      console.log('here');
       if (shotUnsub) shotUnsub();
     };
   }, []);

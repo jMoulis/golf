@@ -2,8 +2,8 @@ import styled from '@emotion/styled';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Flexbox } from '../../../commons';
-import { ButtonPill } from '../../../commons/ButtonPill';
-import { DeleteButton } from '../../../commons/DeleteButton';
+import { ButtonPill } from '../../../commons/Buttons/ButtonPill';
+import { DeleteButton } from '../../../commons/Buttons/DeleteButton';
 import { PelzType } from '../types';
 import { usePelz } from '../usePelz';
 
@@ -48,9 +48,7 @@ export const StatFooter = ({ pelz, onClose }: Props) => {
               onDeletePelz(pelz.id);
               onClose();
             }}
-          >
-            <FontAwesomeIcon icon={faTrash} />
-          </DeleteButton>
+          />
         ) : null}
       </Flexbox>
     </Flexbox>

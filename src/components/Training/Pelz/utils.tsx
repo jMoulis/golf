@@ -198,7 +198,6 @@ export const buildDefaultTestShots: () => PelzTestShot[] = () => {
 export const buildDefaultTest: (
   theme: ENUM_PELZ_THEME
 ) => Record<string, PelzTestType> = (theme) => {
-  console.log(theme);
   const tests = Array.from(
     { length: theme === ENUM_PELZ_THEME.SHORT_GAME ? 8 : 6 },
     (_, index) => (index += 1)

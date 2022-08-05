@@ -4,8 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Menu } from '@mui/material';
 import React, { useState } from 'react';
 import { theme } from '../../../style/theme';
-import { FloatingButton } from '../../commons/FloatingButton';
-import { ShotButton } from '../../commons/ShotButton';
+import { FloatingButton } from '../../commons/Buttons/FloatingButton';
+import { ShotButton } from '../../commons/Buttons/ShotButton';
 import { ENUM_GAME_STATUS, GameStatus } from '../../types';
 
 const Wrapper = styled.div`

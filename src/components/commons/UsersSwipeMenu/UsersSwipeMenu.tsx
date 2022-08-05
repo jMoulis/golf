@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { SwipeableDrawer } from '@mui/material';
+import { theme } from '../../../style/theme';
 import { iOS } from '../../../utils/global.utils';
 import { UserType } from '../../types';
 import { Avatar } from '../../User/Avatar';
@@ -43,9 +44,7 @@ export const UsersSwipeMenu = ({
       disableBackdropTransition={!iOS}
       disableDiscovery={iOS}
       PaperProps={{
-        style: {
-          height: '90vh',
-        },
+        style: theme.swipeable.paper,
       }}
       anchor="bottom"
       open={open}

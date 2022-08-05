@@ -6,8 +6,8 @@ import React from 'react';
 import { ShotType } from '../../../../game';
 import { theme } from '../../../../style/theme';
 import { iOS } from '../../../../utils/global.utils';
-import { ButtonPill } from '../../../commons/ButtonPill';
-import { DeleteButton } from '../../../commons/DeleteButton';
+import { ButtonPill } from '../../../commons/Buttons/ButtonPill';
+import { DeleteButton } from '../../../commons/Buttons/DeleteButton';
 import { FixedBottomToolbar } from '../../../commons/FixedBottomToolbar';
 import { List } from '../../../commons/List';
 import { SwipeMenuHeader } from '../../../commons/SwipeMenuHeader';
@@ -48,13 +48,14 @@ export const ShotEvaluationForm = ({
     <SwipeableDrawer
       disableBackdropTransition={!iOS}
       disableDiscovery={iOS}
-      anchor='bottom'
+      anchor="bottom"
       open={open}
       onClose={onClose}
       PaperProps={{
         style: theme.swipeable.paper,
       }}
-      onOpen={onOpen}>
+      onOpen={onOpen}
+    >
       <SwipeMenuHeader title={`Modifier le shot`}></SwipeMenuHeader>
       <List
         style={{
@@ -62,13 +63,15 @@ export const ShotEvaluationForm = ({
           borderBottom: `1px solid ${theme.colors.separator}`,
           backgroundColor: '#fff',
           flex: 'unset',
-        }}>
+        }}
+      >
         <ShotEvaluationFormItem
           hole={hole}
           selectedShot={selectedShot}
           game={game}
           gameRef={gameRef}
-          onEditShot={onEditShot}>
+          onEditShot={onEditShot}
+        >
           {children}
         </ShotEvaluationFormItem>
       </List>
@@ -82,15 +85,12 @@ export const ShotEvaluationForm = ({
       <FixedBottomToolbar>
         <ButtonPill
           onClick={onClose}
-          color='#fff'
-          backgroundColor={theme.colors.saveButton}>
+          color="#fff"
+          backgroundColor={theme.colors.saveButton}
+        >
           <span>Enregistrer</span>
         </ButtonPill>
-        {onDeleteShot ? (
-          <DeleteButton onClick={onDeleteShot}>
-            <FontAwesomeIcon icon={faTrash} />
-          </DeleteButton>
-        ) : null}
+        {onDeleteShot ? <DeleteButton onClick={onDeleteShot} /> : null}
       </FixedBottomToolbar>
     </SwipeableDrawer>
   );

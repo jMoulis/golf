@@ -2,7 +2,7 @@ import React, { FormEvent, useState } from 'react';
 import { CoachPage } from '../../pages/AdminPages/CoachPage';
 import { UserType } from '../../types';
 import { FixedBottomToolbar } from '../../commons/FixedBottomToolbar';
-import { ButtonPill } from '../../commons/ButtonPill';
+import { ButtonPill } from '../../commons/Buttons/ButtonPill';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../../firebase';
 import { useSession } from './useSession';

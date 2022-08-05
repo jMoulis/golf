@@ -7,7 +7,7 @@ import { auth } from '../../../../firebase';
 import { theme } from '../../../../style/theme';
 import { Flexbox } from '../../../commons';
 import { Input } from '../../../commons/Input';
-import { ShotButton } from '../../../commons/ShotButton';
+import { ShotButton } from '../../../commons/Buttons/ShotButton';
 import { ThemeType, ThemeTypeInput } from '../../../types';
 import { useThemes } from './useThemes';
 
@@ -54,23 +54,25 @@ export const ThemeForm = ({ selectedTheme, onUpdate }: Props) => {
   return (
     <Form onSubmit={handleSubmit}>
       <Input
-        placeholder='Nom du thème'
+        placeholder="Nom du thème"
         value={input}
         onChange={(event) => setInput(event.currentTarget.value)}
       />
       <Flexbox
-        justifyContent='flex-end'
+        justifyContent="flex-end"
         style={{
           padding: '5px',
-        }}>
+        }}
+      >
         <ShotButton
           style={{
             height: '40px',
             width: '40px',
           }}
-          type='submit'
-          color='#fff'
-          backgroundColor={theme.colors.saveButton}>
+          type="submit"
+          color="#fff"
+          backgroundColor={theme.colors.saveButton}
+        >
           <FontAwesomeIcon icon={faPlus} />
         </ShotButton>
       </Flexbox>

@@ -1,9 +1,7 @@
 import styled from '@emotion/styled';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FormEvent, useEffect, useState } from 'react';
 import { Flexbox } from '../../commons';
-import { DeleteButton } from '../../commons/DeleteButton';
+import { DeleteButton } from '../../commons/Buttons/DeleteButton';
 import { Input } from '../../commons/Input';
 import { HoleCourseType } from '../../types';
 
@@ -46,42 +44,40 @@ export const HoleForm = ({ hole, onChange, onDelete }: Props) => {
     }
   };
   return (
-    <Flexbox justifyContent='space-between' alignItems='flex-end'>
+    <Flexbox justifyContent="space-between" alignItems="flex-end">
       <Flexbox>
-        <InputWrapper flexDirection='column'>
+        <InputWrapper flexDirection="column">
           <span>Numéro</span>
           <CustomInput
             onChange={handleChange}
-            type='number'
-            name='number'
+            type="number"
+            name="number"
             value={holeForm?.number || ''}
             onBlur={handleOnBlur}
           />
         </InputWrapper>
-        <InputWrapper flexDirection='column'>
+        <InputWrapper flexDirection="column">
           <span>par</span>
           <CustomInput
             onChange={handleChange}
-            type='number'
-            name='par'
+            type="number"
+            name="par"
             value={holeForm?.par || ''}
             onBlur={handleOnBlur}
           />
         </InputWrapper>
-        <InputWrapper flexDirection='column'>
+        <InputWrapper flexDirection="column">
           <span>Hcp</span>
           <CustomInput
             onChange={handleChange}
-            type='number'
-            name='hcp'
+            type="number"
+            name="hcp"
             value={holeForm?.hcp || ''}
             onBlur={handleOnBlur}
           />
         </InputWrapper>
       </Flexbox>
-      <DeleteButton onClick={() => onDelete(hole.ref)}>
-        <FontAwesomeIcon icon={faTrash} />
-      </DeleteButton>
+      <DeleteButton onClick={() => onDelete(hole.ref)} />
     </Flexbox>
   );
 };

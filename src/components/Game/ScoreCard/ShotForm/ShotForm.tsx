@@ -7,10 +7,10 @@ import { v4 } from 'uuid';
 import { ShotType } from '../../../../game';
 import { theme } from '../../../../style/theme';
 import { Flexbox } from '../../../commons';
-import { ButtonPill } from '../../../commons/ButtonPill';
-import { DeleteButton } from '../../../commons/DeleteButton';
+import { ButtonPill } from '../../../commons/Buttons/ButtonPill';
+import { DeleteButton } from '../../../commons/Buttons/DeleteButton';
 import { FixedBottomToolbar } from '../../../commons/FixedBottomToolbar';
-import { ShotButton } from '../../../commons/ShotButton';
+import { ShotButton } from '../../../commons/Buttons/ShotButton';
 import { GameHoleType, GameType, ThemeType } from '../../../types';
 import { ShotEvaluationForm } from '../ShotEvaluationForm/ShotEvaluationForm';
 import { shotTypes } from './shotTypes';
@@ -154,15 +154,13 @@ export const ShotForm = ({
         <FixedBottomToolbar>
           <ButtonPill onClick={handleSubmit}>Enregistrer</ButtonPill>
           <DeleteButton
-            style={{
+            buttonStyle={{
               height: '50px',
               width: '50px',
+              color: '#d73038',
             }}
             onClick={handleClose}
-            color="#d73038"
-          >
-            <FontAwesomeIcon icon={faTrash} />
-          </DeleteButton>
+          />
         </FixedBottomToolbar>
       </Root>
       {withEvaluationForm ? (

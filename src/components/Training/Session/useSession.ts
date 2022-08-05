@@ -1,12 +1,13 @@
 import { Unsubscribe } from "firebase/auth";
-import { addDoc, collection, deleteDoc, doc, Firestore, getFirestore, onSnapshot, orderBy, query, setDoc, where } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, Firestore, getFirestore, onSnapshot, orderBy, query, setDoc, where, writeBatch } from "firebase/firestore";
 import { useCallback, useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { app, auth } from "../../../firebase";
 import { ENUM_COLLECTION } from "../../../hooks/enumCollection";
+import { SessionPayload, SessionType } from "./types";
 
 export const useSession = (dataCollection: ENUM_COLLECTION) => {
-  const [documents, setDocuments] = useState<any[]>([]);
+  const [documents, setDocuments] = useState<SessionType[]>([]);
   const unsubscribe = useRef<Unsubscribe | null>(null);
   const [user] = useAuthState(auth);
 
@@ -24,11 +25,13 @@ export const useSession = (dataCollection: ENUM_COLLECTION) => {
     unsubscribe.current = onSnapshot(
       dataQuery,
       (payload) => {
-        const incomingDocuments = payload.docs.map((doc) => {
-          const parsedDoc = doc.data() as any;
+        const incomingDocuments: SessionType[] = payload.docs.map((doc) => {
+
+          const parsedDoc = doc.data() as SessionPayload;
           return {
-            id: doc.id,
             ...parsedDoc,
+            id: doc.id,
+            date: parsedDoc.date.toDate()
           };
         });
         setDocuments(incomingDocuments);
@@ -37,7 +40,7 @@ export const useSession = (dataCollection: ENUM_COLLECTION) => {
         console.error(`Get ${dataCollection}`, error.message);
       },
     );
-  }, [user]);
+  }, [user, dataCollection]);
 
   const handleCreateDocument = useCallback(async (form: any) => {
     if (!user) return null;
@@ -45,7 +48,7 @@ export const useSession = (dataCollection: ENUM_COLLECTION) => {
       collection(db.current, dataCollection),
       form,
     );
-  }, [user]);
+  }, [user, dataCollection]);
 
   const getDocuments = useCallback((userId: string) => {
     getList(userId);
@@ -55,6 +58,7 @@ export const useSession = (dataCollection: ENUM_COLLECTION) => {
         unsubscribeGames();
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleEditDocument = useCallback(async (value: any, docID: string) => {
@@ -63,7 +67,8 @@ export const useSession = (dataCollection: ENUM_COLLECTION) => {
       docRef,
       value,
     );
-  }, []);
+    return true;
+  }, [dataCollection]);
 
   const handleDeleteDocument = (docID: string) => {
     if (db.current) {
@@ -72,11 +77,18 @@ export const useSession = (dataCollection: ENUM_COLLECTION) => {
     }
   }
 
+  const batchEditDocument = (value: any, docID: string) => {
+    const batch = writeBatch(db.current);
+    const batchRef = doc(db.current, dataCollection, docID);
+    batch.update(batchRef, value)
+  }
+
   return {
     getDocuments,
     documents,
     onDeleteDocument: handleDeleteDocument,
     onCreate: handleCreateDocument,
-    onEditDocument: handleEditDocument
+    onEditDocument: handleEditDocument,
+    onBatchEditDocument: batchEditDocument
   }
 }

@@ -100,6 +100,8 @@ export type UserType = {
   roles?: string[];
   coaches?: UserType[];
   students?: UserType[];
+  createdAt?: Timestamp;
+  updatedAt?: Timestamp;
 };
 
 export type UserTypeSummary = {

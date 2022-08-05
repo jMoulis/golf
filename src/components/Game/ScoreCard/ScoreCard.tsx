@@ -15,6 +15,8 @@ import { ShotType } from '../../../game';
 import { SwipeShotForm } from '../../commons/SwipeShotForm/SwipeShotForm';
 import { SaveMenu } from './SaveMenu';
 import { app } from '../../../firebase';
+import { firebaseErrors } from '../../../utils/firebaseErrors';
+import { Alerts } from '../../commons/Alerts';
 
 const List = styled.ul`
   overflow: auto;
@@ -37,6 +39,7 @@ export const ScoreCard = ({ game, onClose }: Props) => {
   const [selectedHole, setSelectedHole] = useState<GameHoleType | null>(null);
   const shotUnsubscribeRef = useRef<Unsubscribe | null>(null);
   const [open, setOpen] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const shotUnsub = shotUnsubscribeRef.current;
@@ -64,7 +67,7 @@ export const ScoreCard = ({ game, onClose }: Props) => {
 
   const handleAddShot = async (shot: ShotType, hole: GameHoleType) => {
     if (gameRef) {
-      await setDoc(
+      const payload = await setDoc(
         gameRef,
         {
           strokeBrut: increment(1),
@@ -77,7 +80,10 @@ export const ScoreCard = ({ game, onClose }: Props) => {
         {
           merge: true,
         }
-      );
+      ).catch(firebaseErrors);
+      if (payload?.ERROR) {
+        setError(payload.ERROR);
+      }
     }
   };
 
@@ -159,6 +165,12 @@ export const ScoreCard = ({ game, onClose }: Props) => {
         onClose={onClose}
         onValidate={handleValidate}
         status={game.status}
+      />
+      <Alerts
+        onClose={() => setError(null)}
+        open={Boolean(error)}
+        message={error || 'Erreur'}
+        severity="error"
       />
     </>
   );

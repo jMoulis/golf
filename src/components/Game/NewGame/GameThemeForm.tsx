@@ -1,7 +1,7 @@
 import { SwipeableDrawer } from '@mui/material';
 import { useEffect } from 'react';
 import { theme } from '../../../style/theme';
-import { ButtonPill } from '../../commons/ButtonPill';
+import { ButtonPill } from '../../commons/Buttons/ButtonPill';
 import { FixedBottomToolbar } from '../../commons/FixedBottomToolbar';
 import { SwipeMenuHeader } from '../../commons/SwipeMenuHeader';
 import { ThemeType } from '../../types';
@@ -31,14 +31,15 @@ export const GameThemeForm = ({
 
   return (
     <SwipeableDrawer
-      anchor='bottom'
+      anchor="bottom"
       PaperProps={{
         style: theme.swipeable.paper,
       }}
       onClose={onClose}
       onOpen={() => {}}
-      open={open}>
-      <SwipeMenuHeader title='Themes' />
+      open={open}
+    >
+      <SwipeMenuHeader title="Themes" />
       <ThemeList
         listStyling={{
           maxHeight: 'calc(100% - 80px)',

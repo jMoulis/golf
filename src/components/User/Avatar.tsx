@@ -1,9 +1,8 @@
 import styled from '@emotion/styled';
-import { getDownloadURL, ref } from 'firebase/storage';
 import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
-import { storage } from '../../firebase';
 import { UserType, UserTypeSummary } from '../types';
 import avatarPlaceholder from '../../assets/images/avatar-placeholder.png';
+import { useFileStorage } from '../../hooks/useFileStorage';
 
 const Image = styled.img<{ styling?: any }>`
   border-radius: 300px;
@@ -31,22 +30,14 @@ export const Avatar = ({ user, styling, onUploadAvatar }: Props) => {
   const [loading, setLoading] = useState<'UNSET' | 'LOADING' | 'DONE'>('UNSET');
   const [imageUrl, setImageUrl] = useState('');
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const { getFile } = useFileStorage();
 
   const fetchImageURL = useCallback(async (userAvatar: string) => {
     setLoading('LOADING');
-    const storageRef = ref(storage, userAvatar);
-    const downloadedUrl = await getDownloadURL(storageRef);
-    // // Update metadata properties
-    // updateMetadata(storageRef, newMetadata)
-    //   .then((metadata) => {
-    //     console.log(metadata);
-    //     // Updated metadata for 'images/forest.jpg' is returned in the Promise
-    //   })
-    //   .catch((error) => {
-    //     // Uh-oh, an error occurred!
-    //   });
-
-    setImageUrl(downloadedUrl);
+    const downloadedUrl = await getFile(userAvatar);
+    if (downloadedUrl) {
+      setImageUrl(downloadedUrl);
+    }
     setLoading('DONE');
   }, []);
 
@@ -57,13 +48,14 @@ export const Avatar = ({ user, styling, onUploadAvatar }: Props) => {
       setLoading('DONE');
       setImageUrl(avatarPlaceholder);
     }
-  }, [fetchImageURL, user.avatar]);
+  }, [fetchImageURL, user]);
 
   const handleClick = () => {
     if (onUploadAvatar) {
       inputRef.current?.click();
     }
   };
+
   const handleChange = (event: FormEvent<HTMLInputElement>) => {
     const file = event.currentTarget.files?.[0];
     if (file && onUploadAvatar) {

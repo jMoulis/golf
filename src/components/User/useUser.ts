@@ -1,7 +1,7 @@
 import { collection, doc, getDoc, getFirestore, onSnapshot, query, setDoc, Unsubscribe, where } from "firebase/firestore";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { getUserContext, signInAction, useAuthDispatch } from "../../auth/authContext";
+import { useUserContext, signInAction, useAuthDispatch } from "../../auth/authContext";
 import { app, auth } from "../../firebase";
 import { UserType } from "../types";
 
@@ -18,7 +18,7 @@ export const useUser: () => {
   const [coaches, setCoaches] = useState<UserType[]>([]);
   const coachesSubscribe = useRef<Unsubscribe | null>(null);
   const userUnsbuscribe = useRef<Unsubscribe | null>(null);
-  const user = getUserContext();
+  const user = useUserContext();
 
   const getConnectedUser = useCallback(async () => {
     if (!userSystem) return null;

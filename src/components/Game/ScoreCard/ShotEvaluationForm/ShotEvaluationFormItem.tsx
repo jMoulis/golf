@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { ShotType } from '../../../../game';
 import { Flexbox } from '../../../commons';
 import { ListItem } from '../../../commons/List';
-import { ShotButton } from '../../../commons/ShotButton';
+import { ShotButton } from '../../../commons/Buttons/ShotButton';
 import { GameHoleType, GameType } from '../../../types';
 import { shotTypesByTypes } from '../ShotForm/shotTypes';
 import { theme } from '../../../../style/theme';

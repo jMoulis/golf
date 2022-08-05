@@ -6,7 +6,7 @@ import { theme } from '../../../style/theme';
 import { CourseForm } from '../../Admin/Course/CourseForm';
 import { CourseListItem } from '../../Admin/Course/CourseListItem';
 import { useCourse } from '../../Admin/Course/useCourse';
-import { ButtonPill } from '../../commons/ButtonPill';
+import { ButtonPill } from '../../commons/Buttons/ButtonPill';
 import { FixedBottomToolbar } from '../../commons/FixedBottomToolbar';
 import { List } from '../../commons/List';
 import { SwipeMenuHeader } from '../../commons/SwipeMenuHeader';

@@ -1,11 +1,12 @@
 import styled from '@emotion/styled';
-import { faCheckCircle, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { faFilePen, faGrid } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { theme } from '../../../../style/theme';
 import { Flexbox } from '../../../commons';
-import { DeleteButton } from '../../../commons/DeleteButton';
+import { DateDisplay } from '../../../commons/DateDisplay';
+import { DeleteButton } from '../../../commons/Buttons/DeleteButton';
 import { ListItem } from '../../../commons/List';
 import { ENUM_GAME_STATUS, GameStatus, GameType } from '../../../types';
 import { Avatar } from '../../../User/Avatar';
@@ -38,6 +39,7 @@ export const GameListItem = ({
   const [selectedScoreCard, setSelectedScoreCard] = useState<GameType | null>(
     null
   );
+
   return (
     <>
       <ListItem key={game.id}>
@@ -51,7 +53,7 @@ export const GameListItem = ({
         >
           <Flexbox onClick={() => onSelectGame(game)} flexDirection="column">
             <span style={{ fontWeight: 'bold' }}>{game.courseRef}</span>
-            <span>{dateFormat.current.format(game.date)}</span>
+            <DateDisplay>{dateFormat.current.format(game.date)}</DateDisplay>
             <CourseStats
               game={game}
               holes={game.holes ? Object.values(game.holes) : []}
@@ -60,7 +62,7 @@ export const GameListItem = ({
               <Score holes={game.holes ? Object.values(game.holes) : []} />
             </Flexbox>
             <Flexbox>
-              {game.coach ? (
+              {game.coach?.avatar ? (
                 <Avatar
                   styling={{
                     width: '30px',
@@ -96,18 +98,15 @@ export const GameListItem = ({
             <DeleteButton
               type="button"
               onClick={() => setSelectedScoreCard(game)}
-              style={{
+              buttonStyle={{
                 backgroundColor: theme.colors.blue,
               }}
-            >
-              <FontAwesomeIcon icon={faGrid} />
-            </DeleteButton>
+              icon={faGrid}
+            />
             <DeleteButton
               type="button"
               onClick={() => onSelectDeleteGame(game)}
-            >
-              <FontAwesomeIcon icon={faTrash} />
-            </DeleteButton>
+            />
           </Flexbox>
         </Flexbox>
       </ListItem>

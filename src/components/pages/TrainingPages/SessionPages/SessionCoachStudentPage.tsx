@@ -1,7 +1,7 @@
 import { theme } from '../../../../style/theme';
 import { CoachPageHeader } from '../../../Coach/CoachPageHeader';
 import { useCoachPage } from '../../../Coach/useCoachPage';
-import { SessionList } from '../../../Training/Session/SessionList';
+import { SessionList } from '../../../Training/Session/SessionList/SessionList';
 
 export const SessionCoachStudentPage = () => {
   const { student, onNavigateBack } = useCoachPage();

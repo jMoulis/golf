@@ -4,7 +4,7 @@ import { useAuthAction } from '../../auth/useAuthAction';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase';
 import styled from '@emotion/styled';
-import { ButtonPill } from '../commons/ButtonPill';
+import { ButtonPill } from '../commons/Buttons/ButtonPill';
 import { useToggle } from '../../hooks/useToggle';
 import { theme } from '../../style/theme';
 import AppLogo from '../../assets/images/golf-field.png';

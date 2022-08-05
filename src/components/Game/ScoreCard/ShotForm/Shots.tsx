@@ -5,7 +5,7 @@ import { DocumentReference, increment, setDoc } from 'firebase/firestore';
 import { useState } from 'react';
 import { ShotType } from '../../../../game';
 import { theme } from '../../../../style/theme';
-import { ShotButton } from '../../../commons/ShotButton';
+import { ShotButton } from '../../../commons/Buttons/ShotButton';
 import { GameHoleType, GameType, ThemeType } from '../../../types';
 import { ShotEvaluationForm } from '../ShotEvaluationForm/ShotEvaluationForm';
 import { Shot } from './Shot';

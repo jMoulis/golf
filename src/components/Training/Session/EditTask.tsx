@@ -1,11 +1,20 @@
+import styled from '@emotion/styled';
 import { faTrash } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { TextareaAutosize } from '@mui/material';
 import { FormEvent, useEffect, useState } from 'react';
 import { Flexbox } from '../../commons';
-import { DeleteButton } from '../../commons/DeleteButton';
+import { DeleteButton } from '../../commons/Buttons/DeleteButton';
 import { Checkbox } from './commonStyledComponents';
 import { TaskType } from './types';
+
+const Root = styled(Flexbox)`
+  .textarea {
+    &::placeholder {
+      font-style: italic;
+    }
+  }
+`;
 
 type Props = {
   onEditTask: (task: TaskType) => void;
@@ -54,7 +63,7 @@ export const EditTask = ({ onEditTask, task, onDeleteTask }: Props) => {
   };
 
   return (
-    <Flexbox alignItems="center">
+    <Root alignItems="center">
       <Checkbox
         type="checkbox"
         name="status"
@@ -64,18 +73,18 @@ export const EditTask = ({ onEditTask, task, onDeleteTask }: Props) => {
       <TextareaAutosize
         style={{
           border: 'none',
-          fontSize: '20px',
+          fontSize: '17px',
           flex: 1,
           resize: 'none',
         }}
+        className="textarea"
         name="text"
         onChange={handleChange}
         value={form?.text || ''}
         onBlur={handleEditSession}
+        placeholder="Saisir tâche"
       />
-      <DeleteButton onClick={handleDeleteTask}>
-        <FontAwesomeIcon icon={faTrash} />
-      </DeleteButton>
-    </Flexbox>
+      <DeleteButton onClick={handleDeleteTask} />
+    </Root>
   );
 };

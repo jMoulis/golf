@@ -1,13 +1,13 @@
 import styled from '@emotion/styled';
 import { faSignOut } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ref, uploadBytes } from 'firebase/storage';
+import { Timestamp } from 'firebase/firestore';
 import { FormEvent, useEffect, useState } from 'react';
 import { useAuthAction } from '../../auth/useAuthAction';
-import { storage } from '../../firebase';
+import { useFileStorage } from '../../hooks/useFileStorage';
 import { theme } from '../../style/theme';
-import { ButtonPill } from '../commons/ButtonPill';
-import { DeleteButton } from '../commons/DeleteButton';
+import { resizeFile, ResizeFileOptionsType } from '../../utils/global.utils';
+import { ButtonPill } from '../commons/Buttons/ButtonPill';
+import { DeleteButton } from '../commons/Buttons/DeleteButton';
 import { FixedBottomToolbar } from '../commons/FixedBottomToolbar';
 import { Input } from '../commons/Input';
 import { UserType } from '../types';
@@ -33,12 +33,12 @@ type Props = {
 
 export const UserForm = ({ user, onClose }: Props) => {
   const { editUser } = useUser();
+  const { uploadFile } = useFileStorage();
   const { logout } = useAuthAction();
   const [form, setForm] = useState<UserType>({
     firstname: '',
     lastname: '',
   });
-
   const handleInputChange = (event: FormEvent<HTMLInputElement>) => {
     const { name, value } = event.currentTarget;
     setForm((prevForm) => ({
@@ -48,7 +48,6 @@ export const UserForm = ({ user, onClose }: Props) => {
   };
 
   useEffect(() => {
-    console.log(user);
     setForm(user);
   }, [user]);
 
@@ -59,17 +58,30 @@ export const UserForm = ({ user, onClose }: Props) => {
     }));
   };
 
-  const handleUploadFile = (file: File) => {
+  const handleUploadFile = async (file: File) => {
     if (!user?.id) return null;
     if (!file) return null;
-    const storageRef = ref(storage, `/avatars/${user?.id}/${file.name}`);
-    uploadBytes(storageRef, file).then((snapshot) => {
+    const options: ResizeFileOptionsType = {
+      maxWidth: 200,
+      maxHeight: 200,
+      compressFormat: 'JPEG',
+      quality: 50,
+      rotation: 0,
+      outputType: 'file',
+    };
+    const resizedImage: any = await resizeFile(file, options);
+
+    uploadFile(
+      resizedImage,
+      `/avatars/${user?.id}/avatar.${options.compressFormat}`
+    ).then((snapshot) => {
       const { fullPath } = snapshot.metadata;
       const updatedUser = {
         ...user,
         avatar: fullPath,
       };
-      editUser(updatedUser);
+      const updatedAt = Timestamp.fromDate(new Date());
+      editUser({ ...updatedUser, updatedAt });
     });
   };
 
@@ -115,9 +127,7 @@ export const UserForm = ({ user, onClose }: Props) => {
       <Roles selectedRoles={form.roles || []} onEdit={handleEditRoles} />
       <FixedBottomToolbar>
         <ButtonPill onClick={handleSubmit}>ENREGISTRER</ButtonPill>
-        <DeleteButton onClick={handleLogout}>
-          <FontAwesomeIcon icon={faSignOut} />
-        </DeleteButton>
+        <DeleteButton onClick={handleLogout} icon={faSignOut} />
       </FixedBottomToolbar>
     </Root>
   );

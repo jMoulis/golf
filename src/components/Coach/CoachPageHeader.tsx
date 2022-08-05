@@ -1,9 +1,6 @@
-import { faArrowLeft } from '@fortawesome/pro-duotone-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
 import { Flexbox } from '../commons';
 import { PageHeader } from '../commons/Core/PageHeader';
-import { DeleteButton } from '../commons/DeleteButton';
+import { NavigationButton } from '../commons/Buttons/NavigationButton';
 
 type Props = {
   headerTitle: string;
@@ -19,9 +16,7 @@ export const CoachPageHeader = ({
   return (
     <PageHeader backgroundColor={headerTheme}>
       <Flexbox alignItems="center">
-        <DeleteButton onClick={onNavigate}>
-          <FontAwesomeIcon icon={faArrowLeft} />
-        </DeleteButton>
+        <NavigationButton onClick={onNavigate} />
         {headerTitle}
       </Flexbox>
     </PageHeader>

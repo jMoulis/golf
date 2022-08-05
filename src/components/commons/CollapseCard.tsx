@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Collapse } from '@mui/material';
 import React, { useState } from 'react';
 import { theme } from '../../style/theme';
-import { Button } from './Button';
+import { Button } from './Buttons/Button';
 
 const Header = styled.header`
   display: flex;
@@ -28,7 +28,7 @@ export const CollapseCard = ({ children, title, onAdd }: Props) => {
   const [open, setOpen] = useState(true);
 
   const handleClick = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.stopPropagation();
     onAdd();
@@ -40,7 +40,8 @@ export const CollapseCard = ({ children, title, onAdd }: Props) => {
         <Title>{title}</Title>
         <Button
           onClick={handleClick}
-          style={{ color: theme.colors.blue, fontSize: '25px' }}>
+          style={{ color: theme.colors.blue, fontSize: '25px' }}
+        >
           <FontAwesomeIcon icon={faSquarePlus} />
         </Button>
       </Header>

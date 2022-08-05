@@ -5,7 +5,7 @@ import { Menu } from '@mui/material';
 import React, { useState } from 'react';
 import { theme } from '../../style/theme';
 import { Flexbox } from '../commons';
-import { ShotButton } from '../commons/ShotButton';
+import { ShotButton } from '../commons/Buttons/ShotButton';
 import { RoleTag } from './UserStyledComponents';
 
 const CustomShotButton = styled(ShotButton)`
@@ -57,7 +57,8 @@ export const Roles = ({ selectedRoles, onEdit }: Props) => {
             margin: '0 5px',
             padding: '3px 10px',
             boxShadow: theme.shadows.flatButton,
-          }}>
+          }}
+        >
           {role}
           <ShotButton
             onClick={() => handleDeleteRole(role)}
@@ -68,7 +69,8 @@ export const Roles = ({ selectedRoles, onEdit }: Props) => {
               color: '#000',
               boxShadow: 'none',
               fontSize: '20px',
-            }}>
+            }}
+          >
             <FontAwesomeIcon icon={faTimes} />
           </ShotButton>
         </RoleTag>
@@ -79,15 +81,16 @@ export const Roles = ({ selectedRoles, onEdit }: Props) => {
           width: '35px',
           fontSize: '25px',
         }}
-        type='submit'
-        color='#fff'
+        type="submit"
+        color="#fff"
         onClick={handleClick}
-        backgroundColor={theme.colors.saveButton}>
+        backgroundColor={theme.colors.saveButton}
+      >
         <FontAwesomeIcon icon={faPlus} />
       </ShotButton>
       <Menu
-        id='demo-positioned-menu'
-        aria-labelledby='demo-positioned-button'
+        id="demo-positioned-menu"
+        aria-labelledby="demo-positioned-button"
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
@@ -107,7 +110,8 @@ export const Roles = ({ selectedRoles, onEdit }: Props) => {
         }}
         MenuListProps={{
           'aria-labelledby': 'basic-button',
-        }}>
+        }}
+      >
         {roles.map((role, key) => (
           <CustomShotButton key={key} onClick={() => handleAddRole(role)}>
             {role}

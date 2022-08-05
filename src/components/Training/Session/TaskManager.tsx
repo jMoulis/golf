@@ -1,17 +1,17 @@
 import styled from '@emotion/styled';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
-import { FloatingButton } from '../../commons/FloatingButton';
+import { FloatingButton } from '../../commons/Buttons/FloatingButton';
 import { List, ListItem } from '../../commons/List';
 import { BOTTOM_NAVBAR_HEIGHT, FLOATING_HEIGHT } from '../../cssConstants';
-import { AddTask } from './AddTask';
 import { EditTask } from './EditTask';
 import { TaskType } from './types';
+import { v4 } from 'uuid';
 
 const CustomList = styled(List)`
   max-height: calc(
-    100vh - ${BOTTOM_NAVBAR_HEIGHT} - ${FLOATING_HEIGHT} - ${FLOATING_HEIGHT}
+    100vh - ${BOTTOM_NAVBAR_HEIGHT} - ${FLOATING_HEIGHT} - ${FLOATING_HEIGHT} -
+      120px
   );
 `;
 
@@ -32,15 +32,12 @@ export const TaskManager = ({
   onEditTask,
   onDeleteTask,
 }: Props) => {
-  const [open, setOpen] = useState(false);
-
+  const handleAddTask = () => {
+    const taskId = v4();
+    onAddTask({ id: taskId, text: '', status: false });
+  };
   return (
     <>
-      <AddTask
-        onAddTask={onAddTask}
-        open={open}
-        onClose={() => setOpen(false)}
-      />
       <CustomList>
         {tasks.map((task, key) => (
           <CustomListItem key={key}>
@@ -53,7 +50,7 @@ export const TaskManager = ({
         ))}
       </CustomList>
       <FloatingButton
-        onClick={() => setOpen(true)}
+        onClick={handleAddTask}
         backgroundColor="#000"
         color="#fff"
       >

@@ -6,7 +6,7 @@ import { auth, app } from '../../../firebase';
 import { theme } from '../../../style/theme';
 import { UserType } from '../../types';
 import { Avatar } from '../../User/Avatar';
-import { ButtonPill } from '../../commons/ButtonPill';
+import { ButtonPill } from '../../commons/Buttons/ButtonPill';
 import { List } from '../../commons/List';
 import { Flexbox } from '../../commons';
 import { NameTag, RoleTag } from '../../User/UserStyledComponents';
