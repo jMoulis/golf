@@ -7,9 +7,9 @@ import { FixedBottomToolbar } from '../../commons/FixedBottomToolbar';
 import { FloatingButton } from '../../commons/Buttons/FloatingButton';
 import { Input } from '../../commons/Input';
 import { BOTTOM_NAVBAR_HEIGHT, FLOATING_HEIGHT } from '../../cssConstants';
-import { CourseType, HoleCourseType } from '../../types';
-import { HoleForm } from './HoleForm';
-import { sortHoles } from './utils';
+import { CourseType, HoleCourseType, StartCourseType } from '../../types';
+import { HoleForm } from './Hole/HoleForm';
+import { orderStarts, sortHoles } from './utils';
 import Menu from '@mui/material/Menu';
 import { ShotButton } from '../../commons/Buttons/ShotButton';
 import { DeleteButton } from '../../commons/Buttons/DeleteButton';
@@ -17,6 +17,7 @@ import { List, ListItem } from '../../commons/List';
 import { getCoursePar } from '../../../utils/scoreUtils';
 import { Flexbox } from '../../commons';
 import { FormInputError } from '../../commons/FormInputError';
+import { Starts } from './Starts/Starts';
 
 const CustomList = styled(List)`
   padding-bottom: calc(${BOTTOM_NAVBAR_HEIGHT} + ${FLOATING_HEIGHT});
@@ -45,13 +46,10 @@ export const CourseForm = ({ selectedCourse, onSubmit, onClose }: Props) => {
   const defaultForm = useRef<CourseType>({
     name: '',
     holes: [],
+    starts: {},
     par: 0,
   });
-  const [form, setForm] = useState<CourseType>({
-    name: '',
-    holes: [],
-    par: 0,
-  });
+  const [form, setForm] = useState<CourseType>(defaultForm.current);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -143,10 +141,21 @@ export const CourseForm = ({ selectedCourse, onSubmit, onClose }: Props) => {
     }));
   };
 
+  const handleSelectStart = (starts: Record<string, StartCourseType>) => {
+    setForm((prev) => ({
+      ...prev,
+      starts,
+    }));
+  };
+
   const guessedPar = useMemo(() => {
     const par = getCoursePar(form.holes);
     return par;
   }, [form.holes]);
+
+  const orderedSelectedStarts = useMemo(() => {
+    return orderStarts(form.starts);
+  }, [form.starts]);
 
   return (
     <>
@@ -177,6 +186,11 @@ export const CourseForm = ({ selectedCourse, onSubmit, onClose }: Props) => {
               </FormInputError>
             ) : null}
           </Flexbox>
+
+          <Starts
+            onSelect={handleSelectStart}
+            selectedStarts={orderedSelectedStarts || {}}
+          />
         </CustomListItem>
         {form?.holes
           ? form.holes.map((hole, key) => (
@@ -185,6 +199,7 @@ export const CourseForm = ({ selectedCourse, onSubmit, onClose }: Props) => {
                   onChange={handleHoleChange}
                   hole={hole}
                   onDelete={handleDeleteHole}
+                  starts={form.starts}
                 />
               </ListItem>
             ))

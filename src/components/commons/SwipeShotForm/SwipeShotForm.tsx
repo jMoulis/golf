@@ -1,10 +1,9 @@
 import { SwipeableDrawer } from '@mui/material';
 import { DocumentReference } from 'firebase/firestore';
-import { ShotType } from '../../../game';
 import { theme } from '../../../style/theme';
 import { iOS } from '../../../utils/global.utils';
 import { ShotForm } from '../../Game/ScoreCard/ShotForm/ShotForm';
-import { GameHoleType, GameType } from '../../types';
+import { GameHoleType, GameType, ShotType } from '../../types';
 import { SwipeMenuHeader } from '../SwipeMenuHeader';
 
 type Props = {

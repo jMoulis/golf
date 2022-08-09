@@ -1,6 +1,5 @@
 import { DocumentReference, setDoc } from "firebase/firestore"
-import { ShotType } from "../../../../game"
-import { GameHoleType, GameType, ThemeType } from "../../../types"
+import { GameHoleType, GameType, ThemeType, ShotType } from "../../../types"
 
 export const useScoring = () => {
   const onAddShotScoring = ({ evaluation, gameRef, selectedShot, hole }: {

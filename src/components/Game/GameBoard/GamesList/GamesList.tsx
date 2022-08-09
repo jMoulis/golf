@@ -41,6 +41,7 @@ export const GamesList = ({ userId }: Props) => {
 
   useEffect(() => {
     getGames(userId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
   return (

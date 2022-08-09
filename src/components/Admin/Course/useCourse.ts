@@ -65,8 +65,7 @@ export const useCourse = () => {
         {},
       );
       setDoc(docRef, {
-        name: course.name,
-        par: course.par,
+        ...course,
         countHoles: course.holes.length,
         holes: mapHoles,
       });

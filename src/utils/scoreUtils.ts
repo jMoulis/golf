@@ -157,3 +157,48 @@ export const scoresByType = (holes?: GameHoleType[]) => {
     triple: 0,
   };
 };
+
+export const shotsTypeStat = (holes: GameHoleType[]) => {
+  const regul = holes.reduce((acc: number, value) => {
+    if (
+      value.par === value.shots?.length &&
+      value.shots?.filter((shot) => shot.type === 'putt')?.length === 2
+    ) {
+      return (acc += 1);
+    }
+    return acc;
+  }, 0);
+
+  const fairway = holes.reduce((acc: number, value) => {
+    if (!value.shots) return acc;
+    const [shot, nextShot] = value.shots;
+    if (shot?.type === 'tee' && nextShot?.type === 'fairway')
+      return (acc += 1);
+    return acc;
+  }, 0);
+
+  const putt: any = holes.reduce((acc: number, hole) => {
+    return (
+      acc + (hole.shots?.filter((shot) => shot.type === 'putt').length || 0)
+    );
+  }, 0);
+  const bunker: any = holes.reduce((acc: number, hole) => {
+    return (
+      acc +
+      (hole.shots?.filter((shot) => shot.type === 'bunker').length || 0)
+    );
+  }, 0);
+  const penalty: any = holes.reduce((acc: number, hole) => {
+    return (
+      acc +
+      (hole.shots?.filter((shot) => shot.type === 'penalty').length || 0)
+    );
+  }, 0);
+  return {
+    regul,
+    fairway,
+    putt,
+    bunker,
+    penalty,
+  }
+}

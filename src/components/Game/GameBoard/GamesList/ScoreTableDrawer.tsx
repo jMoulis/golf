@@ -4,7 +4,7 @@ import { theme } from '../../../../style/theme';
 import { iOS } from '../../../../utils/global.utils';
 import { SwipeMenuHeader } from '../../../commons/SwipeMenuHeader';
 import { GameType } from '../../../types';
-import { RenderHolesTable } from '../../RenderHolesTable';
+import { RenderHolesTable } from '../../ScoreCard/RenderHolesTables/RenderHolesTable';
 
 type Props = {
   open: boolean;

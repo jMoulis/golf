@@ -1,9 +1,6 @@
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SwipeableDrawer } from '@mui/material';
 import { DocumentReference } from 'firebase/firestore';
 import React from 'react';
-import { ShotType } from '../../../../game';
 import { theme } from '../../../../style/theme';
 import { iOS } from '../../../../utils/global.utils';
 import { ButtonPill } from '../../../commons/Buttons/ButtonPill';
@@ -11,7 +8,7 @@ import { DeleteButton } from '../../../commons/Buttons/DeleteButton';
 import { FixedBottomToolbar } from '../../../commons/FixedBottomToolbar';
 import { List } from '../../../commons/List';
 import { SwipeMenuHeader } from '../../../commons/SwipeMenuHeader';
-import { GameHoleType, GameType, ThemeType } from '../../../types';
+import { GameHoleType, GameType, ThemeType, ShotType } from '../../../types';
 import { EvalShots } from '../ShotForm/EvalShots';
 import { ShotEvaluationFormItem } from './ShotEvaluationFormItem';
 

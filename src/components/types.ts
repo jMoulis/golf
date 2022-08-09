@@ -1,17 +1,24 @@
 import { Timestamp } from "firebase/firestore";
 
+export type SSSSlopeType = {
+  sss: number,
+  slope: number,
+}
+
+export type StartCourseType = {
+  start: string;
+  mens: SSSSlopeType,
+  ladies: SSSSlopeType
+}
+
+export type CourseDistanceType = Record<string, number>;
+
 export type HoleCourseType = {
   ref: string;
   number: number;
   par: number;
   hcp: number;
-  distances?: {
-    black?: number;
-    white?: number;
-    yellow: number;
-    blue?: number;
-    red?: number;
-  }[];
+  distances?: CourseDistanceType;
 };
 export interface GameHoleType extends HoleCourseType {
   shots: any[];
@@ -21,14 +28,7 @@ export type CourseType = {
   name: string;
   par: number;
   countHoles?: number;
-  sss?: {
-    men?: any;
-    women?: any;
-  };
-  slope?: {
-    men?: any;
-    women?: any;
-  };
+  starts: Record<string, StartCourseType>;
   holes: HoleCourseType[];
 };
 
@@ -38,7 +38,9 @@ export type CoursePayloadType = {
   par: number;
   countHoles?: number;
   holes: Record<string, HoleCourseType>;
-}
+  starts?: Record<string, StartCourseType>;
+};
+
 export type DistanceType = {
   black?: string;
   white?: string;
@@ -72,6 +74,7 @@ interface GameTypeCommons {
   coach?: UserTypeSummary;
   player?: UserTypeSummary;
   scoreCardPDF?: string;
+  start: string;
 }
 export interface GamePayloadType extends GameTypeCommons {
   date: Timestamp;
@@ -80,6 +83,15 @@ export interface GamePayloadType extends GameTypeCommons {
 export interface GameType extends GameTypeCommons {
   id: string;
   date: Date;
+}
+
+export type ShotType = {
+  type: string;
+  distance?: number;
+  direction?: string;
+  slope?: string
+  themes?: any;
+  id?: any;
 }
 
 export type ThemeType = {

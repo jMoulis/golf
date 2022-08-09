@@ -38,7 +38,7 @@ export const GameBoardHeader = ({ holes, courseName, game }: Props) => {
         label: 'Shots',
         color: theme.colors.gamePlay,
         icon: <FontAwesomeIcon icon={faGolfBallTee} />,
-        Component: <ShotsStats holes={holes} />,
+        Component: <ShotsStats holes={holes ? Object.values(holes) : []} />,
       },
       {
         label: 'Eval',

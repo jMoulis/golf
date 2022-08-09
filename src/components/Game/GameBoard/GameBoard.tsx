@@ -3,13 +3,14 @@ import {
   doc,
   DocumentData,
   DocumentReference,
+  getDoc,
   getFirestore,
   onSnapshot,
   Unsubscribe,
 } from 'firebase/firestore';
 import { app } from '../../../firebase';
 import { ScoreCard } from '../ScoreCard/ScoreCard';
-import { GameType } from '../../types';
+import { CoursePayloadType, GameType } from '../../types';
 import { GameBoardHeader } from './GameBoardHeader';
 import { PageHeader } from '../../commons/Core/PageHeader';
 import { theme } from '../../../style/theme';
@@ -24,16 +25,31 @@ type Props = {
 };
 export const GameBoard = ({ open, onClose, gameID }: Props) => {
   const [game, setGame] = useState<GameType | null>(null);
+  const [course, setCourse] = useState<CoursePayloadType | null>(null);
   const gameRef = useRef<DocumentReference<DocumentData> | null>(null);
   const holeUnsubscribe = useRef<Unsubscribe | null>(null);
 
+  const getCourse = async (courseId: string) => {
+    const db = getFirestore(app);
+    const courseRef = doc(db, 'courses', courseId);
+    const payload = await getDoc(courseRef);
+    if (payload.exists()) {
+      const data = payload.data() as CoursePayloadType;
+      setCourse({
+        id: payload.id,
+        ...data,
+      });
+    }
+  };
   const fetchGame = useCallback(async (id: string) => {
     const db = getFirestore(app);
     gameRef.current = doc(db, 'games', id);
     try {
       holeUnsubscribe.current = onSnapshot(gameRef.current, (data) => {
         if (data.exists()) {
-          setGame({ ...data.data(), id: data.id } as any);
+          const payloadGame = { ...data.data(), id: data.id } as GameType;
+          setGame(payloadGame);
+          getCourse(payloadGame.courseRef);
         } else {
           console.error('No such document!');
         }
@@ -90,6 +106,7 @@ export const GameBoard = ({ open, onClose, gameID }: Props) => {
             game={game}
             gameRef={gameRef.current}
             onClose={handleClose}
+            course={course}
           />
         </>
       ) : null}

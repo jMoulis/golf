@@ -25,10 +25,8 @@ import { ListItem } from '../../commons/List';
 import { Flexbox } from '../../commons';
 import { CoachPage } from '../../pages/AdminPages/CoachPage';
 import { CourseMeta } from '../../Admin/Course/CourseMeta';
-import { ShotButton } from '../../commons/Buttons/ShotButton';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useUser } from '../../User/useUser';
+import { Starts } from './Starts';
 
 const ThemeTag = styled.div`
   background-color: ${theme.colors.blueGreen};
@@ -58,6 +56,8 @@ export const NewGame = ({ onSubmit }: Props) => {
   const [step, setStep] = useState<StepType>(null);
   const [user] = useAuthState(auth);
   const [selectedCoach, setSelectedCoach] = useState<UserType | null>(null);
+  const [selectedStart, setSelectedStart] = useState<string>('yellow');
+
   const { user: fullUser } = useUser();
 
   const handleSubmit = async () => {
@@ -75,6 +75,7 @@ export const NewGame = ({ onSubmit }: Props) => {
         userId: user.uid,
         coursePar: selectedCourse.par,
         status: ENUM_GAME_STATUS.DRAFT,
+        start: selectedStart,
         users: selectedCoach?.id ? [user.uid, selectedCoach.id] : [user.uid],
         player: {
           firstname: fullUser?.firstname,
@@ -163,10 +164,12 @@ export const NewGame = ({ onSubmit }: Props) => {
                 {theme.type}
               </ThemeTag>
             ))}
-            <ShotButton
+          </Flexbox>
+          <Flexbox justifyContent="center">
+            <ButtonPill
               style={{
-                height: '40px',
-                width: '40px',
+                minHeight: '40px',
+                minWidth: 'fit-content',
               }}
               type="submit"
               color="#fff"
@@ -176,8 +179,8 @@ export const NewGame = ({ onSubmit }: Props) => {
               }}
               backgroundColor={theme.colors.saveButton}
             >
-              <FontAwesomeIcon icon={faPlus} />
-            </ShotButton>
+              Ajouter des thèmes
+            </ButtonPill>
           </Flexbox>
         </ListItem>
       ) : (
@@ -194,6 +197,13 @@ export const NewGame = ({ onSubmit }: Props) => {
         </ListItem>
       )}
 
+      <Starts
+        starts={
+          selectedCourse?.starts ? Object.keys(selectedCourse.starts) : []
+        }
+        onSelect={setSelectedStart}
+        selectedStart={selectedStart}
+      />
       <CourseList
         open={step === 'SELECT_COURSE'}
         courses={courses}

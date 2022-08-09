@@ -1,8 +1,7 @@
 import styled from '@emotion/styled';
-import React from 'react';
-import { ShotType } from '../../../../game';
 import { Flexbox } from '../../../commons';
 import { ShotButton } from '../../../commons/Buttons/ShotButton';
+import { ShotType } from '../../../types';
 
 const Dot = styled.div<{ status: boolean }>`
   height: 14px;

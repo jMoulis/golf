@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import React, { useEffect, useState } from 'react';
 import { theme } from '../../../style/theme';
+import { shotsTypeStat } from '../../../utils/scoreUtils';
 import { Flexbox } from '../../commons';
 import { GameHoleType } from '../../types';
 import { shotTypesByTypes } from '../ScoreCard/ShotForm/shotTypes';
@@ -12,7 +13,7 @@ const CustomTag = styled(Tag)`
   box-shadow: ${theme.shadows.flatButton};
 `;
 type Props = {
-  holes?: Record<string, GameHoleType>;
+  holes?: GameHoleType[];
 };
 
 export const ShotsStats = ({ holes }: Props) => {
@@ -39,44 +40,7 @@ export const ShotsStats = ({ holes }: Props) => {
         penalty: 0,
       });
     } else {
-      const parsedHoles = Object.values(holes);
-
-      const regul = parsedHoles.reduce((acc: number, value) => {
-        if (
-          value.par === value.shots?.length &&
-          value.shots?.filter((shot) => shot.type === 'putt')?.length === 2
-        ) {
-          return (acc += 1);
-        }
-        return acc;
-      }, 0);
-
-      const fairway = parsedHoles.reduce((acc: number, value) => {
-        if (!value.shots) return acc;
-        const [shot, nextShot] = value.shots;
-        if (shot?.type === 'tee' && nextShot?.type === 'fairway')
-          return (acc += 1);
-        return acc;
-      }, 0);
-
-      const putt: any = parsedHoles.reduce((acc: number, hole) => {
-        return (
-          acc + (hole.shots?.filter((shot) => shot.type === 'putt').length || 0)
-        );
-      }, 0);
-      const bunker: any = parsedHoles.reduce((acc: number, hole) => {
-        return (
-          acc +
-          (hole.shots?.filter((shot) => shot.type === 'bunker').length || 0)
-        );
-      }, 0);
-      const penalty: any = parsedHoles.reduce((acc: number, hole) => {
-        return (
-          acc +
-          (hole.shots?.filter((shot) => shot.type === 'penalty').length || 0)
-        );
-      }, 0);
-
+      const { regul, fairway, putt, bunker, penalty } = shotsTypeStat(holes);
       setStats({
         regul,
         fairway,
@@ -89,18 +53,20 @@ export const ShotsStats = ({ holes }: Props) => {
 
   return (
     <Flexbox
-      flex='1'
-      justifyContent='space-around'
+      flex="1"
+      justifyContent="space-around"
       styling={{
         marginBottom: '7px',
-      }}>
+      }}
+    >
       {Object.keys(stats).map((key) => (
         <Stat key={key}>
           <CustomTag
             scoreColor={{
               bk: '',
               color: shotTypesByTypes[key]?.color,
-            }}>
+            }}
+          >
             {shotTypesByTypes[key]?.icon}
           </CustomTag>
           <span>{(stats as any)[key]}</span>

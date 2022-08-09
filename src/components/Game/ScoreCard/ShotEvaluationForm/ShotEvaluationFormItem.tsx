@@ -1,11 +1,10 @@
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
-import { ShotType } from '../../../../game';
 import { Flexbox } from '../../../commons';
 import { ListItem } from '../../../commons/List';
 import { ShotButton } from '../../../commons/Buttons/ShotButton';
-import { GameHoleType, GameType } from '../../../types';
+import { GameHoleType, GameType, ShotType } from '../../../types';
 import { shotTypesByTypes } from '../ShotForm/shotTypes';
 import { theme } from '../../../../style/theme';
 import { DocumentReference } from 'firebase/firestore';

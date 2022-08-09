@@ -51,3 +51,11 @@ export const generatorsKey = (fileType: string) => {
   if (fileType.includes('video')) return 'video';
   return (mime as any).getExtension(fileType);
 }
+
+export const removeForbiddenKeys = (object: any, keys: string[]): any => {
+  if (!object) return {};
+  return Object.keys(object).reduce((acc: any, objectKey: string) => {
+    if (keys.includes(objectKey)) return acc;
+    return { ...acc, [objectKey]: object[objectKey] };
+  }, {});
+};

@@ -1,9 +1,14 @@
 import styled from '@emotion/styled';
 import { FormEvent, useEffect, useState } from 'react';
-import { Flexbox } from '../../commons';
-import { DeleteButton } from '../../commons/Buttons/DeleteButton';
-import { Input } from '../../commons/Input';
-import { HoleCourseType } from '../../types';
+import { Flexbox } from '../../../commons';
+import { DeleteButton } from '../../../commons/Buttons/DeleteButton';
+import { Input } from '../../../commons/Input';
+import {
+  CourseDistanceType,
+  HoleCourseType,
+  StartCourseType,
+} from '../../../types';
+import { DistanceForm } from './DistanceForm';
 
 const CustomInput = styled(Input)`
   width: 50px;
@@ -17,9 +22,10 @@ type Props = {
   hole: HoleCourseType;
   onChange: (hole: HoleCourseType) => void;
   onDelete: (holeRef?: string) => void;
+  starts: Record<string, StartCourseType>;
 };
 
-export const HoleForm = ({ hole, onChange, onDelete }: Props) => {
+export const HoleForm = ({ hole, onChange, onDelete, starts }: Props) => {
   const [holeForm, setHoleForm] = useState<HoleCourseType>();
 
   useEffect(() => {
@@ -38,9 +44,21 @@ export const HoleForm = ({ hole, onChange, onDelete }: Props) => {
       setHoleForm(updatedHole);
     }
   };
+
   const handleOnBlur = () => {
     if (holeForm) {
       onChange(holeForm);
+    }
+  };
+
+  const handleSubmit = (distances: CourseDistanceType) => {
+    if (holeForm) {
+      const updatedHole = {
+        ...holeForm,
+        distances,
+      };
+      setHoleForm(updatedHole);
+      onChange(updatedHole);
     }
   };
   return (
@@ -76,6 +94,7 @@ export const HoleForm = ({ hole, onChange, onDelete }: Props) => {
             onBlur={handleOnBlur}
           />
         </InputWrapper>
+        <DistanceForm hole={holeForm} starts={starts} onSubmit={handleSubmit} />
       </Flexbox>
       <DeleteButton onClick={() => onDelete(hole.ref)} />
     </Flexbox>

@@ -4,7 +4,7 @@ import React from 'react';
 import { theme } from '../../../style/theme';
 import { scoreResult } from '../../../utils/scoreUtils';
 import { Flexbox } from '../../commons';
-import { GameHoleType, GameType } from '../../types';
+import { HoleCourseType, GameHoleType, GameType } from '../../types';
 import { Shots } from './ShotForm/Shots';
 
 const ListItem = styled.div<{ selected: boolean }>`
@@ -18,6 +18,15 @@ const ListItem = styled.div<{ selected: boolean }>`
   border-radius: ${theme.radius.listItem};
   box-shadow: ${theme.shadows.listItem};
   min-height: 70px;
+`;
+
+const DistanceTag = styled.div<{ color: string }>`
+  font-size: 13px;
+  color: ${({ color }) => color === 'black' && '#fff'};
+  letter-spacing: 2px;
+  background-color: ${({ color }) => color};
+  padding: 3px;
+  border-radius: 3px;
 `;
 
 const HoleHeader = styled.div`
@@ -46,6 +55,7 @@ type Props = {
   gameRef: DocumentReference | null;
   onOpenForm: (event: React.KeyboardEvent | React.MouseEvent) => void;
   game: GameType;
+  courseHoles?: Record<string, HoleCourseType>;
 };
 
 export const RenderHoles = ({
@@ -55,25 +65,28 @@ export const RenderHoles = ({
   gameRef,
   onOpenForm,
   game,
+  courseHoles,
 }: Props) => {
   return (
     <li>
       {holes.map((hole) => (
         <ListItem selected={hole.ref === selectedHole?.ref} key={hole.ref}>
           <HoleHeader onClick={() => onSelectHole(hole)}>
-            <Flexbox flexDirection='column'>
-              <Flexbox alignItems='center'>
+            <Flexbox flexDirection="column">
+              <Flexbox alignItems="center">
                 <span
                   style={{
                     fontWeight: 'bold',
                     fontSize: '20px',
                     display: 'inline-block',
                     marginRight: '5px',
-                  }}>
+                  }}
+                >
                   {hole.number}
                 </span>
                 <Tag
-                  scoreColor={scoreResult(hole.par, hole.shots?.length || 0)}>
+                  scoreColor={scoreResult(hole.par, hole.shots?.length || 0)}
+                >
                   {hole.shots?.length || 0}
                 </Tag>
               </Flexbox>
@@ -82,9 +95,13 @@ export const RenderHoles = ({
                   fontSize: '13px',
                   color: 'gray',
                   letterSpacing: '2px',
-                }}>
+                }}
+              >
                 Par {hole.par}
               </span>
+              <DistanceTag color={game.start}>
+                {`${courseHoles?.[hole.ref]?.distances?.[game.start]}m`}
+              </DistanceTag>
             </Flexbox>
           </HoleHeader>
           <Shots

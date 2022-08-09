@@ -22,11 +22,12 @@ export const useExportPdfGame = (game: GameType | null) => {
         ''
       );
     return fileUrl
-  }, [game]);
+  }, [game, user?.uid]);
 
   const exportPDFWithMethod = async (element: any) => {
     if (!element) return null;
     if (!game) return null;
+
     if (game?.scoreCardPDF) {
       const fileUrl = await getFile(fileName)
       if (fileUrl) {

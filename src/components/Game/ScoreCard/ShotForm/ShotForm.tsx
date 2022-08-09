@@ -1,17 +1,14 @@
 import styled from '@emotion/styled';
-import { faTrash } from '@fortawesome/pro-duotone-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DocumentReference } from 'firebase/firestore';
 import { useState } from 'react';
 import { v4 } from 'uuid';
-import { ShotType } from '../../../../game';
 import { theme } from '../../../../style/theme';
 import { Flexbox } from '../../../commons';
 import { ButtonPill } from '../../../commons/Buttons/ButtonPill';
 import { DeleteButton } from '../../../commons/Buttons/DeleteButton';
 import { FixedBottomToolbar } from '../../../commons/FixedBottomToolbar';
 import { ShotButton } from '../../../commons/Buttons/ShotButton';
-import { GameHoleType, GameType, ThemeType } from '../../../types';
+import { GameHoleType, GameType, ThemeType, ShotType } from '../../../types';
 import { ShotEvaluationForm } from '../ShotEvaluationForm/ShotEvaluationForm';
 import { shotTypes } from './shotTypes';
 import { useScoring } from './useScoring';

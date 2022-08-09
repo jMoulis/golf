@@ -9,9 +9,14 @@ import {
   Unsubscribe,
 } from 'firebase/firestore';
 import styled from '@emotion/styled';
-import { ENUM_GAME_STATUS, GameHoleType, GameType } from '../../types';
+import {
+  CoursePayloadType,
+  ENUM_GAME_STATUS,
+  ShotType,
+  GameHoleType,
+  GameType,
+} from '../../types';
 import { RenderHoles } from './RenderHoles';
-import { ShotType } from '../../../game';
 import { SwipeShotForm } from '../../commons/SwipeShotForm/SwipeShotForm';
 import { SaveMenu } from './SaveMenu';
 import { app } from '../../../firebase';
@@ -27,9 +32,10 @@ type Props = {
   game?: GameType;
   gameRef: DocumentReference | null;
   onClose: () => void;
+  course: CoursePayloadType | null;
 };
 
-export const ScoreCard = ({ game, onClose }: Props) => {
+export const ScoreCard = ({ game, onClose, course }: Props) => {
   const gameRef = useMemo(() => {
     if (!game?.id) return null;
     const db = getFirestore(app);
@@ -89,16 +95,8 @@ export const ScoreCard = ({ game, onClose }: Props) => {
 
   const frontNine = useMemo(() => {
     if (!game?.holes) return [];
-    return Object.values(game.holes)
-      .sort((a, b) => a.number - b.number)
-      .slice(0, 9);
-  }, [game?.holes]);
-
-  const backNine = useMemo(() => {
-    if (!game?.holes) return [];
-    return Object.values(game.holes)
-      .sort((a, b) => a.number - b.number)
-      .slice(9, 18);
+    return Object.values(game.holes).sort((a, b) => a.number - b.number);
+    // .slice(0, 9);
   }, [game?.holes]);
 
   const toggleDrawer =
@@ -141,15 +139,16 @@ export const ScoreCard = ({ game, onClose }: Props) => {
           holes={frontNine}
           onOpenForm={toggleDrawer(true)}
           game={game}
+          courseHoles={course?.holes}
         />
-        <RenderHoles
+        {/* <RenderHoles
           gameRef={gameRef}
           onSelectHole={handleSelectHole}
           selectedHole={selectedHole}
           holes={backNine}
           onOpenForm={toggleDrawer(true)}
           game={game}
-        />
+        /> */}
       </List>
       <SwipeShotForm
         onClose={() => setOpen(false)}

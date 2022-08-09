@@ -68,5 +68,5 @@ export const shotTypesByTypes = shotTypes.reduce(
       [shotType.type]: shotType,
     };
   },
-  {},
+  {}
 );
