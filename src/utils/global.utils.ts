@@ -33,9 +33,9 @@ export const resizeFile = (file: File, options: ResizeFileOptionsType) =>
     );
   });
 
-export const generateFileName = ({ file, fileName }: { fileName?: string, file: File }) => {
+export const generateFileName = ({ file, fileName }: { fileName?: string, file: File | Blob }) => {
   const createdAt = Date.now();
-  const fileNameTimestamp = fileName || `${createdAt}-${file.name}`;
+  const fileNameTimestamp = fileName || `${createdAt}-${(file as any)?.name || 'video'}`;
   const cleanFilename = fileNameTimestamp.replace(/(\W+)/gi, '-');
   const extension: string = (mime as any).getExtension(file.type);
   return {

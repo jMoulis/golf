@@ -6,7 +6,13 @@ import { theme } from '../../../style/theme';
 import { FixedBottomToolbar } from '../../commons/FixedBottomToolbar';
 import { ButtonPill } from '../../commons/Buttons/ButtonPill';
 import { TaskManager } from './TaskManager';
-import { DocumentType, SessionType, TaskType } from './types';
+import {
+  DocumentType,
+  LoadingType,
+  SessionType,
+  TaskType,
+  VideoType,
+} from './types';
 import { TitleInput, DateInput } from './commonStyledComponents';
 import { Flexbox } from '../../commons';
 import { FileList } from './File/FileList';
@@ -15,6 +21,7 @@ import { useFileStorage } from '../../../hooks/useFileStorage';
 import { StorageReference } from 'firebase/storage';
 import { Alerts } from '../../commons/Alerts';
 import { EditSessionAddMenu } from './EditSessionAddMenu';
+import { VideoRecorder } from './VideoRecorder';
 
 type Props = {
   selectedSession: SessionType;
@@ -27,7 +34,7 @@ export const EditSession = ({
   onEditDocument,
 }: Props) => {
   const [openUploadFile, setOpenUploadFile] = useState(false);
-
+  const [openRecording, setOpenRecording] = useState(false);
   const [sessionForm, setSessionForm] = useState<
     | {
         topic?: string;
@@ -35,8 +42,11 @@ export const EditSession = ({
       }
     | undefined
   >(undefined);
-  const { deleteFile } = useFileStorage();
+  const { deleteFile, uploadFileWithFeedback, updloadBase64File } =
+    useFileStorage();
   const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploading, setUploading] = useState<LoadingType>('UNSET');
 
   useEffect(() => {
     if (selectedSession) {
@@ -123,7 +133,6 @@ export const EditSession = ({
           documents: [...(selectedSession.documents || []), ...documents],
         };
         onEditDocument(updatedSession, updatedSession.id);
-        // setForm(updatedSession);
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -162,6 +171,79 @@ export const EditSession = ({
 
   const handleUploadFile = () => {
     setOpenUploadFile(true);
+  };
+
+  const handleRecordVideo = () => {
+    setOpenRecording(true);
+  };
+
+  const handleDeleteVideo = async (video: VideoType) => {
+    const filePath = `/sessions/${selectedSession.id}/${video.name}`;
+    const thumbnailName = `${video.name}-thumbnail`;
+    const thumbnailPath = `/sessions/${selectedSession.id}/${thumbnailName}`;
+    await deleteFile(filePath);
+    await deleteFile(thumbnailPath);
+    const updatedDocuments = (selectedSession.documents || [])
+      .filter((prevDoc) => prevDoc.name === video.name)
+      .filter((prevDoc) => prevDoc.thumbnail === thumbnailName);
+    const updatedSession = {
+      ...selectedSession,
+      documents: updatedDocuments,
+    };
+    onEditDocument(updatedSession, updatedSession.id);
+  };
+
+  const handleUploadVideo = (video: VideoType) => {
+    if (!selectedSession) return null;
+    const filePath = `/sessions/${selectedSession.id}/${video.name}`;
+    const task = uploadFileWithFeedback(video.blob, filePath);
+    task.on(
+      'state_changed',
+      (snapshot) => {
+        const snapshotProgress = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        setUploadProgress(snapshotProgress);
+        setUploading('LOADING');
+      },
+      () => {
+        setUploading('ERROR');
+      },
+      () => {
+        setUploading('DONE');
+        if (selectedSession) {
+          const { fullPath, name } = task.snapshot.metadata;
+          const thumbnailPath = `${fullPath}-thumbnail`;
+          const newDoc = {
+            path: fullPath,
+            name,
+            mimeType: 'video/mp4',
+            extension: 'mp4',
+            thumbnail: thumbnailPath,
+          };
+          const base64 = video.thumbnail.split(';base64,')[1];
+          updloadBase64File(thumbnailPath, base64, 'image/png');
+          const updatedDocuments = [
+            ...(selectedSession.documents || []),
+            newDoc,
+          ];
+          const updatedSession = {
+            ...selectedSession,
+            documents: updatedDocuments,
+          };
+          onEditDocument(updatedSession, updatedSession.id);
+        }
+        // const uploadedFile = fileUploads[index];
+        // if (uploadedFile.file) {
+        //   const { fullPath, name } = task.snapshot.metadata;
+        //   addFile({
+        //     fullPath,
+        //     file: uploadedFile.file,
+        //     name,
+        //   });
+        // }
+      }
+    );
   };
 
   return (
@@ -224,11 +306,21 @@ export const EditSession = ({
         <EditSessionAddMenu
           onAddTask={handleAddTask}
           onUploadFile={handleUploadFile}
+          onRecordVideo={handleRecordVideo}
         />
         <FixedBottomToolbar>
           <ButtonPill onClick={handleSubmit}>FERMER</ButtonPill>
         </FixedBottomToolbar>
       </SwipeableDrawer>
+      <VideoRecorder
+        open={openRecording}
+        onClose={() => setOpenRecording(false)}
+        onOpen={() => setOpenRecording(true)}
+        onUpload={handleUploadVideo}
+        onDelete={handleDeleteVideo}
+        uploadProgress={uploadProgress}
+        uploading={uploading}
+      />
       <Alerts
         open={Boolean(deleteError)}
         onClose={handleCloseSnackbar}

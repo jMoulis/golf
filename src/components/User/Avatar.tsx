@@ -39,6 +39,7 @@ export const Avatar = ({ user, styling, onUploadAvatar }: Props) => {
       setImageUrl(downloadedUrl);
     }
     setLoading('DONE');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

@@ -1,6 +1,4 @@
 import styled from '@emotion/styled';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Flexbox } from '../../../commons';
 import { ButtonPill } from '../../../commons/Buttons/ButtonPill';
 import { DeleteButton } from '../../../commons/Buttons/DeleteButton';

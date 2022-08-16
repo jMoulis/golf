@@ -32,6 +32,7 @@ export const useUser: () => {
         dispatch(signInAction({ id: userSystem.uid }))
       }
     }, (error) => console.error('GetUser', error));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userSystem]);
 
   const fetchOneUser = useCallback(async (userId: string) => {

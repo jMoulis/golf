@@ -67,7 +67,7 @@ export const usePelz = () => {
       date
     }
     return newPelz
-  }, [fullUser]);
+  }, [fullUser, user]);
 
   const loadTests = useCallback((userId: string) => {
     getTests(userId);
@@ -77,6 +77,7 @@ export const usePelz = () => {
         unsubscribeGames();
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleEditPelz = useCallback(async (value: any, pelzID: string) => {

@@ -14,6 +14,7 @@ export const useCoachPage = () => {
     if (userId) {
       fetchOneUser(userId).then((snap) => setStudent(snap));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
   const handleNavigationBack = () => {

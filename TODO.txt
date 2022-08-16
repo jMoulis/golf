@@ -1,0 +1,6 @@
+[]: Add existing video to video recorder library
+[]: Add preview in list of selected file
+[]: Style date component in create Session form
+[]: Update controls Video player
+[]: Handle upload video error
+[]: Finish Whiteboard App

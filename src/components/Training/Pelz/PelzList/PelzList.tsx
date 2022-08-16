@@ -41,7 +41,8 @@ export const PelzList = ({ userId }: Props) => {
 
   useEffect(() => {
     loadTests(userId);
-  }, [loadTests]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId]);
 
   return (
     <>

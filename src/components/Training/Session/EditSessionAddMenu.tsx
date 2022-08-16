@@ -27,9 +27,14 @@ const CustomShotButton = styled(ShotButton)`
 type Props = {
   onAddTask: (task: TaskType) => void;
   onUploadFile: () => void;
+  onRecordVideo: () => void;
 };
 
-export const EditSessionAddMenu = ({ onAddTask, onUploadFile }: Props) => {
+export const EditSessionAddMenu = ({
+  onAddTask,
+  onUploadFile,
+  onRecordVideo,
+}: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -49,6 +54,10 @@ export const EditSessionAddMenu = ({ onAddTask, onUploadFile }: Props) => {
   const handleUploadFile = () => {
     setAnchorEl(null);
     onUploadFile();
+  };
+  const handleRecord = () => {
+    setAnchorEl(null);
+    onRecordVideo();
   };
 
   return (
@@ -87,6 +96,9 @@ export const EditSessionAddMenu = ({ onAddTask, onUploadFile }: Props) => {
           </CustomShotButton>
           <CustomShotButton onClick={handleUploadFile}>
             Importer un fichier
+          </CustomShotButton>
+          <CustomShotButton onClick={handleRecord}>
+            Enregisrer une video
           </CustomShotButton>
         </Wrapper>
       </Menu>

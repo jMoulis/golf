@@ -81,14 +81,17 @@ export const useThumbnail = () => {
   }
 
   const generateVideoThumbnail = useCallback(async (file: File, fileName: string) => {
-    return generateVideoThumbnails(file, 4, 'base64').then(async (snapshots) => {
+    return generateVideoThumbnails(file, 1, 'base64').then(async (snapshots) => {
+
       const snapshot = snapshots[0];
       if (snapshot) {
-        const base64Reponse = await fetch(snapshot);
-        const blob = await base64Reponse.blob();
-        const file = new File([blob], fileName, { type: 'image/png' });
-        const resizedImage = await generateImageThumbnail(file);
-        return resizedImage;
+        const base64Reponse = await fetch(snapshot).catch((error) => console.error(error));
+        if (base64Reponse) {
+          const blob = await base64Reponse.blob();
+          const file = new File([blob], fileName, { type: 'image/png' });
+          const resizedImage = await generateImageThumbnail(file);
+          return resizedImage;
+        }
       }
     }).catch((error) => [false, null, null, null, error]);
   }, [])

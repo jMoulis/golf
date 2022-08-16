@@ -73,14 +73,6 @@ export const FileUploader = ({
     onClose();
   };
 
-  // useEffect(() => {
-  //   if (done) {
-  //     setCancelConfirmation(false);
-  //     setUploadedFiles([]);
-  //     setOpen(false);
-  //   }
-  // }, [done]);
-
   const handleCloseSwipe = () => {
     if (isLoading) {
       setCancelConfirmation(true);

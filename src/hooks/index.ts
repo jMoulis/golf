@@ -56,25 +56,14 @@ export const generateVideoThumbnails = async (videoFile: File, numberOfThumbnail
   return type !== "url" ? new Promise(async (resolve, reject) => {
     if (!videoFile.type?.includes("video")) reject({ code: CODE_ERRORS.INVALID_FORMAT, message: 'This format is not supported' });
     await getVideoDurationFromVideoFile(videoFile).then(async (duration) => {
-
-
-      // divide the video timing into particular timestamps in respective to number of thumbnails
-      // ex if time is 10 and numOfthumbnails is 4 then result will be -> 0, 2.5, 5, 7.5 ,10
-      // we will use this timestamp to take snapshots
       for (let i = 0; i <= duration; i += duration / numberOfThumbnails) {
         fractions.push(Math.floor(i));
       }
-      // the array of promises
       const promiseArray = fractions.map((time, index) => getVideoThumbnail(videoFile, index >= fractions.length - 1 ? time - 2 : time));
-      // console.log('promiseArray', promiseArray)
-      // console.log('duration', duration)
-      // console.log('fractions', fractions)
       await Promise.all(promiseArray).then((res) => {
         res.forEach((res) => {
-          // console.log('res', res.slice(0,8))
           thumbnail.push(res);
         });
-        // console.log('thumbnail', thumbnail)
         resolve(thumbnail);
       }).catch((err) => {
         reject({ code: CODE_ERRORS.SYSTEM, message: err.message })
@@ -86,18 +75,15 @@ export const generateVideoThumbnails = async (videoFile: File, numberOfThumbnail
   })
     : new Promise(async (resolve, reject) => {
       await getVideoDurationFromVideoFile(videoFile).then(async (duration) => {
-        console.log('duration', duration);
         // divide the video timing into particular timestamps in respective to number of thumbnails
         // ex if time is 10 and numOfthumbnails is 4 then result will be -> 0, 2.5, 5, 7.5 ,10
         // we will use this timestamp to take snapshots
+
         for (let i = 0; i <= duration; i += duration / numberOfThumbnails) {
           fractions.push(Math.floor(i));
         }
         // the array of promises
         const promiseArray = fractions.map((time, index) => getVideoThumbnail(videoFile, index >= fractions.length - 1 ? time - 2 : time))
-        // console.log('promiseArray', promiseArray)
-        // console.log('duration', duration)
-        // console.log('fractions', fractions)
         await Promise.all(promiseArray).then((res) => {
           res.forEach((res) => {
             // console.log('res', res.slice(0,8))
@@ -282,6 +268,7 @@ export const generateVideoThumbnailViaUrl = (urlOfFIle: string, videoTimeInSecon
  * @returns {number} The duration of the video in seconds
  */
 export const getVideoDurationFromVideoFile = (videoFile: File | string): Promise<number> => {
+
   return new Promise((resolve, reject) => {
     try {
       if (videoFile) {

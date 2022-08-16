@@ -1,12 +1,14 @@
 import styled from '@emotion/styled';
 import { faImageSlash } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
+import React, { FormEvent } from 'react';
+import { useFileStorage } from '../../../hooks/useFileStorage';
 import { theme } from '../../../style/theme';
 import { BOTTOM_NAVBAR_HEIGHT } from '../../cssConstants';
 import { ButtonPill } from '../Buttons/ButtonPill';
 import { DeleteButton } from '../Buttons/DeleteButton';
 import { FixedBottomToolbar } from '../FixedBottomToolbar';
+import { SwipableDefault } from '../SwipableDefault';
 import { PreviewType, PreviewTypeWithStorageRef } from './types';
 
 const Root = styled.div`
@@ -75,11 +77,37 @@ export const PreviewFiles = ({
   onDelete,
   fileID,
 }: Props) => {
+  const { getFile } = useFileStorage();
+  const [detailImage, setDetailImage] = React.useState<string | null>(null);
+
+  const handleDelete = (
+    event: FormEvent<HTMLButtonElement>,
+    fileName: string
+  ) => {
+    event.stopPropagation();
+    onDelete && onDelete(fileName);
+  };
+  const handleDisplayFile = async (
+    preview?: PreviewTypeWithStorageRef | PreviewType
+  ) => {
+    if ((preview as PreviewTypeWithStorageRef)?.storageImageRef?.fullPath) {
+      const payload = await getFile(
+        (preview as PreviewTypeWithStorageRef).storageImageRef.fullPath
+      );
+      setDetailImage(payload);
+    }
+  };
+
   return (
     <Root>
       {title ? <Title>{title}</Title> : null}
       {previews.map((preview, key) => (
-        <PreviewWrapper key={key}>
+        <PreviewWrapper
+          key={key}
+          onClick={() =>
+            handleDisplayFile(preview as PreviewTypeWithStorageRef)
+          }
+        >
           {preview.url ? (
             <PreviewImage src={preview.url || ''} />
           ) : (
@@ -90,7 +118,7 @@ export const PreviewFiles = ({
           <FileName>{preview.customName || preview.name}</FileName>
           {onDelete ? (
             <DeleteButton
-              onClick={() => onDelete && onDelete((preview as any)[fileID])}
+              onClick={(event) => handleDelete(event, (preview as any)[fileID])}
             />
           ) : null}
         </PreviewWrapper>
@@ -98,6 +126,14 @@ export const PreviewFiles = ({
       <FixedBottomToolbar>
         <ButtonPill onClick={onClose}>FERMER</ButtonPill>
       </FixedBottomToolbar>
+      <SwipableDefault
+        onOpen={() => {}}
+        open={Boolean(detailImage)}
+        title=""
+        onClose={() => setDetailImage(null)}
+      >
+        {detailImage ? <img src={detailImage} /> : null}
+      </SwipableDefault>
     </Root>
   );
 };

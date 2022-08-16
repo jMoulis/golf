@@ -39,7 +39,7 @@ export const FileList = ({ files, sessionID, onDelete }: Props) => {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [previews, setPreviews] = useState<PreviewTypeWithStorageRef[]>([]);
-  // 1659695509059-5E0D8695-8F0C-4ED6-96CB-597C0E038640-jpeg
+
   const builtPreviews: (
     files: DocumentType[],
     idSession: string

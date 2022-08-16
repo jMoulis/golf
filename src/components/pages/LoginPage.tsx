@@ -80,6 +80,7 @@ export const LoginPage = () => {
     if (user) {
       navigate('/protected');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, loading]);
 
   const handleLogin = (event: FormEvent<HTMLFormElement>) => {

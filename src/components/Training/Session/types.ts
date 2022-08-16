@@ -40,3 +40,5 @@ export type AddFileType = {
 };
 
 export type UploadTaskWithID = { task: UploadTask, id: number, loading: LoadingType, progress: number }
+
+export type VideoType = { blob: Blob; thumbnail: string, name: string };

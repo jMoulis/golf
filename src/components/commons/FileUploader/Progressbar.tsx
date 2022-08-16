@@ -53,6 +53,7 @@ export const Progressbar = ({ uploadTask }: Props) => {
     if (uploadTask.loading === 'LOADING') return handlePauseDownload;
     if (uploadTask.loading === 'PAUSE') return handleResumeDownload;
     return () => {};
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [uploadTask.loading]);
 
   return (

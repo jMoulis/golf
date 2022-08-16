@@ -1,6 +1,4 @@
 import styled from '@emotion/styled';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRef } from 'react';
 import { Flexbox } from '../../../commons';
 import { DateDisplay } from '../../../commons/DateDisplay';

@@ -1,6 +1,4 @@
 import styled from '@emotion/styled';
-import { faTrash } from '@fortawesome/pro-duotone-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { TextareaAutosize } from '@mui/material';
 import { FormEvent, useEffect, useState } from 'react';
 import { Flexbox } from '../../commons';
