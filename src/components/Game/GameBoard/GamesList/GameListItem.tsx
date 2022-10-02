@@ -3,13 +3,12 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { faFilePen, faGrid } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRef, useState } from 'react';
-import { theme } from '../../../../style/theme';
-import { Flexbox } from '../../../commons';
-import { DateDisplay } from '../../../commons/DateDisplay';
-import { DeleteButton } from '../../../commons/Buttons/DeleteButton';
-import { ListItem } from '../../../commons/List';
-import { ENUM_GAME_STATUS, GameStatus, GameType } from '../../../types';
-import { Avatar } from '../../../User/Avatar';
+import { theme } from 'style/theme';
+import { Flexbox } from 'components/commons';
+import { DateDisplay } from 'components/commons/DateDisplay';
+import { DeleteButton } from 'components/commons/Buttons/DeleteButton';
+import { ListItem } from 'components/commons/List';
+import { ENUM_GAME_STATUS, GameStatus, GameType } from 'components/types';
 import { CourseStats } from '../CourseStats';
 import { Score } from './Score';
 import { ScoreTableDrawer } from './ScoreTableDrawer';
@@ -60,28 +59,6 @@ export const GameListItem = ({
             />
             <Flexbox justifyContent="space-around">
               <Score holes={game.holes ? Object.values(game.holes) : []} />
-            </Flexbox>
-            <Flexbox>
-              {game.coach?.avatar ? (
-                <Avatar
-                  styling={{
-                    width: '30px',
-                    height: '30px',
-                  }}
-                  onDisplayDetail={() => {}}
-                  user={game.coach}
-                />
-              ) : null}
-              {game.player ? (
-                <Avatar
-                  styling={{
-                    width: '30px',
-                    height: '30px',
-                  }}
-                  user={game.player}
-                  onDisplayDetail={() => {}}
-                />
-              ) : null}
             </Flexbox>
             <Status status={game.status}>
               <FontAwesomeIcon

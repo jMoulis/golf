@@ -1,6 +1,6 @@
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { useUser } from "../components/User/useUser";
-import { auth } from "../firebase";
+import { auth } from "../firebaseConfig/firebase";
 import { logoutAction, useAuthDispatch } from "./authContext";
 
 export const useAuthAction = () => {

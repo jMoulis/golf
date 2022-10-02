@@ -10,8 +10,9 @@ import { ButtonPill } from '../commons/Buttons/ButtonPill';
 import { DeleteButton } from '../commons/Buttons/DeleteButton';
 import { FixedBottomToolbar } from '../commons/FixedBottomToolbar';
 import { Input } from '../commons/Input';
-import { UserType } from '../types';
+import { ClubType, UserType } from '../types';
 import { Avatar } from './Avatar';
+import { Bag } from './Bag/Bag';
 import { Roles } from './Roles';
 import { useUser } from './useUser';
 
@@ -89,9 +90,38 @@ export const UserForm = ({ user, onClose }: Props) => {
     onClose();
     logout();
   };
+
   const handleSubmit = () => {
     editUser(form);
     onClose();
+  };
+
+  const handleUpdateBag = (club: ClubType) => {
+    const updatedBag = [...(user?.bag || [])];
+    const prevClub = updatedBag.findIndex(
+      (prevClub) => prevClub.id === club.id
+    );
+
+    if (prevClub === -1) {
+      updatedBag.push({ ...club, distance: 0, distances: [] });
+    } else {
+      updatedBag.splice(prevClub, 1);
+    }
+
+    const updatedUser = {
+      ...user,
+      bag: updatedBag,
+    };
+    editUser(updatedUser);
+  };
+
+  const handleDeleteClub = (club: ClubType) => {
+    const updatedBag = [...(user?.bag || [])];
+    const updatedUser = {
+      ...user,
+      bag: updatedBag.filter((prevClub) => prevClub.id !== club.id),
+    };
+    editUser(updatedUser);
   };
 
   return (
@@ -125,6 +155,12 @@ export const UserForm = ({ user, onClose }: Props) => {
         placeholder="Nom de famille"
       />
       <Roles selectedRoles={form.roles || []} onEdit={handleEditRoles} />
+
+      <Bag
+        clubs={user.bag || []}
+        onEdit={handleUpdateBag}
+        onDelete={handleDeleteClub}
+      />
       <FixedBottomToolbar>
         <ButtonPill onClick={handleSubmit}>ENREGISTRER</ButtonPill>
         <DeleteButton onClick={handleLogout} icon={faSignOut} />

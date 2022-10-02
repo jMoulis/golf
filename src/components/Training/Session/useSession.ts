@@ -2,7 +2,7 @@ import { Unsubscribe } from "firebase/auth";
 import { addDoc, collection, deleteDoc, doc, Firestore, getFirestore, onSnapshot, orderBy, query, setDoc, where, writeBatch } from "firebase/firestore";
 import { useCallback, useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { app, auth } from "../../../firebase";
+import { app, auth } from "../../../firebaseConfig/firebase";
 import { ENUM_COLLECTION } from "../../../hooks/enumCollection";
 import { SessionPayload, SessionType } from "./types";
 

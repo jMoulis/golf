@@ -93,10 +93,10 @@ export const SessionListItem = ({
           />
         </Flexbox>
         <Flexbox>
-          <TaskCheckStatus status count={taskTypes(session.tasks).done} />
+          <TaskCheckStatus status count={taskTypes(session.tasks || []).done} />
           <TaskCheckStatus
             status={false}
-            count={taskTypes(session.tasks).unDone}
+            count={taskTypes(session.tasks || []).unDone}
           />
         </Flexbox>
       </Flexbox>

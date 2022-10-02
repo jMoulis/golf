@@ -100,7 +100,9 @@ export const RenderHoles = ({
                 Par {hole.par}
               </span>
               <DistanceTag color={game.start}>
-                {`${courseHoles?.[hole.ref]?.distances?.[game.start]}m`}
+                {courseHoles?.[hole.ref]?.distances?.[game.start]
+                  ? `${courseHoles?.[hole.ref]?.distances?.[game.start]}m`
+                  : null}
               </DistanceTag>
             </Flexbox>
           </HoleHeader>

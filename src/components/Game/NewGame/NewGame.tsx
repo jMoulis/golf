@@ -6,7 +6,7 @@ import {
   Timestamp,
 } from 'firebase/firestore';
 import { useCallback, useEffect, useState } from 'react';
-import { app, auth } from '../../../firebase';
+import { app, auth } from '../../../firebaseConfig/firebase';
 import {
   CoursePayloadType,
   ENUM_GAME_STATUS,

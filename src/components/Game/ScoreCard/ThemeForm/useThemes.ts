@@ -14,7 +14,7 @@ import {
 } from 'firebase/firestore';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { app, auth } from '../../../../firebase';
+import { app, auth } from '../../../../firebaseConfig/firebase';
 import { ThemeType, ThemeTypeInput } from '../../../types';
 
 

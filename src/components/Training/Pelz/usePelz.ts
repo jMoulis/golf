@@ -2,7 +2,7 @@ import { Unsubscribe } from "firebase/auth";
 import { addDoc, collection, deleteDoc, doc, Firestore, getFirestore, onSnapshot, orderBy, query, setDoc, Timestamp, where } from "firebase/firestore";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { app, auth } from "../../../firebase";
+import { app, auth } from "../../../firebaseConfig/firebase";
 import { useUser } from "../../User/useUser";
 import { ENUM_PELZ_THEME } from "./enums";
 import { PelzPayload, PelzTestInput, PelzType } from "./types";

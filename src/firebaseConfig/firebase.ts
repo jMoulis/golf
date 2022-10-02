@@ -19,6 +19,7 @@ export const auth = getAuth(app);
 export const storage = getStorage(app);
 
 const db = getFirestore(app);
+
 enableIndexedDbPersistence(db).catch((err) => {
   if (err.code === 'failed-precondition') {
     // Multiple tabs open, persistence can only be enabled

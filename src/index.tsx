@@ -6,6 +6,8 @@ import reportWebVitals from './reportWebVitals';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import './style/reset.css';
 import { AuthProvider } from './auth/authContext';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -15,6 +17,7 @@ root.render(
     <BrowserRouter>
       <AuthProvider>
         <App />
+        <ToastContainer position="bottom-center" theme="colored" />
       </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>

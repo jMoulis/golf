@@ -59,3 +59,15 @@ export const removeForbiddenKeys = (object: any, keys: string[]): any => {
     return { ...acc, [objectKey]: object[objectKey] };
   }, {});
 };
+
+export const sortArrayByAlphabet = (array: any[], key: string, _direction: boolean) => {
+  return array.sort((a, b) => {
+    if (typeof a[key] === 'number') return 0;
+    if (typeof b[key] === 'number') return 0;
+    const valueA = a[key];
+    const valueB = b[key];
+    if (valueA < valueB) return -1;
+    if (valueA > valueB) return 1;
+    return 0
+  })
+}

@@ -100,7 +100,7 @@ export const Shots = ({
       });
     };
     if (gameRef && selectedShot) {
-      const updatedShot = { ...selectedShot, type: incomingShot.type };
+      const updatedShot = { ...selectedShot, ...incomingShot };
       setSelectedShot(updatedShot);
       const updatedShots = updateShots(hole.shots, updatedShot);
       await setDoc(

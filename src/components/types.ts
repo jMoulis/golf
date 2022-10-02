@@ -21,7 +21,7 @@ export type HoleCourseType = {
   distances?: CourseDistanceType;
 };
 export interface GameHoleType extends HoleCourseType {
-  shots: any[];
+  shots: ShotType[];
 }
 export type CourseType = {
   id?: string;
@@ -92,6 +92,15 @@ export type ShotType = {
   slope?: string
   themes?: any;
   id?: any;
+  club?: {
+    id: string,
+    name: string,
+    distance?: number
+  }
+  coords?: {
+    lng: number | null,
+    lat: number | null
+  }
 }
 
 export type ThemeType = {
@@ -114,6 +123,7 @@ export type UserType = {
   students?: UserType[];
   createdAt?: Timestamp;
   updatedAt?: Timestamp;
+  bag?: BagType
 };
 
 export type UserTypeSummary = {
@@ -122,3 +132,19 @@ export type UserTypeSummary = {
   lastname?: string;
   avatar?: string;
 };
+
+export type ClubType = {
+  id: string;
+  name: string;
+  distance?: number;
+  order: number
+}
+export type BagClubType = {
+  id: string;
+  name: string;
+  distances: number[];
+  distance: number;
+  order: number
+}
+
+export type BagType = BagClubType[];

@@ -30,11 +30,11 @@ export const Avatar = ({ user, styling, onUploadAvatar }: Props) => {
   const [loading, setLoading] = useState<'UNSET' | 'LOADING' | 'DONE'>('UNSET');
   const [imageUrl, setImageUrl] = useState('');
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const { getFile } = useFileStorage();
+  const { getFileURL } = useFileStorage();
 
   const fetchImageURL = useCallback(async (userAvatar: string) => {
     setLoading('LOADING');
-    const downloadedUrl = await getFile(userAvatar);
+    const downloadedUrl = await getFileURL(userAvatar);
     if (downloadedUrl) {
       setImageUrl(downloadedUrl);
     }

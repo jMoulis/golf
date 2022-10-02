@@ -8,7 +8,7 @@ import {
   onSnapshot,
   Unsubscribe,
 } from 'firebase/firestore';
-import { app } from '../../../firebase';
+import { app } from '../../../firebaseConfig/firebase';
 import { ScoreCard } from '../ScoreCard/ScoreCard';
 import { CoursePayloadType, GameType } from '../../types';
 import { GameBoardHeader } from './GameBoardHeader';

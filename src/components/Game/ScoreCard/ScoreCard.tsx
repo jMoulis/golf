@@ -15,13 +15,53 @@ import {
   ShotType,
   GameHoleType,
   GameType,
-} from '../../types';
+  UserType,
+} from 'components/types';
 import { RenderHoles } from './RenderHoles';
-import { SwipeShotForm } from '../../commons/SwipeShotForm/SwipeShotForm';
+import { SwipeShotForm } from 'components/commons/SwipeShotForm/SwipeShotForm';
 import { SaveMenu } from './SaveMenu';
-import { app } from '../../../firebase';
-import { firebaseErrors } from '../../../utils/firebaseErrors';
-import { Alerts } from '../../commons/Alerts';
+import { app } from 'components/../firebaseConfig/firebase';
+import { firebaseErrors } from 'components/../utils/firebaseErrors';
+import { Alerts } from 'components/commons/Alerts';
+import * as geometry from 'spherical-geometry-js';
+import { useGeolocated } from 'react-geolocated';
+import { useUser } from 'components/User/useUser';
+
+const calculateDistance = (
+  newCoords?: { lng: number | null; lat: number | null },
+  prevCoords?: { lng: number | null; lat: number | null }
+) => {
+  if (!newCoords || !prevCoords) return 0;
+  if (!newCoords?.lat) return 0;
+  if (!newCoords?.lng) return 0;
+  if (!prevCoords?.lat) return 0;
+  if (!prevCoords?.lng) return 0;
+
+  const distance = geometry.computeDistanceBetween(
+    { lat: newCoords.lat, lng: newCoords.lng },
+    {
+      lat: prevCoords.lat,
+      lng: prevCoords.lng,
+    }
+  );
+  return distance;
+};
+
+const updateUserBagClubDistance = (
+  clubId: string,
+  distance: number,
+  user: UserType
+) => {
+  const userBag = (user.bag || [])?.map((club) =>
+    club.id === clubId
+      ? { ...club, distances: [...(club.distances || []), distance] }
+      : club
+  );
+  return {
+    ...user,
+    bag: userBag,
+  };
+};
 
 const List = styled.ul`
   overflow: auto;
@@ -42,6 +82,15 @@ export const ScoreCard = ({ game, onClose, course }: Props) => {
     return doc(db, 'games', game.id);
   }, [game?.id]);
 
+  const { coords, isGeolocationAvailable, isGeolocationEnabled } =
+    useGeolocated({
+      positionOptions: {
+        enableHighAccuracy: true,
+      },
+      watchPosition: true,
+      userDecisionTimeout: 5000,
+    });
+  const { user, editUser } = useUser();
   const [selectedHole, setSelectedHole] = useState<GameHoleType | null>(null);
   const shotUnsubscribeRef = useRef<Unsubscribe | null>(null);
   const [open, setOpen] = useState<boolean>(false);
@@ -72,6 +121,37 @@ export const ScoreCard = ({ game, onClose, course }: Props) => {
   };
 
   const handleAddShot = async (shot: ShotType, hole: GameHoleType) => {
+    let newShot = { ...shot };
+    if (coords) {
+      newShot = {
+        ...newShot,
+        coords: coords
+          ? { lat: coords?.latitude, lng: coords?.longitude }
+          : { lat: null, lng: null },
+      };
+    }
+
+    const prevShot = (hole.shots || [])[(hole.shots || []).length - 1];
+
+    const updatedShots = (hole.shots || []).map((prev) => {
+      if (prev.id === prevShot?.id) {
+        const newDistance = calculateDistance(prev.coords, newShot.coords);
+        if (user && prevShot.club?.id) {
+          editUser(
+            updateUserBagClubDistance(prevShot.club.id || '', newDistance, user)
+          );
+        }
+        return {
+          ...prev,
+          club: {
+            ...prev.club,
+            distance: newDistance,
+          },
+        };
+      }
+      return prev;
+    });
+
     if (gameRef) {
       const payload = await setDoc(
         gameRef,
@@ -79,7 +159,7 @@ export const ScoreCard = ({ game, onClose, course }: Props) => {
           strokeBrut: increment(1),
           holes: {
             [hole.ref]: {
-              shots: arrayUnion(shot),
+              shots: [...updatedShots, newShot],
             },
           },
         },
@@ -141,14 +221,6 @@ export const ScoreCard = ({ game, onClose, course }: Props) => {
           game={game}
           courseHoles={course?.holes}
         />
-        {/* <RenderHoles
-          gameRef={gameRef}
-          onSelectHole={handleSelectHole}
-          selectedHole={selectedHole}
-          holes={backNine}
-          onOpenForm={toggleDrawer(true)}
-          game={game}
-        /> */}
       </List>
       <SwipeShotForm
         onClose={() => setOpen(false)}

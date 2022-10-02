@@ -57,8 +57,6 @@ export const ShotEvaluationForm = ({
       <List
         style={{
           padding: '5px',
-          borderBottom: `1px solid ${theme.colors.separator}`,
-          backgroundColor: '#fff',
           flex: 'unset',
         }}
       >

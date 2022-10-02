@@ -1,3 +1,4 @@
+import { ErrorBoundary } from 'components/Error/ErrorBoundary';
 import { theme } from '../../style/theme';
 import { PageHeader } from '../commons/Core/PageHeader';
 import { Statistic } from '../Statistic/Statistic';
@@ -8,7 +9,9 @@ export const StatPage = () => {
       <PageHeader backgroundColor={theme.headers.statistics.linear}>
         Statistiques
       </PageHeader>
-      <Statistic />
+      <ErrorBoundary>
+        <Statistic />
+      </ErrorBoundary>
     </>
   );
 };

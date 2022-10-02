@@ -1,10 +1,10 @@
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { SwipeableDrawer } from '@mui/material';
-import { iOS } from '../../../utils/global.utils';
-import { SwipeMenuHeader } from '../../commons/SwipeMenuHeader';
-import { theme } from '../../../style/theme';
-import { FixedBottomToolbar } from '../../commons/FixedBottomToolbar';
-import { ButtonPill } from '../../commons/Buttons/ButtonPill';
+import { iOS } from 'utils/global.utils';
+import { SwipeMenuHeader } from 'components/commons/SwipeMenuHeader';
+import { theme } from 'style/theme';
+import { FixedBottomToolbar } from 'components/commons/FixedBottomToolbar';
+import { ButtonPill } from 'components/commons/Buttons/ButtonPill';
 import { TaskManager } from './TaskManager';
 import {
   DocumentType,
@@ -14,14 +14,15 @@ import {
   VideoType,
 } from './types';
 import { TitleInput, DateInput } from './commonStyledComponents';
-import { Flexbox } from '../../commons';
+import { Flexbox } from 'components/commons';
 import { FileList } from './File/FileList';
 import { EditSessionUploadFile } from './EditSessionUploadFile';
-import { useFileStorage } from '../../../hooks/useFileStorage';
+import { useFileStorage } from 'hooks/useFileStorage';
 import { StorageReference } from 'firebase/storage';
-import { Alerts } from '../../commons/Alerts';
+import { Alerts } from 'components/commons/Alerts';
 import { EditSessionAddMenu } from './EditSessionAddMenu';
 import { VideoRecorder } from './VideoRecorder';
+import { toast } from 'react-toastify';
 
 type Props = {
   selectedSession: SessionType;
@@ -80,7 +81,7 @@ export const EditSession = ({
 
   const handleEditTask = (task: TaskType) => {
     if (!selectedSession) return null;
-    const updatedTasks = selectedSession?.tasks.map((prevTask) => {
+    const updatedTasks = (selectedSession?.tasks || []).map((prevTask) => {
       if (prevTask.id === task.id) {
         return task;
       }
@@ -94,7 +95,7 @@ export const EditSession = ({
 
   const handleDeleteTask = (taskID: string) => {
     if (!selectedSession) return null;
-    const updatedTasks = selectedSession?.tasks.filter(
+    const updatedTasks = (selectedSession?.tasks || []).filter(
       (prevTask) => prevTask.id !== taskID
     );
     onEditDocument(
@@ -206,8 +207,9 @@ export const EditSession = ({
         setUploadProgress(snapshotProgress);
         setUploading('LOADING');
       },
-      () => {
+      (error) => {
         setUploading('ERROR');
+        toast.error(`Upload video: ${error.message}`);
       },
       () => {
         setUploading('DONE');
@@ -222,7 +224,10 @@ export const EditSession = ({
             thumbnail: thumbnailPath,
           };
           const base64 = video.thumbnail.split(';base64,')[1];
-          updloadBase64File(thumbnailPath, base64, 'image/png');
+
+          updloadBase64File(thumbnailPath, base64, 'image/png').catch(
+            (error: any) => toast.error(`UploadFile: ${error.message}`)
+          );
           const updatedDocuments = [
             ...(selectedSession.documents || []),
             newDoc,
@@ -233,15 +238,6 @@ export const EditSession = ({
           };
           onEditDocument(updatedSession, updatedSession.id);
         }
-        // const uploadedFile = fileUploads[index];
-        // if (uploadedFile.file) {
-        //   const { fullPath, name } = task.snapshot.metadata;
-        //   addFile({
-        //     fullPath,
-        //     file: uploadedFile.file,
-        //     name,
-        //   });
-        // }
       }
     );
   };

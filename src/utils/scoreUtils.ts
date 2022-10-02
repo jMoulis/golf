@@ -202,3 +202,12 @@ export const shotsTypeStat = (holes: GameHoleType[]) => {
     penalty,
   }
 }
+
+export const getClubDistanceAverage = (distances: number[]) => {
+  const removeZeros = distances.filter((distance) => distance > 0);
+  const total = removeZeros.reduce((a, b) => a + Math.ceil(b), 0);
+  if (removeZeros.length && total) {
+    return Math.ceil(total / removeZeros.length);
+  }
+  return 0;
+}

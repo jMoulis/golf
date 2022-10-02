@@ -2,7 +2,7 @@ import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthAction } from '../../auth/useAuthAction';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '../../firebase';
+import { auth } from '../../firebaseConfig/firebase';
 import styled from '@emotion/styled';
 import { ButtonPill } from '../commons/Buttons/ButtonPill';
 import { useToggle } from '../../hooks/useToggle';

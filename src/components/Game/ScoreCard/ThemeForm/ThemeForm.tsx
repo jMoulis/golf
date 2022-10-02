@@ -3,7 +3,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FormEvent, useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '../../../../firebase';
+import { auth } from '../../../../firebaseConfig/firebase';
 import { theme } from '../../../../style/theme';
 import { Flexbox } from '../../../commons';
 import { Input } from '../../../commons/Input';

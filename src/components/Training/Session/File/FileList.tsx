@@ -56,6 +56,7 @@ export const FileList = ({ files, sessionID, onDelete }: Props) => {
           name: file.name,
           storageThumbnailRef,
           storageImageRef,
+          mimeType: file.mimeType,
         };
         const payload = await getDownloadURL(storageThumbnailRef).catch(
           (error) => storageErrors(error, 'Miniature')

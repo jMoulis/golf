@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { arrayUnion, doc, getFirestore, setDoc } from 'firebase/firestore';
 import { useEffect, useMemo } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth, app } from '../../../firebase';
+import { auth, app } from '../../../firebaseConfig/firebase';
 import { theme } from '../../../style/theme';
 import { UserType } from '../../types';
 import { Avatar } from '../../User/Avatar';

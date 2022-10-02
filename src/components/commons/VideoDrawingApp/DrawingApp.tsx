@@ -8,12 +8,12 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SwipeableDrawer } from '@mui/material';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { theme } from '../../../style/theme';
-import { iOS } from '../../../utils/global.utils';
+import { theme } from 'style/theme';
+import { iOS } from 'utils/global.utils';
 import { Flexbox } from '..';
 import { SwitchCamera, Toolbar } from './components';
-import { WhiteBoard } from './WhiteBoard/WhiteBoard';
-import { VideoType } from '../../Training/Session/types';
+import { VideoType } from 'components/Training/Session/types';
+import { Sketch } from './Sketch/Sketch';
 
 const Image = styled.img`
   max-width: 100%;
@@ -115,13 +115,13 @@ export const DrawingApp = ({ video, onClose, open, onDelete }: Props) => {
           muted
           displayed={isSafari && playingStatus === 'UNSET'}
         />
-        <div
+        {/* <div
           style={{
             position: 'absolute',
           }}
         >
-          <WhiteBoard />
-        </div>
+          <Sketch />
+        </div> */}
         <Toolbar>
           <Flexbox flex="1" justifyContent="space-between" alignItems="center">
             <SwitchCamera onClick={handleClose}>

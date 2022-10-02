@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '../../firebase';
+import { auth } from '../../firebaseConfig/firebase';
 import { BottomNavbar } from '../Home/BottomNavbar';
 import { Page } from '../commons/Core/Page';
 

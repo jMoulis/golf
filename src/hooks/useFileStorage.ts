@@ -1,15 +1,28 @@
-import { deleteObject, getDownloadURL, ref, uploadBytes, uploadBytesResumable, uploadString } from "firebase/storage";
+import { deleteObject, getBlob, getDownloadURL, ref, uploadBytes, uploadBytesResumable, uploadString } from "firebase/storage";
 import { useCallback } from "react";
-import { storage } from "../firebase";
+import { toast } from "react-toastify";
+import { storage } from "../firebaseConfig/firebase";
 import { storageErrors } from "../utils/storageErrors";
 
 export const useFileStorage = () => {
-  const getFile = useCallback(async (filePath: string) => {
+  const getFileURL = useCallback(async (filePath: string) => {
     const storageRef = ref(storage, filePath);
     try {
       const downloadedUrl = await getDownloadURL(storageRef);
       return downloadedUrl;
-    } catch (error) {
+    } catch (error: any) {
+      toast.error(`Getting file: ${error.message}`)
+      return null;
+    }
+  }, []);
+
+  const getFileAsBlob = useCallback(async (filePath: string) => {
+    const storageRef = ref(storage, filePath);
+    try {
+      const blob = await getBlob(storageRef);
+      return blob;
+    } catch (error: any) {
+      toast.error(`Getting file: ${error.message}`)
       return null;
     }
   }, [])
@@ -36,5 +49,5 @@ export const useFileStorage = () => {
     return deleteObject(fileRef).catch(storageErrors);
   }, [])
 
-  return { getFile, updloadBase64File, uploadFile, deleteFile, uploadFileWithFeedback }
+  return { getFileURL, updloadBase64File, uploadFile, deleteFile, uploadFileWithFeedback, getFileAsBlob }
 }

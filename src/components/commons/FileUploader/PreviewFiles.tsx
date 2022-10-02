@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { faImageSlash } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { FormEvent } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { useFileStorage } from '../../../hooks/useFileStorage';
 import { theme } from '../../../style/theme';
 import { BOTTOM_NAVBAR_HEIGHT } from '../../cssConstants';
@@ -10,6 +10,8 @@ import { DeleteButton } from '../Buttons/DeleteButton';
 import { FixedBottomToolbar } from '../FixedBottomToolbar';
 import { SwipableDefault } from '../SwipableDefault';
 import { PreviewType, PreviewTypeWithStorageRef } from './types';
+import { DrawingApp } from 'components/commons/VideoDrawingApp/DrawingApp';
+import { VideoType } from 'components/Training/Session/types';
 
 const Root = styled.div`
   margin: 5px;
@@ -77,8 +79,12 @@ export const PreviewFiles = ({
   onDelete,
   fileID,
 }: Props) => {
-  const { getFile } = useFileStorage();
+  const [selectedPreview, setSelectedPreview] = useState<
+    (PreviewTypeWithStorageRef | PreviewType) | null
+  >(null);
+  const { getFileURL, getFileAsBlob } = useFileStorage();
   const [detailImage, setDetailImage] = React.useState<string | null>(null);
+  const [video, setVideo] = React.useState<VideoType | null>(null);
 
   const handleDelete = (
     event: FormEvent<HTMLButtonElement>,
@@ -87,14 +93,30 @@ export const PreviewFiles = ({
     event.stopPropagation();
     onDelete && onDelete(fileName);
   };
+
   const handleDisplayFile = async (
     preview?: PreviewTypeWithStorageRef | PreviewType
   ) => {
+    setSelectedPreview(preview || null);
     if ((preview as PreviewTypeWithStorageRef)?.storageImageRef?.fullPath) {
-      const payload = await getFile(
-        (preview as PreviewTypeWithStorageRef).storageImageRef.fullPath
-      );
-      setDetailImage(payload);
+      if (preview?.mimeType?.includes('image')) {
+        const payload = await getFileURL(
+          (preview as PreviewTypeWithStorageRef).storageImageRef.fullPath
+        );
+        return setDetailImage(payload);
+      }
+      if (preview?.mimeType?.includes('video')) {
+        const payload = await getFileAsBlob(
+          (preview as PreviewTypeWithStorageRef).storageImageRef.fullPath
+        );
+        if (payload) {
+          setVideo({
+            blob: payload,
+            thumbnail: preview.url || '',
+            name: preview.name || '',
+          });
+        }
+      }
     }
   };
 
@@ -126,14 +148,27 @@ export const PreviewFiles = ({
       <FixedBottomToolbar>
         <ButtonPill onClick={onClose}>FERMER</ButtonPill>
       </FixedBottomToolbar>
-      <SwipableDefault
-        onOpen={() => {}}
-        open={Boolean(detailImage)}
-        title=""
-        onClose={() => setDetailImage(null)}
-      >
-        {detailImage ? <img src={detailImage} /> : null}
-      </SwipableDefault>
+      {selectedPreview?.mimeType?.includes('image') ? (
+        <SwipableDefault
+          onOpen={() => {}}
+          open={Boolean(detailImage)}
+          title=""
+          onClose={() => setDetailImage(null)}
+        >
+          {detailImage ? <img src={detailImage} /> : null}
+        </SwipableDefault>
+      ) : null}
+      {selectedPreview?.mimeType?.includes('video') ? (
+        video ? (
+          // <video autoPlay src={detailImage} />
+          <DrawingApp
+            video={video}
+            open={Boolean(video)}
+            onClose={() => setVideo(null)}
+            onDelete={() => {}}
+          />
+        ) : null
+      ) : null}
     </Root>
   );
 };

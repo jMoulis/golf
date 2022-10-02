@@ -13,7 +13,7 @@ interface Session {
   topic: string;
   users: string[];
   userId: string;
-  tasks: TaskType[];
+  tasks?: TaskType[];
   documents?: DocumentType[];
 }
 

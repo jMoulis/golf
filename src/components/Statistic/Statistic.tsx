@@ -3,6 +3,8 @@
 //   getHolesScores,
 //   getScoreBrut,
 
+import { ErrorBoundary } from 'components/Error/ErrorBoundary';
+
 // } from '../../utils/scoreUtils';
 // import { useGames } from '../Game/useGames';
 
@@ -31,5 +33,10 @@ export const Statistic = () => {
    *
    * Get stat by courseRef
    */
-  return <div>En cours de contruction... patience</div>;
+
+  return (
+    <ErrorBoundary>
+      <div>En cours de contruction... patience</div>
+    </ErrorBoundary>
+  );
 };

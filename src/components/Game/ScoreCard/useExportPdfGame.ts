@@ -1,7 +1,7 @@
 import { drawDOM, exportPDF } from "@progress/kendo-drawing";
 import { useMemo, useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../../firebase";
+import { auth } from "../../../firebaseConfig/firebase";
 import { useFileStorage } from "../../../hooks/useFileStorage";
 import { GameType } from "../../types";
 import { useGames } from "../useGames";
@@ -11,7 +11,7 @@ export const useExportPdfGame = (game: GameType | null) => {
   const [user] = useAuthState(auth);
   const dateFormat = useRef<Intl.DateTimeFormat>(new Intl.DateTimeFormat());
   const { onEditGame } = useGames();
-  const { getFile, updloadBase64File } = useFileStorage();
+  const { getFileURL, updloadBase64File } = useFileStorage();
 
   const fileName = useMemo(() => {
     if (!game) return '';
@@ -29,7 +29,7 @@ export const useExportPdfGame = (game: GameType | null) => {
     if (!game) return null;
 
     if (game?.scoreCardPDF) {
-      const fileUrl = await getFile(fileName)
+      const fileUrl = await getFileURL(fileName)
       if (fileUrl) {
         setUrl(fileUrl)
       }
@@ -40,7 +40,7 @@ export const useExportPdfGame = (game: GameType | null) => {
           const base64 = dataUri.split(';base64,')[1];
           updloadBase64File(fileName, base64, 'application/pdf').then((snapshot) => {
             onEditGame(game.id, { scoreCardPDF: snapshot.metadata.fullPath });
-            getFile(fileName).then((fileUrl) => {
+            getFileURL(fileName).then((fileUrl) => {
               if (fileUrl) {
                 setUrl(fileUrl)
               } else {

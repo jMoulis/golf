@@ -14,9 +14,10 @@ import {
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { app, auth } from '../../firebase';
-import { useFileStorage } from '../../hooks/useFileStorage';
+import { app, auth } from 'firebaseConfig/firebase';
+import { useFileStorage } from 'hooks/useFileStorage';
 import { GamePayloadType, GameType } from '../types';
+import { toast } from 'react-toastify';
 
 export const useGames = () => {
   const { deleteFile } = useFileStorage();
@@ -33,7 +34,7 @@ export const useGames = () => {
         if (deleteGame.scoreCardPDF) {
           deleteFile(deleteGame.scoreCardPDF)
         }
-      });
+      }).catch((error) => toast.error(`Delete game: ${error.message}`));
       setDeleteGame(null);
     }
   };
@@ -46,8 +47,6 @@ export const useGames = () => {
       where('users', 'array-contains', user.uid),
       orderBy('date', 'desc')
     );
-
-
     gamesUnsubscribe.current = onSnapshot(
       gamesQuery,
       (payload) => {
@@ -62,7 +61,7 @@ export const useGames = () => {
         setGames(incomingGames);
       },
       (error) => {
-        console.error('Get games', error.message);
+        toast.error(`Get games: ${error.message}`)
       },
     );
   }, [user]);
@@ -78,13 +77,17 @@ export const useGames = () => {
 
   const handleUpdateGame = async (gameID: string, value: any) => {
     const gameRef = doc(db.current, 'games', gameID);
-    await setDoc(
-      gameRef,
-      value,
-      {
-        merge: true,
-      },
-    );
+    try {
+      await setDoc(
+        gameRef,
+        value,
+        {
+          merge: true,
+        },
+      );
+    } catch (error: any) {
+      toast.error(`Update game: ${error.message}`)
+    }
   }
 
   return {

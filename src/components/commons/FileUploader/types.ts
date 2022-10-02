@@ -7,7 +7,8 @@ export interface PreviewType {
   url?: string;
   loading?: LoadingType;
   customName?: string;
-  file?: File
+  file?: File;
+  mimeType?: string;
 }
 export interface PreviewTypeWithStorageRef extends PreviewType {
   storageThumbnailRef: StorageReference

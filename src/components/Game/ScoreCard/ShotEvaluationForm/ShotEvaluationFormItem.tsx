@@ -1,14 +1,14 @@
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState } from 'react';
-import { Flexbox } from '../../../commons';
-import { ListItem } from '../../../commons/List';
-import { ShotButton } from '../../../commons/Buttons/ShotButton';
-import { GameHoleType, GameType, ShotType } from '../../../types';
-import { shotTypesByTypes } from '../ShotForm/shotTypes';
-import { theme } from '../../../../style/theme';
+import React, { useMemo, useState } from 'react';
+import { Flexbox } from 'components/commons';
+import { ListItem } from 'components/commons/List';
+import { ShotButton } from 'components/commons/Buttons/ShotButton';
+import { GameHoleType, GameType, ShotType } from 'components/types';
+import { shotTypesByTypes } from 'components/Game/ScoreCard/ShotForm/shotTypes';
+import { theme } from 'style/theme';
 import { DocumentReference } from 'firebase/firestore';
-import { SwipeShotForm } from '../../../commons/SwipeShotForm/SwipeShotForm';
+import { SwipeShotForm } from 'components/commons/SwipeShotForm/SwipeShotForm';
 
 type Props = {
   selectedShot: ShotType | null;
@@ -29,6 +29,13 @@ export const ShotEvaluationFormItem = ({
 }: Props) => {
   const [open, setOpen] = useState(false);
 
+  const roundDistance = useMemo(() => {
+    if (selectedShot?.club?.distance) {
+      return `${Math.round(selectedShot.club.distance)}m`;
+    }
+    return 0;
+  }, [selectedShot?.club?.distance]);
+
   return (
     <ListItem
       style={{
@@ -42,17 +49,21 @@ export const ShotEvaluationFormItem = ({
         <span>{`Hole: ${hole?.number} - par: ${hole?.par}`}</span>
         {selectedShot ? (
           <Flexbox flex="1" justifyContent="space-between" alignItems="center">
-            <Flexbox>
-              <span>Type:</span>
-              <span
-                style={{
-                  color: shotTypesByTypes[selectedShot?.type]?.color,
-                  marginLeft: '5px',
-                  fontSize: '20px',
-                }}
-              >
-                {shotTypesByTypes[selectedShot?.type]?.icon}
-              </span>
+            <Flexbox flexDirection="column">
+              <Flexbox>
+                <span>Type:</span>
+                <span
+                  style={{
+                    color: shotTypesByTypes[selectedShot?.type]?.color,
+                    marginLeft: '5px',
+                    fontSize: '20px',
+                  }}
+                >
+                  {shotTypesByTypes[selectedShot?.type]?.icon}
+                </span>
+              </Flexbox>
+              <Flexbox>{selectedShot.club?.name}</Flexbox>
+              <Flexbox>{roundDistance}</Flexbox>
             </Flexbox>
             <ShotButton
               styling={{
@@ -76,6 +87,7 @@ export const ShotEvaluationFormItem = ({
         hole={hole}
         game={game}
         open={open}
+        selectedShot={selectedShot || undefined}
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
         title="Modifier un shot"

@@ -2,7 +2,7 @@ import { collection, doc, getDoc, getFirestore, onSnapshot, query, setDoc, Unsub
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useUserContext, signInAction, useAuthDispatch } from "../../auth/authContext";
-import { app, auth } from "../../firebase";
+import { app, auth } from "../../firebaseConfig/firebase";
 import { UserType } from "../types";
 
 export const useUser: () => {
