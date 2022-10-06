@@ -25,6 +25,7 @@ type Props = {
 
 export const ClubButtons = ({ onSelectClub, selectedClub }: Props) => {
   const { user } = useUser();
+
   return (
     <List>
       {user?.bag

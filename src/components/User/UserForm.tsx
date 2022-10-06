@@ -97,17 +97,27 @@ export const UserForm = ({ user, onClose }: Props) => {
   };
 
   const handleUpdateBag = (club: ClubType) => {
-    const updatedBag = [...(user?.bag || [])];
-    const prevClub = updatedBag.findIndex(
-      (prevClub) => prevClub.id === club.id
-    );
+    const updatedBag = [...(user?.bag || [])].map((prevClub) => {
+      if (prevClub.id === club.id) {
+        return {
+          ...prevClub,
+          ...club,
+        };
+      }
+      return prevClub;
+    });
+    const updatedUser = {
+      ...user,
+      bag: updatedBag,
+    };
+    editUser(updatedUser);
+  };
 
-    if (prevClub === -1) {
-      updatedBag.push({ ...club, distance: 0, distances: [] });
-    } else {
-      updatedBag.splice(prevClub, 1);
-    }
-
+  const handleAddClub = (club: ClubType) => {
+    const updatedBag = [
+      ...(user?.bag || []),
+      { ...club, distance: 0, distances: [] },
+    ];
     const updatedUser = {
       ...user,
       bag: updatedBag,
@@ -159,6 +169,7 @@ export const UserForm = ({ user, onClose }: Props) => {
       <Bag
         clubs={user.bag || []}
         onEdit={handleUpdateBag}
+        onAdd={handleAddClub}
         onDelete={handleDeleteClub}
       />
       <FixedBottomToolbar>

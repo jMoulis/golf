@@ -12,6 +12,9 @@ export const useUser: () => {
   coaches: UserType[];
   getCoaches: () => void;
   editUser: (user: UserType) => null | undefined;
+  updateUserBagClubDistance: (clubId: string,
+    distance: number,
+    user: UserType) => UserType
 } = () => {
   const dispatch = useAuthDispatch();
   const [userSystem] = useAuthState(auth);
@@ -95,12 +98,28 @@ export const useUser: () => {
     );
   }, []);
 
+  const updateUserBagClubDistance = (
+    clubId: string,
+    distance: number,
+    user: UserType
+  ) => {
+    const userBag = (user.bag || [])?.map((club) =>
+      club.id === clubId
+        ? { ...club, distances: [...(club.distances || []), distance] }
+        : club
+    );
+    return {
+      ...user,
+      bag: userBag,
+    };
+  };
   return {
     getConnectedUser,
     user,
     coaches,
     getCoaches,
     editUser,
-    fetchOneUser
+    fetchOneUser,
+    updateUserBagClubDistance
   }
 }

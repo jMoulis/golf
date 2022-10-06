@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faBan,
   faBullseyeArrow,
+  faFrenchFries,
   faGolfBallTee,
   faGolfFlagHole,
   faRoad,
@@ -39,6 +40,11 @@ export const shotTypes = [
     color: '#02732A',
   },
   {
+    type: 'chip',
+    icon: <FontAwesomeIcon icon={faFrenchFries} />,
+    color: '#02732A',
+  },
+  {
     type: 'putt',
     icon: <FontAwesomeIcon icon={faGolfFlagHole} />,
     color: '#B0D959',
@@ -53,7 +59,6 @@ export const shotTypes = [
     icon: <FontAwesomeIcon icon={faUmbrellaBeach} />,
     color: '#D98C71',
   },
-
   {
     type: 'regul',
     icon: <FontAwesomeIcon icon={faBullseyeArrow} />,

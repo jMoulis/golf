@@ -83,7 +83,7 @@ export const ShotEvaluationForm = ({
           color="#fff"
           backgroundColor={theme.colors.saveButton}
         >
-          <span>Enregistrer</span>
+          <span>Fermer</span>
         </ButtonPill>
         {onDeleteShot ? <DeleteButton onClick={onDeleteShot} /> : null}
       </FixedBottomToolbar>

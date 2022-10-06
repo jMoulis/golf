@@ -29,12 +29,11 @@ const CustomShotButton = styled(ShotButton)`
 `;
 
 type Props = {
-  onValidate: () => void;
-  status?: GameStatus;
+  onValidate: (holesCount: number) => void;
   onClose: () => void;
 };
 
-export const SaveMenu = ({ onValidate, status, onClose }: Props) => {
+export const SaveMenu = ({ onValidate, onClose }: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -46,12 +45,8 @@ export const SaveMenu = ({ onValidate, status, onClose }: Props) => {
     setAnchorEl(null);
   };
 
-  const handleSaveDraft = () => {
-    setAnchorEl(null);
-    onClose();
-  };
-  const handleSubmit = () => {
-    onValidate();
+  const handleSubmit = (holesCount: number) => {
+    onValidate(holesCount);
     setAnchorEl(null);
     onClose();
   };
@@ -95,20 +90,13 @@ export const SaveMenu = ({ onValidate, status, onClose }: Props) => {
       >
         <Wrapper>
           <Title>Sauvegarder</Title>
-          {status !== ENUM_GAME_STATUS.DONE ? (
-            <>
-              <CustomShotButton onClick={handleSaveDraft}>
-                Brouillon
-              </CustomShotButton>
-              <CustomShotButton onClick={handleSubmit}>
-                Valider la carte
-              </CustomShotButton>
-            </>
-          ) : (
-            <CustomShotButton onClick={handleSaveDraft}>
-              Fermer
-            </CustomShotButton>
-          )}
+
+          <CustomShotButton onClick={() => handleSubmit(9)}>
+            9 holes
+          </CustomShotButton>
+          <CustomShotButton onClick={() => handleSubmit(18)}>
+            18 holes
+          </CustomShotButton>
         </Wrapper>
       </Menu>
     </>

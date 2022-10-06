@@ -22,6 +22,7 @@ import { useScoring } from './useScoring';
 import { useUser } from 'components/User/useUser';
 import { ClubButtons } from './ClubButtons';
 import { toast } from 'react-toastify';
+import { classicShots } from '../utils';
 
 const Root = styled(Flexbox)`
   background-color: ${theme.colors.backgroundPage};
@@ -153,8 +154,8 @@ export const ShotForm = ({
           shot: {
             ...prev.shot,
             club: {
-              ...prev.shot?.club,
-              ...club,
+              id: club.id,
+              name: club.name,
               distance: (prev.shot?.club?.distance as any) || 0,
             },
           },
@@ -170,16 +171,6 @@ export const ShotForm = ({
     setSelectedShot(null);
     setNewShot(null);
   };
-
-  const classicShots = [
-    'tee',
-    'rough-left',
-    'fairway',
-    'rough-right',
-    'putt',
-    'bunker',
-    'penalty',
-  ];
 
   return (
     <>

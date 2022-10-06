@@ -1,12 +1,14 @@
 import styled from '@emotion/styled';
 import { faSquarePlus } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useUser } from 'components/User/useUser';
 import { DocumentReference, increment, setDoc } from 'firebase/firestore';
 import { useState } from 'react';
 import { theme } from '../../../../style/theme';
 import { ShotButton } from '../../../commons/Buttons/ShotButton';
 import { GameHoleType, GameType, ShotType, ThemeType } from '../../../types';
 import { ShotEvaluationForm } from '../ShotEvaluationForm/ShotEvaluationForm';
+import { excludedDistanceshotType } from '../utils';
 import { Shot } from './Shot';
 import { shotTypesByTypes } from './shotTypes';
 import { useScoring } from './useScoring';
@@ -38,7 +40,7 @@ export const Shots = ({
 }: Props) => {
   const [selectedShot, setSelectedShot] = useState<ShotType | null>(null);
   const { onAddShotScoring, onRemoveShotScoring } = useScoring();
-
+  const { user, editUser, updateUserBagClubDistance } = useUser();
   const handleAddShotScoring = async (
     evaluationValue: 'KO' | 'OK',
     evaluationType: string
@@ -103,6 +105,19 @@ export const Shots = ({
       const updatedShot = { ...selectedShot, ...incomingShot };
       setSelectedShot(updatedShot);
       const updatedShots = updateShots(hole.shots, updatedShot);
+      if (
+        user &&
+        updatedShot.club &&
+        !excludedDistanceshotType.includes(updatedShot.type)
+      ) {
+        editUser(
+          updateUserBagClubDistance(
+            updatedShot.club.id || '',
+            updatedShot.club.distance || 0,
+            user
+          )
+        );
+      }
       await setDoc(
         gameRef,
         {

@@ -26,6 +26,9 @@ import { Alerts } from 'components/commons/Alerts';
 import * as geometry from 'spherical-geometry-js';
 import { useGeolocated } from 'react-geolocated';
 import { useUser } from 'components/User/useUser';
+import { excludedDistanceshotType } from './utils';
+import { scoresByType, shotsTypeStat } from 'utils/scoreUtils';
+import { sortHoles } from 'components/Admin/Course/utils';
 
 const calculateDistance = (
   newCoords?: { lng: number | null; lat: number | null },
@@ -45,22 +48,6 @@ const calculateDistance = (
     }
   );
   return distance;
-};
-
-const updateUserBagClubDistance = (
-  clubId: string,
-  distance: number,
-  user: UserType
-) => {
-  const userBag = (user.bag || [])?.map((club) =>
-    club.id === clubId
-      ? { ...club, distances: [...(club.distances || []), distance] }
-      : club
-  );
-  return {
-    ...user,
-    bag: userBag,
-  };
 };
 
 const List = styled.ul`
@@ -90,7 +77,7 @@ export const ScoreCard = ({ game, onClose, course }: Props) => {
       watchPosition: true,
       userDecisionTimeout: 5000,
     });
-  const { user, editUser } = useUser();
+  const { user, editUser, updateUserBagClubDistance } = useUser();
   const [selectedHole, setSelectedHole] = useState<GameHoleType | null>(null);
   const shotUnsubscribeRef = useRef<Unsubscribe | null>(null);
   const [open, setOpen] = useState<boolean>(false);
@@ -136,9 +123,14 @@ export const ScoreCard = ({ game, onClose, course }: Props) => {
     const updatedShots = (hole.shots || []).map((prev) => {
       if (prev.id === prevShot?.id) {
         const newDistance = calculateDistance(prev.coords, newShot.coords);
-        if (user && prevShot.club?.id) {
+        if (
+          user &&
+          prevShot.club?.id &&
+          newDistance &&
+          !excludedDistanceshotType.includes(newShot.type)
+        ) {
           editUser(
-            updateUserBagClubDistance(prevShot.club.id || '', newDistance, user)
+            updateUserBagClubDistance(prevShot.club.id, newDistance, user)
           );
         }
         return {
@@ -193,7 +185,52 @@ export const ScoreCard = ({ game, onClose, course }: Props) => {
       setOpen(state);
     };
 
-  const handleValidate = async () => {
+  const handleValidate = async (holesCount: number) => {
+    if (!game) return null;
+    const holes = Object.values(game.holes);
+    const sortedHoles = sortHoles(holes);
+
+    const frontNine = sortedHoles.slice(0, 9);
+
+    let stats = {
+      type: 0,
+      gameID: game.id,
+      score: 0,
+      shotTypes: {},
+      scoreType: {},
+    };
+    if (holesCount === 9) {
+      stats = {
+        ...stats,
+        type: 9,
+        shotTypes: shotsTypeStat(frontNine as any),
+        scoreType: scoresByType(frontNine as any),
+        score: frontNine.reduce(
+          (acc, hole: any) => acc + (hole.shots?.length || 0),
+          0
+        ),
+      };
+    } else if (holesCount === 18) {
+      stats = {
+        ...stats,
+        type: 18,
+        shotTypes: shotsTypeStat(sortedHoles as any),
+        scoreType: scoresByType(sortedHoles as any),
+        score: sortedHoles.reduce(
+          (acc, hole: any) => acc + (hole.shots?.length || 0),
+          0
+        ),
+      };
+    }
+    if (
+      user &&
+      ![...(user.stats || [])].some((prev) => prev.gameID === game.id)
+    ) {
+      editUser({
+        ...user,
+        stats: [...(user.stats || []), stats],
+      });
+    }
     if (gameRef) {
       await setDoc(
         gameRef,
@@ -232,11 +269,7 @@ export const ScoreCard = ({ game, onClose, course }: Props) => {
         open={open}
         title="Ajouter un shot"
       />
-      <SaveMenu
-        onClose={onClose}
-        onValidate={handleValidate}
-        status={game.status}
-      />
+      <SaveMenu onClose={onClose} onValidate={handleValidate} />
       <Alerts
         onClose={() => setError(null)}
         open={Boolean(error)}

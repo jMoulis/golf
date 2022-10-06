@@ -113,6 +113,7 @@ export type ThemeTypeInput = {
   userId: string;
 };
 
+export type UserStatType = { type: number, gameID: string, score: number, scoreType: Record<string, number>, shotTypes: Record<string, number> }
 export type UserType = {
   id?: string;
   firstname?: string;
@@ -123,7 +124,8 @@ export type UserType = {
   students?: UserType[];
   createdAt?: Timestamp;
   updatedAt?: Timestamp;
-  bag?: BagType
+  bag?: BagType;
+  stats?: UserStatType[]
 };
 
 export type UserTypeSummary = {
