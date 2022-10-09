@@ -12,7 +12,7 @@ import { ShotButton } from '../../../commons/Buttons/ShotButton';
 import { GameHoleType, GameType, ShotType, ThemeType } from '../../../types';
 import { ShotEvaluationForm } from '../ShotEvaluationForm/ShotEvaluationForm';
 import { excludedDistanceshotType } from '../utils';
-import { MapButton } from './Map/MapButton';
+// import { MapButton } from './Map/MapButton';
 import { Shot } from './Shot';
 import { useConfig } from './shotTypes';
 import { useScoring } from './useScoring';
@@ -160,7 +160,7 @@ export const Shots = ({
             <FontAwesomeIcon icon={faSquarePlus as any} />
           </ShotButton>
         ) : null}
-        <MapButton hole={hole} />
+        {/* <MapButton hole={hole} /> */}
       </Root>
 
       <ShotEvaluationForm
