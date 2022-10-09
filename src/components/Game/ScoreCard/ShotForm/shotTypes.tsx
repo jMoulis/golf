@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faBan,
@@ -11,11 +11,57 @@ import {
   faSquareUpRight,
   faUmbrellaBeach,
 } from '@fortawesome/pro-duotone-svg-icons';
+import { collection, getDocs, getFirestore, query } from 'firebase/firestore';
+import { app } from 'firebaseConfig/firebase';
 
-type ShotyType = {
+type ShotType = {
   type: string;
   icon: any;
   color: string;
+  toStat?: boolean;
+  onlyStat?: boolean;
+  order: number;
+};
+
+export const useConfig = () => {
+  const [config, setConfig] = useState<{ shots: { shotTypes: ShotType[] } }>({
+    shots: {
+      shotTypes: [],
+    },
+  });
+  useEffect(() => {
+    const db = getFirestore(app);
+    const q = query(collection(db, 'config'));
+    getDocs(q).then((querySnapshot) => {
+      let payload: any = {};
+      querySnapshot.forEach((doc) => {
+        payload = {
+          ...payload,
+          [doc.id]: doc.data(),
+        };
+        // payload.push({ id: doc.id, ...doc.data() });
+      });
+      setConfig(payload);
+    });
+  }, []);
+
+  const shotTypesByTypes = useMemo(
+    () =>
+      (config.shots?.shotTypes || []).reduce(
+        (acc: Record<string, ShotType>, shotType: ShotType) => {
+          return {
+            ...acc,
+            [shotType.type]: shotType,
+          };
+        },
+        {}
+      ),
+    [config.shots?.shotTypes]
+  );
+  return {
+    shotTypes: config.shots.shotTypes || [],
+    shotTypesByTypes,
+  };
 };
 
 export const shotTypes = [
@@ -59,19 +105,9 @@ export const shotTypes = [
     icon: <FontAwesomeIcon icon={faUmbrellaBeach} />,
     color: '#D98C71',
   },
-  {
-    type: 'regul',
-    icon: <FontAwesomeIcon icon={faBullseyeArrow} />,
-    color: '#02732A',
-  },
+  // {
+  //   type: 'regul',
+  //   icon: <FontAwesomeIcon icon={faBullseyeArrow} />,
+  //   color: '#02732A',
+  // },
 ];
-
-export const shotTypesByTypes = shotTypes.reduce(
-  (acc: Record<string, ShotyType>, shotType) => {
-    return {
-      ...acc,
-      [shotType.type]: shotType,
-    };
-  },
-  {}
-);

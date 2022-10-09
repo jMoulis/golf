@@ -125,11 +125,11 @@ export const UserForm = ({ user, onClose }: Props) => {
     editUser(updatedUser);
   };
 
-  const handleDeleteClub = (club: ClubType) => {
+  const handleDeleteClub = (clubID: string) => {
     const updatedBag = [...(user?.bag || [])];
     const updatedUser = {
       ...user,
-      bag: updatedBag.filter((prevClub) => prevClub.id !== club.id),
+      bag: updatedBag.filter((prevClub) => prevClub.id !== clubID),
     };
     editUser(updatedUser);
   };

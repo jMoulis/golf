@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import { shotsTypeStat } from '../../../../utils/scoreUtils';
 import { Flexbox } from '../../../commons';
 import { GameHoleType } from '../../../types';
-import { shotTypesByTypes } from '../ShotForm/shotTypes';
+import { useConfig } from '../ShotForm/shotTypes';
 
 const Root = styled(Flexbox)`
   margin: 5px 0;
@@ -26,6 +26,7 @@ type Props = {
 };
 
 export const ShotTypes = ({ holes }: Props) => {
+  const { shotTypesByTypes } = useConfig();
   const shotStats: {
     [key: string]: any;
   } = useMemo(() => {
@@ -38,7 +39,7 @@ export const ShotTypes = ({ holes }: Props) => {
       {Object.keys(shotStats).map((key, index) => {
         const value = shotStats[key];
         return (
-          <ShotWrapper key={index} color={shotTypesByTypes[key].color}>
+          <ShotWrapper key={index} color={shotTypesByTypes[key]?.color}>
             <ShotType>{key}</ShotType>
             {value}
           </ShotWrapper>

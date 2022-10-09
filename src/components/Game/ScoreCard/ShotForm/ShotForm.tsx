@@ -17,12 +17,19 @@ import {
   BagClubType,
 } from 'components/types';
 import { ShotEvaluationForm } from '../ShotEvaluationForm/ShotEvaluationForm';
-import { shotTypes } from './shotTypes';
+import { useConfig } from './shotTypes';
 import { useScoring } from './useScoring';
-import { useUser } from 'components/User/useUser';
 import { ClubButtons } from './ClubButtons';
 import { toast } from 'react-toastify';
 import { classicShots } from '../utils';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  solid,
+  regular,
+  light,
+  thin,
+  duotone,
+} from '@fortawesome/fontawesome-svg-core/import.macro'; // <-- import styles to be used
 
 const Root = styled(Flexbox)`
   background-color: ${theme.colors.backgroundPage};
@@ -67,6 +74,7 @@ export const ShotForm = ({
   const [selectedShot, setSelectedShot] = useState<ShotType | null>(null);
   const [selectedClub, setSelectedClub] = useState<BagClubType | null>(null);
   const { onAddShotScoring, onRemoveShotScoring } = useScoring();
+  const { shotTypes } = useConfig();
 
   const [newShot, setNewShot] = useState<{
     shot: ShotType;
@@ -172,12 +180,15 @@ export const ShotForm = ({
     setNewShot(null);
   };
 
+  if (!shotTypes) return null;
   return (
     <>
       <Root flexDirection="column">
         <Wrapper>
-          {shotTypes.map((shot, key) =>
-            classicShots.includes(shot.type) ? (
+          {shotTypes
+            .sort((a: any, b: any) => a.order - b.order)
+            .filter((shot: any) => !shot.onlyStat)
+            .map((shot: any, key: number) => (
               <CustomShotButton
                 type="button"
                 key={key}
@@ -187,10 +198,11 @@ export const ShotForm = ({
                   selectedShot?.type === shot?.type ? theme.colors.blue : '#fff'
                 }
               >
-                {shot?.icon}
+                {shot?.icon ? (
+                  <FontAwesomeIcon icon={shot?.icon as any} />
+                ) : null}
               </CustomShotButton>
-            ) : null
-          )}
+            ))}
         </Wrapper>
         <ClubButtons
           onSelectClub={handleSelectClub}

@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Flexbox } from '../../../commons';
 import { ShotButton } from '../../../commons/Buttons/ShotButton';
 import { ShotType } from '../../../types';
@@ -27,7 +28,7 @@ export const Shot = ({ typedShot, shot, onSelectShot }: Props) => {
   return (
     <Flexbox flexDirection="column" styling={{ position: 'relative' }}>
       <ShotButton color={typedShot?.color} onClick={() => onSelectShot(shot)}>
-        {typedShot?.icon}
+        {typedShot?.icon ? <FontAwesomeIcon icon={typedShot?.icon} /> : null}
       </ShotButton>
       <Flexbox
         styling={{

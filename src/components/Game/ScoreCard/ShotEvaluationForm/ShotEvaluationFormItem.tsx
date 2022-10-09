@@ -5,7 +5,7 @@ import { Flexbox } from 'components/commons';
 import { ListItem } from 'components/commons/List';
 import { ShotButton } from 'components/commons/Buttons/ShotButton';
 import { GameHoleType, GameType, ShotType } from 'components/types';
-import { shotTypesByTypes } from 'components/Game/ScoreCard/ShotForm/shotTypes';
+import { useConfig } from 'components/Game/ScoreCard/ShotForm/shotTypes';
 import { theme } from 'style/theme';
 import { DocumentReference } from 'firebase/firestore';
 import { SwipeShotForm } from 'components/commons/SwipeShotForm/SwipeShotForm';
@@ -28,7 +28,7 @@ export const ShotEvaluationFormItem = ({
   onEditShot,
 }: Props) => {
   const [open, setOpen] = useState(false);
-
+  const { shotTypesByTypes } = useConfig();
   const roundDistance = useMemo(() => {
     if (selectedShot?.club?.distance) {
       return `${Math.round(selectedShot.club.distance)}m`;
@@ -59,7 +59,11 @@ export const ShotEvaluationFormItem = ({
                     fontSize: '20px',
                   }}
                 >
-                  {shotTypesByTypes[selectedShot?.type]?.icon}
+                  {shotTypesByTypes[selectedShot?.type]?.icon ? (
+                    <FontAwesomeIcon
+                      icon={shotTypesByTypes[selectedShot?.type]?.icon}
+                    />
+                  ) : null}
                 </span>
               </Flexbox>
               <Flexbox>{selectedShot.club?.name}</Flexbox>

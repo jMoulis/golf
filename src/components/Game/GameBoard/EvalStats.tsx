@@ -4,7 +4,7 @@ import { Flexbox } from '../../commons';
 import { ShotButton } from '../../commons/Buttons/ShotButton';
 import { GameHoleType } from '../../types';
 import { shotQualityAsObject } from '../ScoreCard/ShotForm/shotQuality';
-import { shotTypesByTypes } from '../ScoreCard/ShotForm/shotTypes';
+import { useConfig } from '../ScoreCard/ShotForm/shotTypes';
 import { Stat, Tag } from './stylesComponents';
 
 const CustomTag = styled(Tag)`
@@ -30,6 +30,7 @@ type Props = {
 };
 
 export const EvalStats = ({ holes }: Props) => {
+  const { shotTypesByTypes } = useConfig();
   const totalScore = useMemo(() => {
     if (!holes) return [];
     const themes = Object.values(holes)

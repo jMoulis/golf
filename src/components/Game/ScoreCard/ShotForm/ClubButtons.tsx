@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { ShotButton } from 'components/commons/Buttons/ShotButton';
 import { BagClubType } from 'components/types';
+import { ClubImage } from 'components/User/Bag/ClubImage';
 import { useUser } from 'components/User/useUser';
 import { theme } from 'style/theme';
 
@@ -13,8 +14,11 @@ const List = styled.ul`
 const Title = styled.h3``;
 
 const CustomShotButton = styled(ShotButton)`
-  height: 50px;
-  width: 50px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  width: 80px;
   font-size: 15px;
 `;
 
@@ -39,6 +43,7 @@ export const ClubButtons = ({ onSelectClub, selectedClub }: Props) => {
               }
               onClick={() => onSelectClub(club)}
             >
+              <ClubImage clubName={club.name} clubThumbnail={club.thumbnail} />
               {club.name}
             </CustomShotButton>
           </li>

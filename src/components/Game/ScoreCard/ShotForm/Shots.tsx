@@ -1,5 +1,8 @@
 import styled from '@emotion/styled';
-import { faSquarePlus } from '@fortawesome/pro-duotone-svg-icons';
+import {
+  faMapLocation,
+  faSquarePlus,
+} from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useUser } from 'components/User/useUser';
 import { DocumentReference, increment, setDoc } from 'firebase/firestore';
@@ -9,8 +12,9 @@ import { ShotButton } from '../../../commons/Buttons/ShotButton';
 import { GameHoleType, GameType, ShotType, ThemeType } from '../../../types';
 import { ShotEvaluationForm } from '../ShotEvaluationForm/ShotEvaluationForm';
 import { excludedDistanceshotType } from '../utils';
+import { MapButton } from './Map/MapButton';
 import { Shot } from './Shot';
-import { shotTypesByTypes } from './shotTypes';
+import { useConfig } from './shotTypes';
 import { useScoring } from './useScoring';
 
 const Root = styled.div`
@@ -38,6 +42,7 @@ export const Shots = ({
   selectedHole,
   game,
 }: Props) => {
+  const { shotTypesByTypes } = useConfig();
   const [selectedShot, setSelectedShot] = useState<ShotType | null>(null);
   const { onAddShotScoring, onRemoveShotScoring } = useScoring();
   const { user, editUser, updateUserBagClubDistance } = useUser();
@@ -155,6 +160,7 @@ export const Shots = ({
             <FontAwesomeIcon icon={faSquarePlus as any} />
           </ShotButton>
         ) : null}
+        <MapButton hole={hole} />
       </Root>
 
       <ShotEvaluationForm

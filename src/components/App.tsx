@@ -20,6 +20,11 @@ import { theme } from '../style/theme';
 import { CoachIndex } from './pages/commonPages/CoachIndex';
 import { SessionPage } from './pages/TrainingPages/SessionPages/SessionPage';
 import { SessionCoachStudentPage } from './pages/TrainingPages/SessionPages/SessionCoachStudentPage';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { fad } from '@fortawesome/pro-duotone-svg-icons';
+
+library.add(fas, fad);
 
 const Grid = styled.div`
   label: MainGrid;

@@ -12,7 +12,8 @@ export const theme = {
     separator: "#e8e8e8",
     deleteButton: "#8C8C8C",
     success: '#4BB543',
-    error: '#FF9494'
+    error: '#FF9494',
+    font: '#323232'
   },
   shadows: {
     button: "2px 2px 7px -2px rgb(0 0 0 / 23%)",
@@ -38,9 +39,9 @@ export const theme = {
     },
     statistics: {
       linear:
-        "linear-gradient(135deg, rgba(69,241,162,1) 40%, rgba(73,183,208,1) 97%)",
-      primary: "rgba(69,241,162,1)",
-      secondary: "rgba(73,183,208,1)",
+        "linear-gradient(135deg, rgba(28,222,2,1) 40%, #03FAB4 97%)",
+      primary: "rgba(28,222,2,1)",
+      secondary: "#03FAB4",
     },
     trainings: {
       linear:

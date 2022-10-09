@@ -5,19 +5,18 @@ import { BagButton } from './BagButton';
 import { AddClub } from './AddClub';
 import { useToggle } from 'hooks/useToggle';
 import { SwipableDefault } from 'components/commons/SwipableDefault';
-import { List, ListItem } from 'components/commons/List';
-import { sortArrayByAlphabet } from 'utils/global.utils';
-import { getClubDistanceAverage } from 'utils/scoreUtils';
+import { List } from 'components/commons/List';
 import { ClubListItem } from './ClubListItem';
 
 export const Bag = ({
   clubs,
   onEdit,
   onAdd,
+  onDelete,
 }: {
   clubs: BagType;
   onEdit: (club: ClubType) => void;
-  onDelete: (club: ClubType) => void;
+  onDelete: (clubID: string) => void;
   onAdd: (club: ClubType) => void;
 }) => {
   const { open, onClose, onOpen } = useToggle();
@@ -35,7 +34,12 @@ export const Bag = ({
           {clubs
             .sort((a, b) => a.order - b.order)
             .map((club, key) => (
-              <ClubListItem club={club} key={key} onEdit={onEdit} />
+              <ClubListItem
+                club={club}
+                key={key}
+                onEdit={onEdit}
+                onDelete={onDelete}
+              />
             ))}
         </List>
         <AddClub onSelect={(club) => onAdd(club)} userClubs={clubs} />

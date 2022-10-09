@@ -51,7 +51,9 @@ export const GameListItem = ({
           }}
         >
           <Flexbox onClick={() => onSelectGame(game)} flexDirection="column">
-            <span style={{ fontWeight: 'bold' }}>{game.courseRef}</span>
+            <span style={{ fontWeight: 'bold', color: theme.colors.font }}>
+              {game.courseRef}
+            </span>
             <DateDisplay>{dateFormat.current.format(game.date)}</DateDisplay>
             <CourseStats
               game={game}

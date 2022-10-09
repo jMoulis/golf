@@ -125,7 +125,8 @@ export type UserType = {
   createdAt?: Timestamp;
   updatedAt?: Timestamp;
   bag?: BagType;
-  stats?: UserStatType[]
+  stats?: UserStatType[];
+
 };
 
 export type UserTypeSummary = {
@@ -139,14 +140,16 @@ export type ClubType = {
   id: string;
   name: string;
   distance?: number;
-  order: number
+  order: number;
+  thumbnail?: string;
 }
 export type BagClubType = {
   id: string;
   name: string;
   distances: number[];
   distance: number;
-  order: number
+  order: number;
+  thumbnail?: string;
 }
 
 export type BagType = BagClubType[];

@@ -1,10 +1,11 @@
 import styled from '@emotion/styled';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
 import { theme } from '../../../style/theme';
 import { shotsTypeStat } from '../../../utils/scoreUtils';
 import { Flexbox } from '../../commons';
 import { GameHoleType } from '../../types';
-import { shotTypesByTypes } from '../ScoreCard/ShotForm/shotTypes';
+import { useConfig } from '../ScoreCard/ShotForm/shotTypes';
 import { Stat, Tag } from './stylesComponents';
 
 const CustomTag = styled(Tag)`
@@ -17,6 +18,7 @@ type Props = {
 };
 
 export const ShotsStats = ({ holes }: Props) => {
+  const { shotTypesByTypes } = useConfig();
   const [stats, setStats] = useState<{
     regul: number;
     fairway: number;
@@ -67,7 +69,9 @@ export const ShotsStats = ({ holes }: Props) => {
               color: shotTypesByTypes[key]?.color,
             }}
           >
-            {shotTypesByTypes[key]?.icon}
+            {shotTypesByTypes[key]?.icon ? (
+              <FontAwesomeIcon icon={shotTypesByTypes[key]?.icon} />
+            ) : null}
           </CustomTag>
           <span>{(stats as any)[key]}</span>
         </Stat>

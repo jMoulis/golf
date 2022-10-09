@@ -8,6 +8,7 @@ import { useToggle } from 'hooks/useToggle';
 import { Collapse } from '@mui/material';
 import { Flexbox } from 'components/commons';
 import { theme } from 'style/theme';
+import { ClubImage } from './ClubImage';
 
 const Root = styled(ListItem)`
   border-radius: 5px;
@@ -36,10 +37,12 @@ const DistanceLabel = styled.span`
 type Props = {
   club: BagClubType;
   onEdit: (club: BagClubType) => void;
+  onDelete: (clubID: string) => void;
 };
 
-export const ClubListItem = ({ club, onEdit }: Props) => {
+export const ClubListItem = ({ club, onEdit, onDelete }: Props) => {
   const { open, onToggle } = useToggle();
+
   const handleRemoveDistance = (index: number) => {
     const updatedDistances = [...club.distances];
     updatedDistances.splice(index, 1);
@@ -51,10 +54,15 @@ export const ClubListItem = ({ club, onEdit }: Props) => {
   return (
     <>
       <Root key={club.id}>
-        <span onClick={() => onToggle()}>{club.name}</span>
+        <span onClick={() => onToggle()}>
+          <Flexbox alignItems="center">
+            <ClubImage clubName={club.name} clubThumbnail={club.thumbnail} />
+            {club.name}
+          </Flexbox>
+        </span>
         <span>distance</span>
         <span>{getClubDistanceAverage(club.distances)}</span>
-        <DeleteButton onClick={() => onEdit(club)} />
+        <DeleteButton onClick={() => onDelete(club.id)} />
       </Root>
       <Collapse in={open}>
         <DistanceList>
