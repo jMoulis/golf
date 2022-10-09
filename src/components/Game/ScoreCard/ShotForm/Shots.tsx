@@ -12,7 +12,7 @@ import { ShotButton } from '../../../commons/Buttons/ShotButton';
 import { GameHoleType, GameType, ShotType, ThemeType } from '../../../types';
 import { ShotEvaluationForm } from '../ShotEvaluationForm/ShotEvaluationForm';
 import { excludedDistanceshotType } from '../utils';
-// import { MapButton } from './Map/MapButton';
+import { MapButton } from './Map/MapButton';
 import { Shot } from './Shot';
 import { useConfig } from './shotTypes';
 import { useScoring } from './useScoring';
@@ -46,6 +46,7 @@ export const Shots = ({
   const [selectedShot, setSelectedShot] = useState<ShotType | null>(null);
   const { onAddShotScoring, onRemoveShotScoring } = useScoring();
   const { user, editUser, updateUserBagClubDistance } = useUser();
+
   const handleAddShotScoring = async (
     evaluationValue: 'KO' | 'OK',
     evaluationType: string
@@ -139,6 +140,8 @@ export const Shots = ({
     }
   };
 
+  if (!Object.keys(shotTypesByTypes).length) return null;
+
   return (
     <>
       <Root>
@@ -160,7 +163,7 @@ export const Shots = ({
             <FontAwesomeIcon icon={faSquarePlus as any} />
           </ShotButton>
         ) : null}
-        {/* <MapButton hole={hole} /> */}
+        <MapButton hole={hole} />
       </Root>
 
       <ShotEvaluationForm
