@@ -18,40 +18,28 @@ type Props = {
 };
 
 export const ShotsStats = ({ holes }: Props) => {
-  const { shotTypesByTypes } = useConfig();
-  const [stats, setStats] = useState<{
-    regul: number;
-    fairway: number;
-    putt: number;
-    bunker: number;
-    penalty: number;
-  }>({
-    regul: 0,
-    fairway: 0,
-    putt: 0,
-    bunker: 0,
-    penalty: 0,
-  });
+  const { shotTypesByTypes, shotTypes } = useConfig();
+  const [stats, setStats] = useState<any>({});
+
   useEffect(() => {
-    if (!holes) {
-      setStats({
-        regul: 0,
-        fairway: 0,
-        putt: 0,
-        bunker: 0,
-        penalty: 0,
-      });
-    } else {
-      const { regul, fairway, putt, bunker, penalty } = shotsTypeStat(holes);
-      setStats({
-        regul,
-        fairway,
-        putt,
-        bunker,
-        penalty,
-      });
+    if (shotTypes.length) {
+      if (!holes) {
+        setStats({
+          regul: 0,
+          fairway: 0,
+          ...Object.fromEntries(
+            shotTypes
+              .filter((shot) => shot.toStat)
+              .sort((a, b) => a.order - b.order)
+              .map((shot) => [shot.type, 0])
+          ),
+        });
+      } else {
+        const shotsStats = shotsTypeStat(holes, shotTypes);
+        setStats(shotsStats);
+      }
     }
-  }, [holes]);
+  }, [holes, shotTypes]);
 
   return (
     <Flexbox

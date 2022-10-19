@@ -1,5 +1,5 @@
 import { SwipeableDrawer } from '@mui/material';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { theme } from '../../../style/theme';
 import { ButtonPill } from '../../commons/Buttons/ButtonPill';
 import { FixedBottomToolbar } from '../../commons/FixedBottomToolbar';
@@ -11,7 +11,7 @@ import { useThemes } from '../ScoreCard/ThemeForm/useThemes';
 type Props = {
   selectedThemes: ThemeType[];
   onRemoveTheme: (themeID: string) => void;
-  onSelectTheme: (theme: ThemeType) => void;
+  onSelectTheme: (incomingTheme: ThemeType) => void;
   open: boolean;
   onClose: () => void;
 };

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 import { Flexbox } from '../../../commons';
 import { DateDisplay } from '../../../commons/DateDisplay';
 import { DeleteButton } from '../../../commons/Buttons/DeleteButton';

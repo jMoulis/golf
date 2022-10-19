@@ -1,4 +1,5 @@
-import { theme } from '../../../../style/theme';
+import React from 'react';
+import { theme } from 'style/theme';
 import { CoachPageHeader } from '../../../Coach/CoachPageHeader';
 import { useCoachPage } from '../../../Coach/useCoachPage';
 import { PelzList } from '../../../Training/Pelz/PelzList/PelzList';

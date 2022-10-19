@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import styled from '@emotion/styled';
 import { ENUM_PELZ_THEME } from '../../enums';
 import { PelzTestIemShotForm } from './PelzTestIemShotForm';
 import { TestItemShotHeader } from './TestItemShotHeader';
 import { PelzTestShot, PelzTestType } from '../../types';
 import { usePelz } from '../../usePelz';
-import styled from '@emotion/styled';
 import { theme } from '../../../../../style/theme';
 
 const Root = styled.div`

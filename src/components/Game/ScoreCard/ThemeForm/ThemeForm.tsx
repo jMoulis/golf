@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { FormEvent, useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../../../firebaseConfig/firebase';
 import { theme } from '../../../../style/theme';
@@ -39,11 +39,11 @@ export const ThemeForm = ({ selectedTheme, onUpdate }: Props) => {
     if (selectedTheme) {
       onUpdateTheme({ id: selectedTheme.id, type: input });
     } else {
-      const theme: ThemeTypeInput = {
+      const gameTheme: ThemeTypeInput = {
         type: input,
         userId: user?.uid,
       };
-      onAddTheme(theme);
+      onAddTheme(gameTheme);
     }
     if (onUpdate) {
       onUpdate();

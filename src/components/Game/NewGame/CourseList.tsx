@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { SwipeableDrawer } from '@mui/material';
+import React from 'react';
 import { List, ListItem } from '../../commons/List';
 import { CoursePayloadType } from '../../types';
 import { theme } from '../../../style/theme';

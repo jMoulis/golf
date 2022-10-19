@@ -1,3 +1,4 @@
+import React from 'react';
 import { Flexbox } from '../commons';
 import { PageHeader } from '../commons/Core/PageHeader';
 import { NavigationButton } from '../commons/Buttons/NavigationButton';

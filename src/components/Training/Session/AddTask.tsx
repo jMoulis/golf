@@ -1,13 +1,13 @@
-import { FormEvent, useState } from 'react';
-import { Button, Flexbox } from '../../commons';
-import { TaskType } from './types';
+import React, { FormEvent, useState } from 'react';
 import { v4 } from 'uuid';
-import { SwipeMenuHeader } from '../../commons/SwipeMenuHeader';
 import { SwipeableDrawer, TextareaAutosize } from '@mui/material';
-import { iOS } from '../../../utils/global.utils';
-import { theme } from '../../../style/theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusSquare } from '@fortawesome/pro-duotone-svg-icons';
+import { Button, Flexbox } from '../../commons';
+import { TaskType } from './types';
+import { SwipeMenuHeader } from '../../commons/SwipeMenuHeader';
+import { iOS } from '../../../utils/global.utils';
+import { theme } from '../../../style/theme';
 
 type Props = {
   onAddTask: (task: TaskType) => void;

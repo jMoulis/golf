@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { ListItem } from 'components/commons/List';
-import { BagClubType, ClubType } from 'components/types';
+import { BagClubType } from 'components/types';
 import React from 'react';
 import { DeleteButton } from 'components/commons/Buttons/DeleteButton';
 import { getClubDistanceAverage } from 'utils/scoreUtils';

@@ -1,5 +1,5 @@
 import { SwipeableDrawer } from '@mui/material';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { iOS } from '../../../../utils/global.utils';
 import { FixedBottomToolbar } from '../../../commons/FixedBottomToolbar';
 import { List } from '../../../commons/List';
@@ -29,8 +29,8 @@ export const PelzList = ({ userId }: Props) => {
     }
   }, [selectedPelz?.id, pelzs]);
 
-  const handleCreate = async (theme: ENUM_PELZ_THEME) => {
-    const newPelz = await createTest(theme);
+  const handleCreate = async (customTheme: ENUM_PELZ_THEME) => {
+    const newPelz = await createTest(customTheme);
     if (newPelz) setSelectedPelz(newPelz);
   };
 

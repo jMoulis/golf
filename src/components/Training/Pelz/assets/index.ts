@@ -28,4 +28,4 @@ export {
   PUTTING_TEST_4,
   PUTTING_TEST_5,
   PUTTING_TEST_6,
-}
+};

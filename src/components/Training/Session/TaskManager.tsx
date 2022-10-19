@@ -1,12 +1,13 @@
 import styled from '@emotion/styled';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
+import { v4 } from 'uuid';
 import { FloatingButton } from '../../commons/Buttons/FloatingButton';
 import { List, ListItem } from '../../commons/List';
 import { BOTTOM_NAVBAR_HEIGHT, FLOATING_HEIGHT } from '../../cssConstants';
 import { EditTask } from './EditTask';
 import { TaskType } from './types';
-import { v4 } from 'uuid';
 
 const CustomList = styled(List)`
   max-height: calc(

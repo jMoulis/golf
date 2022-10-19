@@ -18,7 +18,7 @@ export const SliderWrapper = styled.div`
 
 export const SliderItem = styled.div<{ width: number }>`
   position: relative;
-  width: ${(props: any) => props.width + 'px' || '100%'};
+  width: ${(props: any) => `${props.width}px` || '100%'};
   display: flex;
   justify-content: center;
   align-items: center;

@@ -70,7 +70,7 @@ export const RenderNine = ({ holes, title }: Props) => {
       sortedholes
         .reduce(
           (acc: any, hole) => (hole.shots ? [...acc, hole.shots] : acc),
-          [],
+          []
         )
         .flat().length || 0;
     return payload;
@@ -87,7 +87,8 @@ export const RenderNine = ({ holes, title }: Props) => {
         <RowHeader
           style={{
             fontWeight: 'bold',
-          }}>
+          }}
+        >
           TROU
         </RowHeader>
         {sortedholes.map((hole: any, key) => (
@@ -95,7 +96,8 @@ export const RenderNine = ({ holes, title }: Props) => {
             key={key}
             style={{
               fontWeight: 'bold',
-            }}>
+            }}
+          >
             {hole.number}
           </TableHeadCell>
         ))}
@@ -116,7 +118,8 @@ export const RenderNine = ({ holes, title }: Props) => {
         <RowHeader
           style={{
             fontWeight: 'bold',
-          }}>
+          }}
+        >
           BRUT
         </RowHeader>
         {sortedholes.map((hole, key) => {
@@ -127,7 +130,8 @@ export const RenderNine = ({ holes, title }: Props) => {
               color={(scoreByHole as any)?.[hole.number]?.color}
               style={{
                 fontWeight: 'bold',
-              }}>
+              }}
+            >
               {hole.shots?.length || '-'}
             </TableCell>
           );
@@ -135,7 +139,8 @@ export const RenderNine = ({ holes, title }: Props) => {
         <TableCell
           style={{
             fontWeight: 'bold',
-          }}>
+          }}
+        >
           {totalScore || '-'}
         </TableCell>
       </Table>

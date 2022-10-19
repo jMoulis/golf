@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { arrayUnion, doc, getFirestore, setDoc } from 'firebase/firestore';
-import { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, app } from '../../../firebaseConfig/firebase';
 import { theme } from '../../../style/theme';
@@ -127,31 +127,29 @@ export const CoachPage = ({ coachControl, onSelect }: Props) => {
   );
 
   return (
-    <>
-      <CustomList>
-        {coaches.map((coach, key) => (
-          <ListItem key={key}>
-            <Flexbox flexDirection="column" alignItems="center">
-              <Avatar user={coach} />
-              <NameTag>{coach.firstname}</NameTag>
-            </Flexbox>
-            {coach.roles?.map((role, key) => (
-              <RoleTag key={key}>{role}</RoleTag>
-            ))}
-            {user?.uid !== coach.id ? (
-              <CustomPillButton
-                onClick={() =>
-                  disabled(coach)
-                    ? handleRemoveCoach(coach)
-                    : handleSelectCoach(coach)
-                }
-              >
-                {disabled(coach) ? 'Retirer' : 'Ajouter'}
-              </CustomPillButton>
-            ) : null}
-          </ListItem>
-        ))}
-      </CustomList>
-    </>
+    <CustomList>
+      {coaches.map((coach, key) => (
+        <ListItem key={key}>
+          <Flexbox flexDirection="column" alignItems="center">
+            <Avatar user={coach} />
+            <NameTag>{coach.firstname}</NameTag>
+          </Flexbox>
+          {coach.roles?.map((role, index) => (
+            <RoleTag key={index}>{role}</RoleTag>
+          ))}
+          {user?.uid !== coach.id ? (
+            <CustomPillButton
+              onClick={() =>
+                disabled(coach)
+                  ? handleRemoveCoach(coach)
+                  : handleSelectCoach(coach)
+              }
+            >
+              {disabled(coach) ? 'Retirer' : 'Ajouter'}
+            </CustomPillButton>
+          ) : null}
+        </ListItem>
+      ))}
+    </CustomList>
   );
 };

@@ -3,7 +3,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SwipeableDrawer } from '@mui/material';
 import { DocumentReference, setDoc } from 'firebase/firestore';
-import { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { theme } from '../../../../style/theme';
 import { iOS } from '../../../../utils/global.utils';
 import { Flexbox } from '../../../commons';
@@ -55,7 +55,7 @@ type Props = {
   onAddEvaluation: (value: 'KO' | 'OK', type: string) => void;
   game: GameType;
   gameRef: DocumentReference | null;
-  onRemoveEvaluation: (theme: ThemeType) => void;
+  onRemoveEvaluation: (incomingTheme: ThemeType) => void;
 };
 
 export const EvalShots = ({
@@ -92,14 +92,14 @@ export const EvalShots = ({
   };
 
   const availableShots = useMemo(() => {
-    const shotThemes = themes.reduce((acc: any, theme) => {
-      if (selectedShot?.themes?.[theme.type]) {
-        return [...acc, theme];
+    const shotThemes = themes.reduce((acc: any, incomingTheme) => {
+      if (selectedShot?.themes?.[incomingTheme.type]) {
+        return [...acc, incomingTheme];
       }
       return acc;
     }, []);
     const filteredGameThemes = (game?.themes || []).filter(
-      (theme) => !selectedShot?.themes?.[theme.type]
+      (incomingTheme) => !selectedShot?.themes?.[incomingTheme.type]
     );
     return [...shotThemes, ...filteredGameThemes];
   }, [selectedShot?.themes, game?.themes, themes]);
@@ -132,13 +132,13 @@ export const EvalShots = ({
             </CustomShotButton>
           </Flexbox>
           {selectedShot &&
-            availableShots.map((theme, key) => {
+            availableShots.map((incomingTheme, key) => {
               const selectedEvaluationValue =
-                selectedShot?.themes?.[theme.type];
+                selectedShot?.themes?.[incomingTheme.type];
               return (
                 <Wrapper key={key}>
                   <span style={{ textTransform: 'uppercase' }}>
-                    {theme.type}
+                    {incomingTheme.type}
                   </span>
                   <Flexbox>
                     {shotQuality.map((evaluationValue, evalKey) => {
@@ -146,7 +146,10 @@ export const EvalShots = ({
                         <CustomShotButton
                           key={evalKey}
                           onClick={() =>
-                            onAddEvaluation(evaluationValue.value, theme.type)
+                            onAddEvaluation(
+                              evaluationValue.value,
+                              incomingTheme.type
+                            )
                           }
                           selected={
                             selectedEvaluationValue === evaluationValue.value
@@ -158,7 +161,9 @@ export const EvalShots = ({
                       );
                     })}
                   </Flexbox>
-                  <DeleteButton onClick={() => handleRemoveTheme(theme)} />
+                  <DeleteButton
+                    onClick={() => handleRemoveTheme(incomingTheme)}
+                  />
                 </Wrapper>
               );
             })}

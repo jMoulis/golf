@@ -8,7 +8,7 @@ import {
   ref,
   StorageReference,
 } from 'firebase/storage';
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { theme } from '../../../../style/theme';
 import { iOS } from '../../../../utils/global.utils';
 import { storageErrors } from '../../../../utils/storageErrors';
@@ -41,7 +41,7 @@ export const FileList = ({ files, sessionID, onDelete }: Props) => {
   const [previews, setPreviews] = useState<PreviewTypeWithStorageRef[]>([]);
 
   const builtPreviews: (
-    files: DocumentType[],
+    incomingFiles: DocumentType[],
     idSession: string
   ) => Promise<PreviewTypeWithStorageRef>[] = useCallback(
     (incomingFiles, idSession) => {
@@ -59,7 +59,7 @@ export const FileList = ({ files, sessionID, onDelete }: Props) => {
           mimeType: file.mimeType,
         };
         const payload = await getDownloadURL(storageThumbnailRef).catch(
-          (error) => storageErrors(error, 'Miniature')
+          (err: any) => storageErrors(err, 'Miniature')
         );
 
         if ((payload as any).ERROR) {
@@ -75,8 +75,8 @@ export const FileList = ({ files, sessionID, onDelete }: Props) => {
 
   useEffect(() => {
     if (open && sessionID) {
-      const previews = builtPreviews(files, sessionID);
-      Promise.all(previews).then((data) => {
+      const buildPreviews = builtPreviews(files, sessionID);
+      Promise.all(buildPreviews).then((data) => {
         setPreviews(data);
       });
       // .catch((error) => setError(error.message));

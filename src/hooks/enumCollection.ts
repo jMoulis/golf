@@ -3,5 +3,5 @@ export enum ENUM_COLLECTION {
   PELZ = 'pelz',
   GAMES = 'games',
   USERS = 'users',
-  THEME = 'themes'
+  THEME = 'themes',
 }

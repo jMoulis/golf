@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faBan,
-  faBullseyeArrow,
   faFrenchFries,
   faGolfBallTee,
   faGolfFlagHole,
@@ -14,7 +13,7 @@ import {
 import { collection, getDocs, getFirestore, query } from 'firebase/firestore';
 import { app } from 'firebaseConfig/firebase';
 
-type ShotType = {
+export type ShotConfigType = {
   type: string;
   icon: any;
   color: string;
@@ -24,7 +23,9 @@ type ShotType = {
 };
 
 export const useConfig = () => {
-  const [config, setConfig] = useState<{ shots: { shotTypes: ShotType[] } }>({
+  const [config, setConfig] = useState<{
+    shots: { shotTypes: ShotConfigType[] };
+  }>({
     shots: {
       shotTypes: [],
     },
@@ -39,7 +40,6 @@ export const useConfig = () => {
           ...payload,
           [doc.id]: doc.data(),
         };
-        // payload.push({ id: doc.id, ...doc.data() });
       });
       setConfig(payload);
     });
@@ -48,7 +48,7 @@ export const useConfig = () => {
   const shotTypesByTypes = useMemo(
     () =>
       (config.shots?.shotTypes || []).reduce(
-        (acc: Record<string, ShotType>, shotType: ShotType) => {
+        (acc: Record<string, ShotConfigType>, shotType: ShotConfigType) => {
           return {
             ...acc,
             [shotType.type]: shotType,

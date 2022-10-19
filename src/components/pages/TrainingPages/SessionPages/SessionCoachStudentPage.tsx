@@ -1,3 +1,4 @@
+import React from 'react';
 import { theme } from '../../../../style/theme';
 import { CoachPageHeader } from '../../../Coach/CoachPageHeader';
 import { useCoachPage } from '../../../Coach/useCoachPage';

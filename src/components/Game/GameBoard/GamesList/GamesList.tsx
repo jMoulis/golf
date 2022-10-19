@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SwipeableDrawer } from '@mui/material';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { theme } from 'style/theme';
 import { iOS } from 'utils/global.utils';
 import { FloatingButton } from 'components/commons/Buttons/FloatingButton';
@@ -13,6 +13,7 @@ import { GameType } from 'components/types';
 import { DeleteModal } from 'components/Game/GameIndex/DeleteModal';
 import { NewGame } from 'components/Game/NewGame/NewGame';
 import { useGames } from 'components/Game/useGames';
+import { useConfig } from 'components/Game/ScoreCard/ShotForm/shotTypes';
 import { GameBoard } from '../GameBoard';
 import { GameListItem } from './GameListItem';
 
@@ -24,6 +25,7 @@ type Props = {
 };
 
 export const GamesList = ({ userId }: Props) => {
+  const { shotTypes } = useConfig();
   const { games, getGames, selectDeleteGame, deletedGame, onDeleteGame } =
     useGames();
   const [open, setOpen] = useState(false);
@@ -88,6 +90,7 @@ export const GamesList = ({ userId }: Props) => {
         open={Boolean(selectedGame)}
         gameID={selectedGame?.id || null}
         onClose={() => setSelectedGame(null)}
+        shotTypes={shotTypes}
       />
     </>
   );

@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { faSignOut } from '@fortawesome/free-solid-svg-icons';
 import { Timestamp } from 'firebase/firestore';
-import { FormEvent, useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { useAuthAction } from '../../auth/useAuthAction';
 import { useFileStorage } from '../../hooks/useFileStorage';
 import { theme } from '../../style/theme';
@@ -34,7 +34,7 @@ type Props = {
 
 export const UserForm = ({ user, onClose }: Props) => {
   const { editUser } = useUser();
-  const { uploadFile } = useFileStorage();
+  const { uploadFile, getFileURL } = useFileStorage();
   const { logout } = useAuthAction();
   const [form, setForm] = useState<UserType>({
     firstname: '',
@@ -65,7 +65,7 @@ export const UserForm = ({ user, onClose }: Props) => {
     const options: ResizeFileOptionsType = {
       maxWidth: 200,
       maxHeight: 200,
-      compressFormat: 'JPEG',
+      compressFormat: 'png',
       quality: 50,
       rotation: 0,
       outputType: 'file',
@@ -77,12 +77,18 @@ export const UserForm = ({ user, onClose }: Props) => {
       `/avatars/${user?.id}/avatar.${options.compressFormat}`
     ).then((snapshot) => {
       const { fullPath } = snapshot.metadata;
-      const updatedUser = {
-        ...user,
-        avatar: fullPath,
-      };
-      const updatedAt = Timestamp.fromDate(new Date());
-      editUser({ ...updatedUser, updatedAt });
+
+      getFileURL(fullPath).then((downloadURL) => {
+        if (downloadURL) {
+          const updatedUser = {
+            ...user,
+            avatar: downloadURL,
+          };
+          const updatedAt = Timestamp.fromDate(new Date());
+          editUser({ ...updatedUser, updatedAt });
+        }
+      });
+      // getDownloadURL(snapshot.ref);
     });
   };
 

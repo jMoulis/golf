@@ -1,10 +1,13 @@
+/* eslint-disable class-methods-use-this */
 export type CustomVideoTime = 'start' | 'middle' | 'end';
 export type VideoTime = number | CustomVideoTime;
 export interface Dimensions {
   width: number;
   height: number;
 }
-const isSafari = typeof navigator !== 'undefined' && /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+const isSafari =
+  typeof navigator !== 'undefined' &&
+  /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 class VideoSnapshot {
   videoUrl: string;
 
@@ -21,7 +24,7 @@ class VideoSnapshot {
     const canvas = document.createElement('canvas');
 
     if (!video.videoWidth && !video.videoHeight) {
-      throw new Error("error retrieving video dimensions");
+      throw new Error('error retrieving video dimensions');
     }
 
     canvas.width = video.videoWidth;
@@ -59,7 +62,7 @@ class VideoSnapshot {
         if (typeof time === 'number') {
           video.currentTime = time;
         } else if (typeof time === 'string') {
-          const duration = video.duration;
+          const { duration } = video;
           video.currentTime = this.getSmartTime(time, duration);
         }
 
@@ -77,7 +80,7 @@ class VideoSnapshot {
       });
       video.addEventListener('error', () => {
         reject(new Error('failed to load video'));
-      })
+      });
     });
 
   getDimensions = async (): Promise<Dimensions> => {
@@ -85,9 +88,9 @@ class VideoSnapshot {
 
     return {
       width: video.videoWidth,
-      height: video.videoHeight
+      height: video.videoHeight,
     };
-  }
+  };
 
   private revoke() {
     URL.revokeObjectURL(this.videoUrl);
@@ -99,7 +102,7 @@ class VideoSnapshot {
       middle: duration / 2,
       end: duration,
     };
-    return smartTimes[time]
+    return smartTimes[time];
   }
 }
 

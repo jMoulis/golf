@@ -1,9 +1,19 @@
-import { collection, deleteDoc, doc, Firestore, getFirestore, onSnapshot, query, setDoc, Unsubscribe } from "firebase/firestore";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { app, auth } from "../../../firebaseConfig/firebase";
-import { CourseType } from "../../types";
-import { sortHoles } from "./utils";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  Firestore,
+  getFirestore,
+  onSnapshot,
+  query,
+  setDoc,
+  Unsubscribe,
+} from 'firebase/firestore';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { app, auth } from '../../../firebaseConfig/firebase';
+import { CourseType } from '../../types';
+import { sortHoles } from './utils';
 
 export const useCourse = () => {
   const [courses, setCourses] = useState<CourseType[]>([]);
@@ -12,28 +22,26 @@ export const useCourse = () => {
   const db = useRef<Firestore>(getFirestore(app));
 
   const getCourses = useCallback(async () => {
-
-    const coursesQuery = query(
-      collection(db.current, 'courses'),
-    );
+    const coursesQuery = query(collection(db.current, 'courses'));
     // const querySnapshot = await getDocs(collection(db, 'courses'));
     coursesUnsubscribe.current = onSnapshot(
       coursesQuery,
       (payload) => {
-        const incomingGames = payload.docs.map((doc) => {
-          const course = doc.data() as CourseType;
+        const incomingGames = payload.docs.map((incomingDoc) => {
+          const course = incomingDoc.data() as CourseType;
           const holes = sortHoles(course.holes);
           return {
-            id: doc.id,
+            id: incomingDoc.id,
             ...course,
-            holes
+            holes,
           };
         });
         setCourses(incomingGames);
       },
       (error) => {
+        // eslint-disable-next-line no-console
         console.error('Get courses', error.message);
-      },
+      }
     );
   }, []);
 
@@ -62,7 +70,7 @@ export const useCourse = () => {
             },
           };
         },
-        {},
+        {}
       );
       setDoc(docRef, {
         ...course,
@@ -70,17 +78,18 @@ export const useCourse = () => {
         holes: mapHoles,
       });
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error('Error adding document: ', e);
     }
   };
 
   const handleDelete = (courseRef: string) => {
-    deleteDoc(doc(db.current, 'courses', courseRef))
+    deleteDoc(doc(db.current, 'courses', courseRef));
   };
 
   return {
     courses,
     onSave: handleSubmit,
-    onDelete: handleDelete
-  }
-}
+    onDelete: handleDelete,
+  };
+};

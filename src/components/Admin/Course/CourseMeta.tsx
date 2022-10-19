@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import React from 'react';
 import { Flexbox } from '../../commons';
 import { CoursePayloadType, CourseType } from '../../types';
 

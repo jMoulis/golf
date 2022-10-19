@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faTrash } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
 import { theme } from '../../../style/theme';
 
 export const Button = styled.button`

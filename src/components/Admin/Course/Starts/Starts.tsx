@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { Collapse } from '@mui/material';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useToggle } from '../../../../hooks/useToggle';
 import { theme } from '../../../../style/theme';
 import { removeForbiddenKeys } from '../../../../utils/global.utils';

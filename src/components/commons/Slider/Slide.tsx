@@ -1,3 +1,4 @@
+import React from 'react';
 import { SliderItem } from './styledComponents';
 
 type Props = {

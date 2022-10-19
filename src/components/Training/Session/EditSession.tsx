@@ -1,10 +1,15 @@
-import { FormEvent, useCallback, useEffect, useState } from 'react';
+import React, { FormEvent, useCallback, useEffect, useState } from 'react';
 import { SwipeableDrawer } from '@mui/material';
 import { iOS } from 'utils/global.utils';
 import { SwipeMenuHeader } from 'components/commons/SwipeMenuHeader';
 import { theme } from 'style/theme';
 import { FixedBottomToolbar } from 'components/commons/FixedBottomToolbar';
 import { ButtonPill } from 'components/commons/Buttons/ButtonPill';
+import { Flexbox } from 'components/commons';
+import { useFileStorage } from 'hooks/useFileStorage';
+import { StorageReference } from 'firebase/storage';
+import { Alerts } from 'components/commons/Alerts';
+import { toast } from 'react-toastify';
 import { TaskManager } from './TaskManager';
 import {
   DocumentType,
@@ -14,15 +19,10 @@ import {
   VideoType,
 } from './types';
 import { TitleInput, DateInput } from './commonStyledComponents';
-import { Flexbox } from 'components/commons';
 import { FileList } from './File/FileList';
 import { EditSessionUploadFile } from './EditSessionUploadFile';
-import { useFileStorage } from 'hooks/useFileStorage';
-import { StorageReference } from 'firebase/storage';
-import { Alerts } from 'components/commons/Alerts';
 import { EditSessionAddMenu } from './EditSessionAddMenu';
 import { VideoRecorder } from './VideoRecorder';
-import { toast } from 'react-toastify';
 
 type Props = {
   selectedSession: SessionType;

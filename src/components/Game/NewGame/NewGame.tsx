@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import {
   addDoc,
   collection,
@@ -5,7 +6,9 @@ import {
   getFirestore,
   Timestamp,
 } from 'firebase/firestore';
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import styled from '@emotion/styled';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { app, auth } from '../../../firebaseConfig/firebase';
 import {
   CoursePayloadType,
@@ -14,9 +17,7 @@ import {
   ThemeType,
   UserType,
 } from '../../types';
-import styled from '@emotion/styled';
 import { theme } from '../../../style/theme';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import { CourseList } from './CourseList';
 import { GameThemeForm } from './GameThemeForm';
 import { ButtonPill } from '../../commons/Buttons/ButtonPill';
@@ -106,6 +107,7 @@ export const NewGame = ({ onSubmit }: Props) => {
     } catch (e) {
       console.error('Error adding document: ', e);
     }
+    return true;
   };
 
   const getCourses = useCallback(async () => {
@@ -153,15 +155,15 @@ export const NewGame = ({ onSubmit }: Props) => {
         <ListItem as="div" onClick={() => setStep('SELECT_COURSE')}>
           <CourseMeta course={selectedCourse} />
           <Flexbox flexWrap="wrap">
-            {selectedThemes.map((theme, key) => (
+            {selectedThemes.map((incomingTheme, key) => (
               <ThemeTag
                 key={key}
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleRemoveTheme(theme.id);
+                  handleRemoveTheme(incomingTheme.id);
                 }}
               >
-                {theme.type}
+                {incomingTheme.type}
               </ThemeTag>
             ))}
           </Flexbox>

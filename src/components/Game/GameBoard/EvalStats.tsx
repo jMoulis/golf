@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Flexbox } from '../../commons';
 import { ShotButton } from '../../commons/Buttons/ShotButton';
 import { GameHoleType } from '../../types';
@@ -80,7 +80,7 @@ export const EvalStats = ({ holes }: Props) => {
             <CustomShotButton
               type="button"
               color={shotQualityAsObject.OK?.color}
-              backgroundColor={'#fff'}
+              backgroundColor="#fff"
             >
               {shotQualityAsObject.OK?.icon}
               <span
@@ -94,7 +94,7 @@ export const EvalStats = ({ holes }: Props) => {
             <CustomShotButton
               type="button"
               color={shotQualityAsObject.KO?.color}
-              backgroundColor={'#fff'}
+              backgroundColor="#fff"
             >
               {shotQualityAsObject.KO?.icon}
               <span

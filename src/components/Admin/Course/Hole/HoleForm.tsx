@@ -1,13 +1,14 @@
 import styled from '@emotion/styled';
-import { FormEvent, useEffect, useState } from 'react';
-import { Flexbox } from '../../../commons';
-import { DeleteButton } from '../../../commons/Buttons/DeleteButton';
-import { Input } from '../../../commons/Input';
+import React, { FormEvent, useEffect, useState } from 'react';
+import { Flexbox } from 'components/commons';
+import { DeleteButton } from 'components/commons/Buttons/DeleteButton';
+import { Input } from 'components/commons/Input';
 import {
   CourseDistanceType,
   HoleCourseType,
   StartCourseType,
-} from '../../../types';
+} from 'components/types';
+import { GeoForm } from './GeoForm';
 import { DistanceForm } from './DistanceForm';
 
 const CustomInput = styled(Input)`
@@ -61,8 +62,14 @@ export const HoleForm = ({ hole, onChange, onDelete, starts }: Props) => {
       onChange(updatedHole);
     }
   };
+  const handleEditCoords = (updatedHole: HoleCourseType) => {
+    setHoleForm(updatedHole);
+    onChange(updatedHole);
+  };
   return (
-    <Flexbox justifyContent="space-between" alignItems="flex-end">
+    <Flexbox justifyContent="space-between" alignItems="center">
+      <GeoForm hole={holeForm} onChange={handleEditCoords} />
+
       <Flexbox>
         <InputWrapper flexDirection="column">
           <span>Numéro</span>
@@ -96,7 +103,10 @@ export const HoleForm = ({ hole, onChange, onDelete, starts }: Props) => {
         </InputWrapper>
         <DistanceForm hole={holeForm} starts={starts} onSubmit={handleSubmit} />
       </Flexbox>
-      <DeleteButton onClick={() => onDelete(hole.ref)} />
+
+      <Flexbox flexDirection="column">
+        <DeleteButton onClick={() => onDelete(hole.ref)} />
+      </Flexbox>
     </Flexbox>
   );
 };

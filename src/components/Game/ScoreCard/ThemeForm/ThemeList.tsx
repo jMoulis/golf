@@ -4,6 +4,7 @@ import {
   faSquareArrowUp,
 } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
 import { theme } from '../../../../style/theme';
 import { DeleteButton } from '../../../commons/Buttons/DeleteButton';
 import { List, ListItem } from '../../../commons/List';
@@ -37,7 +38,7 @@ const Button = styled.button<{ selected: boolean }>`
 `;
 
 type Props = {
-  onSelectTheme?: (theme: ThemeType) => void;
+  onSelectTheme?: (gameTheme: ThemeType) => void;
   onDeleteTheme?: (themeId: string) => void;
   selectedThemes: ThemeType[];
   themes: ThemeType[];
@@ -58,27 +59,30 @@ export const ThemeList = ({
       <CustomListItem>
         <ThemeForm selectedTheme={null} />
       </CustomListItem>
-      {themes.map((theme) => (
-        <CustomListItem key={theme.id}>
-          <ThemeLabel>{theme.type}</ThemeLabel>
+      {themes.map((gameTheme) => (
+        <CustomListItem key={gameTheme.id}>
+          <ThemeLabel>{gameTheme.type}</ThemeLabel>
           {onSelectTheme ? (
             <Button
               selected={selectedThemes.some(
-                (selectedTheme) => selectedTheme.id === theme.id
+                (selectedTheme) => selectedTheme.id === gameTheme.id
               )}
-              onClick={() => onSelectTheme(theme)}
+              onClick={() => onSelectTheme(gameTheme)}
             >
               <FontAwesomeIcon icon={faSquareArrowUp} />
             </Button>
           ) : null}
 
           {onRemoveTheme ? (
-            <Button selected={false} onClick={() => onRemoveTheme(theme.id)}>
+            <Button
+              selected={false}
+              onClick={() => onRemoveTheme(gameTheme.id)}
+            >
               <FontAwesomeIcon icon={faSquareArrowDown} />
             </Button>
           ) : null}
           {onDeleteTheme ? (
-            <DeleteButton onClick={() => onDeleteTheme(theme.id)} />
+            <DeleteButton onClick={() => onDeleteTheme(gameTheme.id)} />
           ) : null}
         </CustomListItem>
       ))}

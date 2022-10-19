@@ -1,14 +1,15 @@
+/* eslint-disable no-nested-ternary */
 import styled from '@emotion/styled';
-import { FormEvent, useCallback, useEffect, useState } from 'react';
-import { useThumbnail } from '../../../hooks/useThumbnail';
-import { generatorsKey } from '../../../utils/global.utils';
-import { Spinner } from './Spinner';
+import React, { FormEvent, useCallback, useEffect, useState } from 'react';
 import mime from 'mime';
-import { Flexbox } from '../Flexbox';
-import { theme } from '../../../style/theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImageSlash } from '@fortawesome/pro-duotone-svg-icons';
 import { Dialog } from '@mui/material';
+import { useThumbnail } from '../../../hooks/useThumbnail';
+import { generatorsKey } from '../../../utils/global.utils';
+import { Spinner } from './Spinner';
+import { Flexbox } from '../Flexbox';
+import { theme } from '../../../style/theme';
 import { DialogHeader } from '../Dialog/DialogHeader';
 import { DeleteButton } from '../Buttons/DeleteButton';
 import { Input } from '../Input';

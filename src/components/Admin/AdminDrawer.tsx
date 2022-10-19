@@ -1,5 +1,6 @@
 import { SwipeableDrawer } from '@mui/material';
 import styled from '@emotion/styled';
+import React from 'react';
 import { RenderDrawerComponent } from './RenderDrawerComponent';
 import { BOTTOM_NAVBAR_HEIGHT } from '../cssConstants';
 import { theme } from '../../style/theme';

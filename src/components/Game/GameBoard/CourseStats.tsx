@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import React from 'react';
 import { getCoursePar, getDiff } from '../../../utils/scoreUtils';
 import { Flexbox } from '../../commons';
 import { GameHoleType, GameType, HoleCourseType } from '../../types';

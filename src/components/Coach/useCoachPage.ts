@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { UserType } from '../types';
 import { useUser } from '../User/useUser';
@@ -23,6 +23,6 @@ export const useCoachPage = () => {
 
   return {
     student,
-    onNavigateBack: handleNavigationBack
-  }
-}
+    onNavigateBack: handleNavigationBack,
+  };
+};

@@ -20,7 +20,7 @@ const Root = styled(Flexbox)`
 const roles = ['coach', 'player', 'owner'];
 
 type Props = {
-  onEdit: (roles: string[]) => void;
+  onEdit: (editedRoles: string[]) => void;
   selectedRoles: string[];
 };
 

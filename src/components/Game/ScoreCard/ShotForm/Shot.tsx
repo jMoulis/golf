@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
 import { Flexbox } from '../../../commons';
 import { ShotButton } from '../../../commons/Buttons/ShotButton';
 import { ShotType } from '../../../types';

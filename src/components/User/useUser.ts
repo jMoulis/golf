@@ -1,9 +1,23 @@
-import { collection, doc, getDoc, getFirestore, onSnapshot, query, setDoc, Unsubscribe, where } from "firebase/firestore";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { useUserContext, signInAction, useAuthDispatch } from "../../auth/authContext";
-import { app, auth } from "../../firebaseConfig/firebase";
-import { UserType } from "../types";
+import {
+  collection,
+  doc,
+  getDoc,
+  getFirestore,
+  onSnapshot,
+  query,
+  setDoc,
+  Unsubscribe,
+  where,
+} from 'firebase/firestore';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import {
+  useUserContext,
+  signInAction,
+  useAuthDispatch,
+} from '../../auth/authContext';
+import { app, auth } from '../../firebaseConfig/firebase';
+import { UserType } from '../types';
 
 export const useUser: () => {
   getConnectedUser: () => Promise<null | undefined>;
@@ -12,9 +26,11 @@ export const useUser: () => {
   coaches: UserType[];
   getCoaches: () => void;
   editUser: (user: UserType) => null | undefined;
-  updateUserBagClubDistance: (clubId: string,
+  updateUserBagClubDistance: (
+    clubId: string,
     distance: number,
-    user: UserType) => UserType
+    user: UserType
+  ) => UserType;
 } = () => {
   const dispatch = useAuthDispatch();
   const [userSystem] = useAuthState(auth);
@@ -27,14 +43,19 @@ export const useUser: () => {
     if (!userSystem) return null;
     const db = getFirestore(app);
     const docRef = doc(db, 'users', userSystem.uid);
-    onSnapshot(docRef, (snap) => {
-      const payloadUser: any = snap.data();
-      if (payloadUser) {
-        dispatch(signInAction(payloadUser));
-      } else {
-        dispatch(signInAction({ id: userSystem.uid }))
-      }
-    }, (error) => console.error('GetUser', error));
+    onSnapshot(
+      docRef,
+      (snap) => {
+        const payloadUser: any = snap.data();
+        if (payloadUser) {
+          dispatch(signInAction(payloadUser));
+        } else {
+          dispatch(signInAction({ id: userSystem.uid }));
+        }
+      },
+      // eslint-disable-next-line no-console
+      (error) => console.error('GetUser', error)
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userSystem]);
 
@@ -43,7 +64,7 @@ export const useUser: () => {
     const docRef = doc(db, 'users', userId);
     const snap = await getDoc(docRef);
     if (snap.exists()) {
-      return { id: snap.id, ...snap.data() }
+      return { id: snap.id, ...snap.data() };
     }
     return null;
   }, []);
@@ -52,21 +73,22 @@ export const useUser: () => {
     const db = getFirestore(app);
     const userQuery = query(
       collection(db, 'users'),
-      where('roles', 'array-contains', 'coach'),
+      where('roles', 'array-contains', 'coach')
     );
     coachesSubscribe.current = onSnapshot(
       userQuery,
       (payload) => {
-        const incomingCoaches = payload.docs.map((doc) => {
-          const user = doc.data() as UserType;
+        const incomingCoaches = payload.docs.map((incomingDoc) => {
+          const editedUser = incomingDoc.data() as UserType;
           return {
-            ...user,
-            id: doc.id,
+            ...editedUser,
+            id: incomingDoc.id,
           };
         });
         setCoaches(incomingCoaches);
       },
-      (error) => console.error('GetCoaches', error),
+      // eslint-disable-next-line no-console
+      (error) => console.error('GetCoaches', error)
     );
   }, []);
 
@@ -88,28 +110,24 @@ export const useUser: () => {
     };
   }, []);
 
-  const editUser = useCallback((user: UserType) => {
-    if (!user?.id) return null;
+  const editUser = useCallback((editedUser: UserType) => {
+    if (!editedUser?.id) return null;
     const db = getFirestore(app);
-    setDoc(
-      doc(db, 'users', user.id),
-      user,
-      { merge: true },
-    );
+    setDoc(doc(db, 'users', editedUser.id), editedUser, { merge: true });
   }, []);
 
   const updateUserBagClubDistance = (
     clubId: string,
     distance: number,
-    user: UserType
+    editedUser: UserType
   ) => {
-    const userBag = (user.bag || [])?.map((club) =>
+    const userBag = (editedUser.bag || [])?.map((club) =>
       club.id === clubId
         ? { ...club, distances: [...(club.distances || []), distance] }
         : club
     );
     return {
-      ...user,
+      ...editedUser,
       bag: userBag,
     };
   };
@@ -120,6 +138,6 @@ export const useUser: () => {
     getCoaches,
     editUser,
     fetchOneUser,
-    updateUserBagClubDistance
-  }
-}
+    updateUserBagClubDistance,
+  };
+};

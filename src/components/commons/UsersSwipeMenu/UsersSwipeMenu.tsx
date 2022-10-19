@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { SwipeableDrawer } from '@mui/material';
+import React from 'react';
 import { theme } from '../../../style/theme';
 import { iOS } from '../../../utils/global.utils';
 import { UserType } from '../../types';

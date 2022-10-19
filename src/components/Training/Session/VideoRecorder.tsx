@@ -9,7 +9,7 @@ import 'react-circular-progressbar/dist/styles.css';
 import { faFilms } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SwipeableDrawer } from '@mui/material';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { theme } from '../../../style/theme';
 import { generateFileName, iOS } from '../../../utils/global.utils';
 import { Flexbox } from '../../commons';
@@ -96,7 +96,7 @@ export const VideoRecorder = ({
     };
     mediaRecordRef.current.start();
     mediaRecordRef.current.onstart = () => onStart();
-    mediaRecordRef.current;
+
     const stopped = new Promise((resolve, reject) => {
       (mediaRecordRef.current as MediaRecorder).onstop = (...rest) => {
         onStop();
@@ -139,6 +139,7 @@ export const VideoRecorder = ({
 
       onUpload(newVideo);
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('ERROR', error);
     }
   };
@@ -229,6 +230,7 @@ export const VideoRecorder = ({
               <ul>
                 {videos.map((item, key) => (
                   <img
+                    alt="Fuckup"
                     style={{
                       width: '50px',
                       height: '50px',

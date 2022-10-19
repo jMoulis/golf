@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { ThemeList } from '../../Game/ScoreCard/ThemeForm/ThemeList';
 import { useThemes } from '../../Game/ScoreCard/ThemeForm/useThemes';
 

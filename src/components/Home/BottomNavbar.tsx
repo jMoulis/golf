@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { BOTTOM_NAVBAR_HEIGHT } from '../cssConstants';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -8,7 +7,8 @@ import {
   faGolfClub,
   faGolfFlagHole,
 } from '@fortawesome/pro-duotone-svg-icons';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { BOTTOM_NAVBAR_HEIGHT } from '../cssConstants';
 import { theme } from '../../style/theme';
 
 const Nav = styled.ul`
@@ -94,7 +94,8 @@ export const BottomNavbar = () => {
               menu.url === selectedMenu
                 ? menu.selectedColor
                 : theme.colors.deleteButton
-            }>
+            }
+          >
             <CustomLink to={menu.url}>
               <IconWrapper>
                 <FontAwesomeIcon icon={menu.icon} />

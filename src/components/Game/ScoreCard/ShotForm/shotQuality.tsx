@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsDown, faThumbsUp } from '@fortawesome/pro-duotone-svg-icons';
+import React from 'react';
 
 export const shotQuality: {
   value: 'KO' | 'OK';
@@ -25,7 +26,7 @@ export const shotQualityAsObject: {
     ...acc,
     [shot.value]: shot,
   }),
-  {},
+  {}
 );
 export const shotEvaluations = [
   {

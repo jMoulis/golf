@@ -1,4 +1,4 @@
-import { Component, ErrorInfo, ReactNode } from 'react';
+import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { toast } from 'react-toastify';
 
 interface Props {
@@ -8,6 +8,7 @@ interface State {
   hasError: boolean;
 }
 export class ErrorBoundary extends Component<Props, State> {
+  // eslint-disable-next-line react/state-in-constructor
   public state: State = {
     hasError: false,
   };
@@ -43,11 +44,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
   public render() {
     if (this.state.hasError) {
-      return (
-        <>
-          <h1>Ui Error occured</h1>
-        </>
-      );
+      return <h1>Ui Error occured</h1>;
     }
 
     return this.props.children;

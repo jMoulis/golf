@@ -1,10 +1,10 @@
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import styled from '@emotion/styled';
 import { Flexbox } from '../../commons';
 import { ButtonPill } from '../../commons/Buttons/ButtonPill';
 import { DeleteButton } from '../../commons/Buttons/DeleteButton';
 import { Modal } from '../../commons/Modal';
-import styled from '@emotion/styled';
 import { theme } from '../../../style/theme';
 import { GameType } from '../../types';
 

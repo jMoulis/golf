@@ -1,8 +1,7 @@
 import styled from '@emotion/styled';
 import { DocumentReference } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { v4 } from 'uuid';
-import { useGeolocated } from 'react-geolocated';
 import { theme } from 'style/theme';
 import { Flexbox } from 'components/commons';
 import { ButtonPill } from 'components/commons/Buttons/ButtonPill';
@@ -16,20 +15,12 @@ import {
   ShotType,
   BagClubType,
 } from 'components/types';
+import { toast } from 'react-toastify';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ShotEvaluationForm } from '../ShotEvaluationForm/ShotEvaluationForm';
-import { useConfig } from './shotTypes';
+import { ShotConfigType } from './shotTypes';
 import { useScoring } from './useScoring';
 import { ClubButtons } from './ClubButtons';
-import { toast } from 'react-toastify';
-import { classicShots } from '../utils';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  solid,
-  regular,
-  light,
-  thin,
-  duotone,
-} from '@fortawesome/fontawesome-svg-core/import.macro'; // <-- import styles to be used
 
 const Root = styled(Flexbox)`
   background-color: ${theme.colors.backgroundPage};
@@ -58,6 +49,7 @@ type Props = {
   withEvaluationForm: boolean;
   onEditShot?: (shot: ShotType) => void;
   selectedShot?: ShotType;
+  shotTypes: ShotConfigType[];
 };
 
 export const ShotForm = ({
@@ -69,12 +61,12 @@ export const ShotForm = ({
   withEvaluationForm,
   onEditShot,
   selectedShot: prevShot,
+  shotTypes,
 }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
   const [selectedShot, setSelectedShot] = useState<ShotType | null>(null);
   const [selectedClub, setSelectedClub] = useState<BagClubType | null>(null);
   const { onAddShotScoring, onRemoveShotScoring } = useScoring();
-  const { shotTypes } = useConfig();
 
   const [newShot, setNewShot] = useState<{
     shot: ShotType;
@@ -89,19 +81,24 @@ export const ShotForm = ({
         setSelectedClub(prevShot.club as any);
       }
     }
-  }, [prevShot]);
+  }, [hole, prevShot]);
 
-  const handleAddShot = (incomingShot: ShotType, hole: any) => {
-    if (hole) {
+  const handleAddShot = (incomingShot: ShotType, incomingHole: any) => {
+    if (incomingHole) {
       const shotId = v4();
-      const newShot = {
+      const createdShot = {
+        ...newShot,
         ...incomingShot,
         id: shotId,
       };
-      setNewShot({ shot: newShot, hole });
-      setSelectedShot(newShot);
+      setNewShot({
+        shot: createdShot,
+        hole: incomingHole,
+      });
+      setSelectedShot(createdShot);
     }
   };
+
   const handleSubmit = () => {
     if (!selectedShot) {
       return toast.error('Selectionner un type de shot');
@@ -156,20 +153,14 @@ export const ShotForm = ({
   const handleSelectClub = (club: any) => {
     setSelectedClub(club);
     setNewShot((prev) => {
-      if (prev?.shot) {
-        return {
-          ...prev,
-          shot: {
-            ...prev.shot,
-            club: {
-              id: club.id,
-              name: club.name,
-              distance: (prev.shot?.club?.distance as any) || 0,
-            },
-          },
-        } as any;
-      }
-      return prev;
+      return {
+        ...prev,
+        club: {
+          id: club.id,
+          name: club.name,
+          distance: (prev?.shot?.club?.distance as any) || 0,
+        },
+      } as any;
     });
   };
 

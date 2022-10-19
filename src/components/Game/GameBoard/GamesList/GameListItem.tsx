@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { faFilePen, faGrid } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { theme } from 'style/theme';
 import { Flexbox } from 'components/commons';
 import { DateDisplay } from 'components/commons/DateDisplay';

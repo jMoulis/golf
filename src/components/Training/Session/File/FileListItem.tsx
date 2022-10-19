@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import React from 'react';
 import { DocumentType } from '../types';
 
 const Root = styled.div``;

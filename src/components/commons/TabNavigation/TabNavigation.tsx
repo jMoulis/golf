@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import React from 'react';
 import { Tab } from './Tab';
 import { TabType } from './types';
 
@@ -33,14 +34,15 @@ export const TabNavigation = ({
 
   return (
     <Root>
-      {children ? children : null}
+      {children || null}
       <Tabs>
         {tabs.map((tab, key) => (
           <Tab
             selected={selectedTab?.label === tab.label}
             key={key}
             color={selectedTab?.color}
-            onClick={() => handleNavigate(tab, key)}>
+            onClick={() => handleNavigate(tab, key)}
+          >
             {tab.icon || null}
             <span>{tab.label}</span>
           </Tab>

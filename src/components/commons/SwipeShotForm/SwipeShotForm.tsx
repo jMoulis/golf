@@ -5,6 +5,8 @@ import { iOS } from 'utils/global.utils';
 import { ShotForm } from 'components/Game/ScoreCard/ShotForm/ShotForm';
 import { GameHoleType, GameType, ShotType } from 'components/types';
 import { SwipeMenuHeader } from 'components/commons//SwipeMenuHeader';
+import React from 'react';
+import { ShotConfigType } from 'components/Game/ScoreCard/ShotForm/shotTypes';
 
 type Props = {
   open: boolean;
@@ -17,6 +19,7 @@ type Props = {
   game: GameType;
   title: string;
   selectedShot?: ShotType;
+  shotTypes: ShotConfigType[];
 };
 
 export const SwipeShotForm = ({
@@ -30,6 +33,7 @@ export const SwipeShotForm = ({
   game,
   title,
   selectedShot,
+  shotTypes,
 }: Props) => {
   return (
     <SwipeableDrawer
@@ -53,6 +57,7 @@ export const SwipeShotForm = ({
         game={game}
         withEvaluationForm={false}
         selectedShot={selectedShot}
+        shotTypes={shotTypes}
       />
     </SwipeableDrawer>
   );

@@ -1,5 +1,5 @@
-import styled from "@emotion/styled";
-import { theme } from "../../../style/theme";
+import styled from '@emotion/styled';
+import { theme } from '../../../style/theme';
 
 export const Stat = styled.span`
   margin-right: 10px;

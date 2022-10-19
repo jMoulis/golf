@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef } from 'react';
+import styled from '@emotion/styled';
 import { sortHoles } from '../../../Admin/Course/utils';
 import { Flexbox } from '../../../commons';
 import { GameHoleType, GameType } from '../../../types';
@@ -8,7 +9,6 @@ import { RenderTotal } from '../RenderTotal';
 import { FixedBottomToolbar } from '../../../commons/FixedBottomToolbar';
 import { useExportPdfGame } from '../useExportPdfGame';
 import { ButtonPill } from '../../../commons/Buttons/ButtonPill';
-import styled from '@emotion/styled';
 import { ShotTypes } from './ShotTypes';
 
 const Root = styled.div`

@@ -3,6 +3,7 @@ import { ShotButton } from 'components/commons/Buttons/ShotButton';
 import { BagClubType } from 'components/types';
 import { ClubImage } from 'components/User/Bag/ClubImage';
 import { useUser } from 'components/User/useUser';
+import React from 'react';
 import { theme } from 'style/theme';
 
 const List = styled.ul`
@@ -10,8 +11,6 @@ const List = styled.ul`
   flex-wrap: wrap;
   padding: 10px;
 `;
-
-const Title = styled.h3``;
 
 const CustomShotButton = styled(ShotButton)`
   flex-direction: column;

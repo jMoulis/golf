@@ -33,10 +33,11 @@ export const Score = ({ holes = [], withLabel, tagStyling }: Props) => {
   return (
     <>
       {Object.keys(scores).map((hole, key) => (
-        <Flexbox key={key} flexDirection='column' alignItems='center'>
+        <Flexbox key={key} flexDirection="column" alignItems="center">
           <Tag
             styling={tagStyling}
-            backgroundColor={(scoresConfig as any)[hole]?.bk}>
+            backgroundColor={(scoresConfig as any)[hole]?.bk}
+          >
             {scores[hole]}
           </Tag>
           {withLabel ? <span>{hole}</span> : null}

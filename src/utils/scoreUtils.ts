@@ -1,19 +1,20 @@
-import { GameHoleType, HoleCourseType } from "../components/types";
+import { ShotConfigType } from 'components/Game/ScoreCard/ShotForm/shotTypes';
+import { GameHoleType, HoleCourseType } from '../components/types';
 
 export const scoresConfig = {
-  pars: { bk: "green", color: "#fff", label: "Par" },
-  birdies: { bk: "#0000e5", color: "#fff", label: "Birdie" },
-  eagles: { bk: "#ff8c19", color: "#fff", label: "Eagle" },
-  boggeys: { bk: "#a8a8a8", color: "#000", label: "Boggey" },
-  double: { bk: "#6F6F6F", color: "#fff", label: "Double Boggey" },
-  triple: { bk: "#323232", color: "#fff", label: "Triple boggey +" },
+  pars: { bk: 'green', color: '#fff', label: 'Par' },
+  birdies: { bk: '#0000e5', color: '#fff', label: 'Birdie' },
+  eagles: { bk: '#ff8c19', color: '#fff', label: 'Eagle' },
+  boggeys: { bk: '#a8a8a8', color: '#000', label: 'Boggey' },
+  double: { bk: '#6F6F6F', color: '#fff', label: 'Double Boggey' },
+  triple: { bk: '#323232', color: '#fff', label: 'Triple boggey +' },
 };
 
 export const scoreResult = (par: number, score: number) => {
   // No score
-  if (score === 0) return { bk: "", color: "#000", label: "" };
+  if (score === 0) return { bk: '', color: '#000', label: '' };
   // All in one
-  if (score === 1) return { bk: "red", color: "#fff", label: "All in one" };
+  if (score === 1) return { bk: 'red', color: '#fff', label: 'All in one' };
   // Par
   if (par === score) return scoresConfig.pars;
   if (score === par - 3) return scoresConfig.eagles;
@@ -27,13 +28,14 @@ export const scoreResult = (par: number, score: number) => {
   if (score === par + 2) return scoresConfig.double;
   // More
   if (score > par + 2) return scoresConfig.triple;
-  return { bk: "", color: "#000" };
+  return { bk: '', color: '#000' };
 };
 
 export const getCoursePar = (holes?: (HoleCourseType | GameHoleType)[]) => {
   if (!holes) return 0;
   return holes.reduce((acc: any, hole: any) => acc + (hole.par || 0), 0);
 };
+
 export const getScoreBrut = (holes?: GameHoleType[]) => {
   if (!holes) return 0;
   return holes.reduce(
@@ -41,7 +43,8 @@ export const getScoreBrut = (holes?: GameHoleType[]) => {
     0
   );
 };
-export const getDiff = (holes?: (GameHoleType)[]) => {
+
+export const getDiff = (holes?: GameHoleType[]) => {
   const activeHoles = holes?.filter((hole) => hole.shots?.length);
   if (!activeHoles) return 0;
   return getScoreBrut(activeHoles) - getCoursePar(activeHoles);
@@ -158,7 +161,26 @@ export const scoresByType = (holes?: GameHoleType[]) => {
   };
 };
 
-export const shotsTypeStat = (holes: GameHoleType[]) => {
+export const shotsTypeStat = (
+  holes: GameHoleType[],
+  shotTypes: ShotConfigType[]
+) => {
+  const defaultShots = shotTypes
+    .filter((shot) => shot.toStat)
+    .sort((a, b) => a.order - b.order)
+    .reduce((acc: any, shotType) => {
+      return {
+        ...acc,
+        [shotType.type]: holes.reduce((total: number, hole) => {
+          return (
+            total +
+            (hole.shots?.filter((shot) => shot.type === shotType.type).length ||
+              0)
+          );
+        }, 0),
+      };
+    }, {});
+
   const regul = holes.reduce((acc: number, value) => {
     if (
       value.par === value.shots?.length &&
@@ -172,36 +194,16 @@ export const shotsTypeStat = (holes: GameHoleType[]) => {
   const fairway = holes.reduce((acc: number, value) => {
     if (!value.shots) return acc;
     const [shot, nextShot] = value.shots;
-    if (shot?.type === 'tee' && nextShot?.type === 'fairway')
-      return (acc += 1);
+    if (shot?.type === 'tee' && nextShot?.type === 'fairway') return (acc += 1);
     return acc;
   }, 0);
 
-  const putt: any = holes.reduce((acc: number, hole) => {
-    return (
-      acc + (hole.shots?.filter((shot) => shot.type === 'putt').length || 0)
-    );
-  }, 0);
-  const bunker: any = holes.reduce((acc: number, hole) => {
-    return (
-      acc +
-      (hole.shots?.filter((shot) => shot.type === 'bunker').length || 0)
-    );
-  }, 0);
-  const penalty: any = holes.reduce((acc: number, hole) => {
-    return (
-      acc +
-      (hole.shots?.filter((shot) => shot.type === 'penalty').length || 0)
-    );
-  }, 0);
   return {
     regul,
     fairway,
-    putt,
-    bunker,
-    penalty,
-  }
-}
+    ...defaultShots,
+  };
+};
 
 export const getClubDistanceAverage = (distances: number[]) => {
   const removeZeros = distances.filter((distance) => distance > 0);
@@ -210,4 +212,4 @@ export const getClubDistanceAverage = (distances: number[]) => {
     return Math.ceil(total / removeZeros.length);
   }
   return 0;
-}
+};

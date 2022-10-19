@@ -1,9 +1,9 @@
-import { FormEvent, useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuthAction } from '../../auth/useAuthAction';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '../../firebaseConfig/firebase';
 import styled from '@emotion/styled';
+import { useAuthAction } from '../../auth/useAuthAction';
+import { auth } from '../../firebaseConfig/firebase';
 import { ButtonPill } from '../commons/Buttons/ButtonPill';
 import { useToggle } from '../../hooks/useToggle';
 import { theme } from '../../style/theme';

@@ -1,9 +1,12 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import styled from '@emotion/styled';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { fad } from '@fortawesome/pro-duotone-svg-icons';
 import { Homepage } from './pages/HomePage';
 import { TrainingPage } from './pages/TrainingPages/TrainingPage';
 import { StatPage } from './pages/StatPage';
-import styled from '@emotion/styled';
 import { GamePage } from './pages/GamePages/GamePage';
 import { LoginPage } from './pages/LoginPage';
 import { AdminPage } from './pages/AdminPages/AdminPage';
@@ -20,9 +23,6 @@ import { theme } from '../style/theme';
 import { CoachIndex } from './pages/commonPages/CoachIndex';
 import { SessionPage } from './pages/TrainingPages/SessionPages/SessionPage';
 import { SessionCoachStudentPage } from './pages/TrainingPages/SessionPages/SessionCoachStudentPage';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { fas } from '@fortawesome/free-solid-svg-icons';
-import { fad } from '@fortawesome/pro-duotone-svg-icons';
 
 library.add(fas, fad);
 
@@ -44,61 +44,59 @@ function App() {
   }, [user, getConnectedUser]);
 
   return (
-    <>
-      <Grid>
-        <Routes>
-          <Route path="/" element={<LoginPage />} />
-          <Route path="protected" element={<Homepage />}>
-            <Route index element={<StatPage />} />
-            <Route path="games" element={<GamePage />}>
+    <Grid>
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
+        <Route path="protected" element={<Homepage />}>
+          <Route index element={<StatPage />} />
+          <Route path="games" element={<GamePage />}>
+            <Route
+              index
+              element={
+                <CoachIndex
+                  title="Mes parties"
+                  headerTheme={theme.headers.games.linear}
+                />
+              }
+            />
+            <Route path=":userId" element={<GameCoachStudentPage />} />
+          </Route>
+          <Route path="trainings" element={<TrainingPage />}>
+            <Route index element={<TrainingIndex />} />
+            <Route path="pelz" element={<PelzPage />}>
               <Route
                 index
                 element={
                   <CoachIndex
-                    title="Mes parties"
-                    headerTheme={theme.headers.games.linear}
+                    title="Mes tests"
+                    headerTheme={theme.headers.trainings.linear}
                   />
                 }
               />
-              <Route path=":userId" element={<GameCoachStudentPage />} />
+              <Route path=":userId" element={<PelzCoachStudentPage />} />
             </Route>
-            <Route path="trainings" element={<TrainingPage />}>
-              <Route index element={<TrainingIndex />} />
-              <Route path="pelz" element={<PelzPage />}>
-                <Route
-                  index
-                  element={
-                    <CoachIndex
-                      title="Mes tests"
-                      headerTheme={theme.headers.trainings.linear}
-                    />
-                  }
-                />
-                <Route path=":userId" element={<PelzCoachStudentPage />} />
-              </Route>
-              <Route path="session" element={<SessionPage />}>
-                <Route
-                  index
-                  element={
-                    <CoachIndex
-                      title="Mes sessions"
-                      headerTheme={theme.headers.trainings.linear}
-                    />
-                  }
-                />
-                <Route path=":userId" element={<SessionCoachStudentPage />} />
-              </Route>
-            </Route>
-            <Route path="admin" element={<AdminPage />}>
-              <Route index element={<AdminIndex />} />
-              <Route path="themes" element={<ThemePage />} />
-              <Route path="courses" element={<CoursePage />} />
-              <Route path="coaches" element={<CoachPage />} />
+            <Route path="session" element={<SessionPage />}>
+              <Route
+                index
+                element={
+                  <CoachIndex
+                    title="Mes sessions"
+                    headerTheme={theme.headers.trainings.linear}
+                  />
+                }
+              />
+              <Route path=":userId" element={<SessionCoachStudentPage />} />
             </Route>
           </Route>
-        </Routes>
-      </Grid>
-    </>
+          <Route path="admin" element={<AdminPage />}>
+            <Route index element={<AdminIndex />} />
+            <Route path="themes" element={<ThemePage />} />
+            <Route path="courses" element={<CoursePage />} />
+            <Route path="coaches" element={<CoachPage />} />
+          </Route>
+        </Route>
+      </Routes>
+    </Grid>
   );
 }
 

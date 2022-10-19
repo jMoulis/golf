@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { v4 } from 'uuid';
 import { theme } from '../../../style/theme';
 import { FloatingButton } from '../../commons/Buttons/FloatingButton';
-import { v4 } from 'uuid';
 import { ShotButton } from '../../commons/Buttons/ShotButton';
 import { TaskType } from './types';
 

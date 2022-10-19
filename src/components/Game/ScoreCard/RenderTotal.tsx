@@ -37,43 +37,44 @@ export const RenderTotal = ({ holes }: Props) => {
 
   return (
     <Root>
-      <Flexbox flexDirection='column'>
+      <Flexbox flexDirection="column">
         <span style={{ fontWeight: 'bold' }}>SCORE</span>
         <span>PAR</span>
         <span style={{ fontWeight: 'bold' }}>BRUT</span>
       </Flexbox>
-      <Flexbox flexDirection='column' alignItems='center'>
+      <Flexbox flexDirection="column" alignItems="center">
         <Label>Aller</Label>
         <div>{frontNine.reduce((acc, hole) => acc + hole.par, 0)}</div>
         <BoldLabel>
           {frontNine.reduce(
             (acc, hole: any) => acc + (hole.shots?.length || 0),
-            0,
+            0
           ) || '-'}
         </BoldLabel>
       </Flexbox>
-      <Flexbox flexDirection='column' alignItems='center'>
+      <Flexbox flexDirection="column" alignItems="center">
         <Label>Retour</Label>
         <div>{backNine.reduce((acc, hole) => acc + hole.par, 0)}</div>
         <BoldLabel>
           {backNine.reduce(
             (acc, hole: any) => acc + (hole.shots?.length || 0),
-            0,
+            0
           ) || '-'}
         </BoldLabel>
       </Flexbox>
-      <Flexbox flexDirection='column' alignItems='center'>
+      <Flexbox flexDirection="column" alignItems="center">
         <Label
           style={{
             whiteSpace: 'nowrap',
-          }}>
+          }}
+        >
           Aller / Retour
         </Label>
         <div>{sortedHoles.reduce((acc, hole) => acc + hole.par, 0)}</div>
         <BoldLabel>
           {sortedHoles.reduce(
             (acc, hole: any) => acc + (hole.shots?.length || 0),
-            0,
+            0
           ) || '-'}
         </BoldLabel>
       </Flexbox>

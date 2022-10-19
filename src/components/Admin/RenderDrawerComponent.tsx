@@ -1,3 +1,4 @@
+import React from 'react';
 import { CoachPage } from '../pages/AdminPages/CoachPage';
 import { CoursePage } from '../pages/AdminPages/CoursePage';
 import { ThemePage } from '../pages/AdminPages/ThemePage';

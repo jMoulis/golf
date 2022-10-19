@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 import { SwipeableDrawer } from '@mui/material';
-import { useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faQuestionSquare } from '@fortawesome/pro-duotone-svg-icons';
 import { theme } from '../../../../../style/theme';
 import { iOS } from '../../../../../utils/global.utils';
 import { Button } from '../../../../commons';
@@ -9,8 +11,6 @@ import { ENUM_PELZ_THEME } from '../../enums';
 import { TestDescription } from './TestDescription';
 import { PelzTestType, TestDescriptionType } from '../../types';
 import { calculatePelzHCPByTest, testDescriptionMap } from '../../utils';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faQuestionSquare } from '@fortawesome/pro-duotone-svg-icons';
 
 const Grid = styled.div`
   white-space: nowrap;
@@ -81,7 +81,7 @@ export const TestItemShotHeader = ({ form, theme: pelzTheme }: Props) => {
           {itemDescription.instructions.title}
         </DescriptionTitle>
         <Grid>
-          <LabelValue>{`(`}</LabelValue>
+          <LabelValue>(</LabelValue>
           <LabelHeader>TOTAL:</LabelHeader>
           <LabelValue>
             {form.shots.reduce((acc: number, shot) => acc + shot.value, 0)}
@@ -102,7 +102,7 @@ export const TestItemShotHeader = ({ form, theme: pelzTheme }: Props) => {
               <LabelValue>{itemDescription.averagePoint}</LabelValue>
             </>
           ) : null}
-          <LabelValue>{`)`}</LabelValue>
+          <LabelValue>)</LabelValue>
         </Grid>
       </Root>
 
@@ -119,7 +119,7 @@ export const TestItemShotHeader = ({ form, theme: pelzTheme }: Props) => {
       >
         <SwipeMenuHeader
           title={`Détails - ${description?.instructions.title}`}
-        ></SwipeMenuHeader>
+        />
         {description ? <TestDescription description={description} /> : null}
       </SwipeableDrawer>
     </>

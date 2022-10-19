@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ENUM_COLLECTION } from '../../../../hooks/enumCollection';
 import { List } from '../../../commons/List';
 import { EditSession } from '../EditSession';

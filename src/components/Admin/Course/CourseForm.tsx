@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
 import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
+import React, { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
+import Menu from '@mui/material/Menu';
 import { ButtonPill } from '../../commons/Buttons/ButtonPill';
 import { FixedBottomToolbar } from '../../commons/FixedBottomToolbar';
 import { FloatingButton } from '../../commons/Buttons/FloatingButton';
@@ -10,7 +11,6 @@ import { BOTTOM_NAVBAR_HEIGHT, FLOATING_HEIGHT } from '../../cssConstants';
 import { CourseType, HoleCourseType, StartCourseType } from '../../types';
 import { HoleForm } from './Hole/HoleForm';
 import { orderStarts, sortHoles } from './utils';
-import Menu from '@mui/material/Menu';
 import { ShotButton } from '../../commons/Buttons/ShotButton';
 import { DeleteButton } from '../../commons/Buttons/DeleteButton';
 import { List, ListItem } from '../../commons/List';
@@ -70,12 +70,10 @@ export const CourseForm = ({ selectedCourse, onSubmit, onClose }: Props) => {
 
   const handleHoleChange = (updatedHole: HoleCourseType) => {
     const prevHoles = form?.holes || [];
-    const prevHole = prevHoles.find(
-      (prevHole) => prevHole.ref === updatedHole.ref
-    );
+    const prevHole = prevHoles.find((hole) => hole.ref === updatedHole.ref);
     if (prevHole) {
-      const updatedHoles = prevHoles.map((prevHole) =>
-        prevHole.ref === updatedHole.ref ? updatedHole : prevHole
+      const updatedHoles = prevHoles.map((hole) =>
+        hole.ref === updatedHole.ref ? updatedHole : hole
       );
 
       setForm((prevForm) => ({

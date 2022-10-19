@@ -4,26 +4,41 @@
     "lib": [
       "dom",
       "dom.iterable",
-      "esnext"
+      "esnext",
     ],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
+    "sourceMap": true,
+    "inlineSources": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
-    "forceConsistentCasingInFileNames": true,
+    "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": true,
     "module": "esnext",
     "moduleResolution": "node",
-    "noUnusedParameters": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx",
     "downlevelIteration": true,
-    "baseUrl": "./src"
+    "noEmit": true,
+    // "skipDefaultLibCheck": true,
+    "baseUrl": "./src",
+    "jsx": "react",
+    "plugins": [
+      {
+        "name": "typescript-styled-plugin",
+        "lint": {
+          "validProperties": [
+            "label"
+          ]
+        }
+      }
+    ]
   },
   "include": [
     "src/**/*"
   ],
+  "exclude": [
+    "./node_modules/mapbox-gl/dist/mapbox-gl.js",
+  ]
 }

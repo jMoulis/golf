@@ -17,7 +17,7 @@ type Props = {
   onClose: () => void;
   onOpen: () => void;
   onAddEvaluation: (value: 'OK' | 'KO', type: string) => void;
-  onRemoveEvaluation: (theme: ThemeType) => void;
+  onRemoveEvaluation: (incomingGameTheme: ThemeType) => void;
   selectedShot: ShotType | null;
   children?: React.ReactNode;
   hole: GameHoleType | null;
@@ -53,7 +53,7 @@ export const ShotEvaluationForm = ({
       }}
       onOpen={onOpen}
     >
-      <SwipeMenuHeader title={`Modifier le shot`}></SwipeMenuHeader>
+      <SwipeMenuHeader title="Modifier le shot" />
       <List
         style={{
           padding: '5px',

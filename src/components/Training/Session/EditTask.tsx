@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { TextareaAutosize } from '@mui/material';
-import { FormEvent, useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { Flexbox } from '../../commons';
 import { DeleteButton } from '../../commons/Buttons/DeleteButton';
 import { Checkbox } from './commonStyledComponents';

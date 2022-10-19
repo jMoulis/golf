@@ -1,15 +1,13 @@
-import styled from '@emotion/styled';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { FloatingButton } from 'components/commons/Buttons/FloatingButton';
-import { List, ListItem } from 'components/commons/List';
+import { List } from 'components/commons/List';
 import { SwipableDefault } from 'components/commons/SwipableDefault';
 import { BagType, ClubType } from 'components/types';
-import { useFileStorage } from 'hooks/useFileStorage';
 import { useToggle } from 'hooks/useToggle';
-import { useCallback } from 'react';
+import React from 'react';
 import { Club } from './Club';
 
 import { useClubs } from './useClubs';

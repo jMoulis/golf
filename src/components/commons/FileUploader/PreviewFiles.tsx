@@ -2,6 +2,8 @@ import styled from '@emotion/styled';
 import { faImageSlash } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { FormEvent, useState } from 'react';
+import { DrawingApp } from 'components/commons/VideoDrawingApp/DrawingApp';
+import { VideoType } from 'components/Training/Session/types';
 import { useFileStorage } from '../../../hooks/useFileStorage';
 import { theme } from '../../../style/theme';
 import { BOTTOM_NAVBAR_HEIGHT } from '../../cssConstants';
@@ -10,8 +12,6 @@ import { DeleteButton } from '../Buttons/DeleteButton';
 import { FixedBottomToolbar } from '../FixedBottomToolbar';
 import { SwipableDefault } from '../SwipableDefault';
 import { PreviewType, PreviewTypeWithStorageRef } from './types';
-import { DrawingApp } from 'components/commons/VideoDrawingApp/DrawingApp';
-import { VideoType } from 'components/Training/Session/types';
 
 const Root = styled.div`
   margin: 5px;
@@ -91,7 +91,7 @@ export const PreviewFiles = ({
     fileName: string
   ) => {
     event.stopPropagation();
-    onDelete && onDelete(fileName);
+    return onDelete && onDelete(fileName);
   };
 
   const handleDisplayFile = async (

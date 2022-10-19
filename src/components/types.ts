@@ -1,15 +1,33 @@
-import { Timestamp } from "firebase/firestore";
+import { Timestamp } from 'firebase/firestore';
 
 export type SSSSlopeType = {
-  sss: number,
-  slope: number,
-}
+  sss: number;
+  slope: number;
+};
 
 export type StartCourseType = {
   start: string;
-  mens: SSSSlopeType,
-  ladies: SSSSlopeType
-}
+  mens: SSSSlopeType;
+  ladies: SSSSlopeType;
+};
+
+export type ShotType = {
+  type: string;
+  distance?: number;
+  direction?: string;
+  slope?: string;
+  themes?: any;
+  id?: any;
+  club?: {
+    id: string;
+    name: string;
+    distance?: number;
+  };
+  coords?: {
+    lng: number | null;
+    lat: number | null;
+  };
+};
 
 export type CourseDistanceType = Record<string, number>;
 
@@ -19,6 +37,7 @@ export type HoleCourseType = {
   par: number;
   hcp: number;
   distances?: CourseDistanceType;
+  bounds?: { latitude: number; longitude: number }[];
 };
 export interface GameHoleType extends HoleCourseType {
   shots: ShotType[];
@@ -56,12 +75,25 @@ export type CourseHoleType = {
   distances: DistanceType[];
 };
 
-export type GameStatus = "DRAFT" | "DONE";
+export type GameStatus = 'DRAFT' | 'DONE';
 
+// eslint-disable-next-line no-shadow
 export enum ENUM_GAME_STATUS {
-  DRAFT = "DRAFT",
-  DONE = "DONE",
+  DRAFT = 'DRAFT',
+  DONE = 'DONE',
 }
+
+export type UserTypeSummary = {
+  id?: string;
+  firstname?: string;
+  lastname?: string;
+  avatar?: string;
+};
+
+export type ThemeType = {
+  id: string;
+  type: string;
+};
 
 interface GameTypeCommons {
   courseRef: string;
@@ -85,35 +117,29 @@ export interface GameType extends GameTypeCommons {
   date: Date;
 }
 
-export type ShotType = {
-  type: string;
-  distance?: number;
-  direction?: string;
-  slope?: string
-  themes?: any;
-  id?: any;
-  club?: {
-    id: string,
-    name: string,
-    distance?: number
-  }
-  coords?: {
-    lng: number | null,
-    lat: number | null
-  }
-}
-
-export type ThemeType = {
-  id: string;
-  type: string;
-};
-
 export type ThemeTypeInput = {
   type: string;
   userId: string;
 };
 
-export type UserStatType = { type: number, gameID: string, score: number, scoreType: Record<string, number>, shotTypes: Record<string, number> }
+export type UserStatType = {
+  type: number;
+  gameID: string;
+  score: number;
+  scoreType: Record<string, number>;
+  shotTypes: Record<string, number>;
+};
+export type BagClubType = {
+  id: string;
+  name: string;
+  distances: number[];
+  distance: number;
+  order: number;
+  thumbnail?: string;
+};
+
+export type BagType = BagClubType[];
+
 export type UserType = {
   id?: string;
   firstname?: string;
@@ -126,14 +152,6 @@ export type UserType = {
   updatedAt?: Timestamp;
   bag?: BagType;
   stats?: UserStatType[];
-
-};
-
-export type UserTypeSummary = {
-  id?: string;
-  firstname?: string;
-  lastname?: string;
-  avatar?: string;
 };
 
 export type ClubType = {
@@ -142,14 +160,4 @@ export type ClubType = {
   distance?: number;
   order: number;
   thumbnail?: string;
-}
-export type BagClubType = {
-  id: string;
-  name: string;
-  distances: number[];
-  distance: number;
-  order: number;
-  thumbnail?: string;
-}
-
-export type BagType = BagClubType[];
+};

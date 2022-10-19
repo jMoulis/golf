@@ -15,6 +15,7 @@ import {
   PUTTING_TEST_6,
 } from './assets';
 import { ENUM_PELZ_THEME } from './enums';
+// eslint-disable-next-line import/no-cycle
 import { globalTestMatrix, pelzMatrices } from './testsMatrix';
 import { PelzTestType, PelzTestShot, TestMapDescriptionType } from './types';
 

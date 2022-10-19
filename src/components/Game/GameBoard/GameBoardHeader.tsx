@@ -1,20 +1,20 @@
 import styled from '@emotion/styled';
-import { Flexbox } from '../../commons';
-import { GameHoleType, GameType } from '../../types';
-import { TotalScores } from './TotalScoresPars';
-import { CourseStats } from './CourseStats';
-import { ShotsStats } from './ShotsStats';
-import { EvalStats } from './EvalStats';
-import { useMemo, useState } from 'react';
-import { TabType } from '../../commons/TabNavigation/types';
-import { TabNavigation } from '../../commons/TabNavigation/TabNavigation';
-import { theme } from '../../../style/theme';
+import React, { useMemo, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faArrowDown19,
   faGolfBallTee,
   faThumbsUp,
 } from '@fortawesome/free-solid-svg-icons';
+import { Flexbox } from '../../commons';
+import { GameHoleType, GameType } from '../../types';
+import { TotalScores } from './TotalScoresPars';
+import { CourseStats } from './CourseStats';
+import { ShotsStats } from './ShotsStats';
+import { EvalStats } from './EvalStats';
+import { TabType } from '../../commons/TabNavigation/types';
+import { TabNavigation } from '../../commons/TabNavigation/TabNavigation';
+import { theme } from '../../../style/theme';
 import { Slider } from '../../commons/Slider/Slider';
 
 const CourseName = styled.span``;

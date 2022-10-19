@@ -1,4 +1,5 @@
-import { useMemo } from 'react';
+/* eslint-disable react/jsx-no-useless-fragment */
+import React, { useMemo } from 'react';
 import { Outlet } from 'react-router-dom';
 import { theme } from '../../../../style/theme';
 import { PageHeader } from '../../../commons/Core/PageHeader';

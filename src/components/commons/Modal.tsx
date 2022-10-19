@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { faRectangleXmark } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { theme } from '../../style/theme';
 import { Portal } from './Portal';
 
@@ -64,7 +64,7 @@ export const Modal = ({ isOpen, onClose, children, title }: Props) => {
   if (!isOpen) return null;
 
   return (
-    <Portal wrapperID='react-portal-modal-container'>
+    <Portal wrapperID="react-portal-modal-container">
       <Root>
         <Content>
           <Header>

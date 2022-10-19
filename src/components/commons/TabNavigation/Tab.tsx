@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { theme } from '../../../style/theme';
+import { theme } from 'style/theme';
 
 export const Tab = styled.div<{ selected?: boolean; color?: string }>`
   display: flex;
@@ -7,6 +7,7 @@ export const Tab = styled.div<{ selected?: boolean; color?: string }>`
   padding: 5px 10px;
   min-width: 100px;
   box-shadow: ${theme.shadows.button};
+  cursor: pointer;
   background-color: ${({ selected }) =>
     selected ? '#fff' : 'rgba(255,255,255,0.3)'};
   & * {

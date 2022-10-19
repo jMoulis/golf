@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
-import { useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
+import { StorageReference } from 'firebase/storage';
 import { Flexbox } from '../../../../commons';
 import { DateDisplay } from '../../../../commons/DateDisplay';
 import { DeleteButton } from '../../../../commons/Buttons/DeleteButton';
@@ -7,7 +8,6 @@ import { ListItem } from '../../../../commons/List';
 import { SessionType, TaskType } from '../../types';
 import { TaskCheckStatus } from './TaskCheckStatus';
 import { FileList } from '../../File/FileList';
-import { StorageReference } from 'firebase/storage';
 import { useFileStorage } from '../../../../../hooks/useFileStorage';
 import { Alerts } from '../../../../commons/Alerts';
 

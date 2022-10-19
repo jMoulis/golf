@@ -1,8 +1,9 @@
-import { Flexbox } from '../commons';
 import styled from '@emotion/styled';
+import { SwipeableDrawer } from '@mui/material';
+import React from 'react';
+import { Flexbox } from '../commons';
 import { Avatar } from './Avatar';
 import { NameTag } from './UserStyledComponents';
-import { SwipeableDrawer } from '@mui/material';
 import { iOS } from '../../utils/global.utils';
 import { useToggle } from '../../hooks/useToggle';
 import { theme } from '../../style/theme';
@@ -18,7 +19,7 @@ const Root = styled.nav`
   align-items: center;
 `;
 
-export const UserPanel = () => {
+export function UserPanel() {
   const { onOpen, onClose, open } = useToggle();
   const { user } = useUser();
 
@@ -52,4 +53,4 @@ export const UserPanel = () => {
       </SwipeableDrawer>
     </Root>
   );
-};
+}

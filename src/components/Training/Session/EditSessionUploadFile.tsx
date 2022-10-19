@@ -1,5 +1,5 @@
 import { getStorage, ref } from 'firebase/storage';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useFileStorage } from '../../../hooks/useFileStorage';
 import { useThumbnail } from '../../../hooks/useThumbnail';
 import { generateFileName, generatorsKey } from '../../../utils/global.utils';
@@ -66,7 +66,6 @@ export const EditSessionUploadFile = ({
       };
       setCompletedFiles(upadtedFiles);
       addThumbnail({ fullPath, file, name });
-      return;
     },
     [addThumbnail]
   );
@@ -154,6 +153,8 @@ export const EditSessionUploadFile = ({
                         return prevFile;
                       });
                     });
+                    break;
+                  default:
                     break;
                 }
               },

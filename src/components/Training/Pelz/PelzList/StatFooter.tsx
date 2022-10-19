@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import React from 'react';
 import { Flexbox } from '../../../commons';
 import { ButtonPill } from '../../../commons/Buttons/ButtonPill';
 import { DeleteButton } from '../../../commons/Buttons/DeleteButton';

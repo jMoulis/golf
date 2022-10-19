@@ -1,13 +1,13 @@
 import React, { FormEvent, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { Timestamp } from 'firebase/firestore';
 import { CoachPage } from '../../pages/AdminPages/CoachPage';
 import { UserType } from '../../types';
 import { FixedBottomToolbar } from '../../commons/FixedBottomToolbar';
 import { ButtonPill } from '../../commons/Buttons/ButtonPill';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../../firebaseConfig/firebase';
 import { useSession } from './useSession';
 import { ENUM_COLLECTION } from '../../../hooks/enumCollection';
-import { Timestamp } from 'firebase/firestore';
 import { SessionType } from './types';
 
 type Props = {

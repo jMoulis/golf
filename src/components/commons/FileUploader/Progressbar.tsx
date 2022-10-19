@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { faPause, faPlay, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { theme } from '../../../style/theme';
 import { UploadTaskWithID } from '../../Training/Session/types';
 import { DeleteButton } from '../Buttons/DeleteButton';

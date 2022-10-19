@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { FormEvent, useRef, useState } from 'react';
+import React, { FormEvent, useRef, useState } from 'react';
 import { Preview } from './Preview';
 import { theme } from '../../../style/theme';
 import { Flexbox } from '../Flexbox';

@@ -28,7 +28,7 @@ export const ShotEvaluationFormItem = ({
   onEditShot,
 }: Props) => {
   const [open, setOpen] = useState(false);
-  const { shotTypesByTypes } = useConfig();
+  const { shotTypesByTypes, shotTypes } = useConfig();
   const roundDistance = useMemo(() => {
     if (selectedShot?.club?.distance) {
       return `${Math.round(selectedShot.club.distance)}m`;
@@ -95,6 +95,7 @@ export const ShotEvaluationFormItem = ({
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
         title="Modifier un shot"
+        shotTypes={shotTypes}
       />
     </ListItem>
   );

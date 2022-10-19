@@ -1,7 +1,8 @@
 import { Outlet } from 'react-router-dom';
+import styled from '@emotion/styled';
+import React from 'react';
 import { PageHeader } from '../../commons/Core/PageHeader';
 import { theme } from '../../../style/theme';
-import styled from '@emotion/styled';
 import { UserPanel } from '../../User/UserPanel';
 
 const Content = styled.div`

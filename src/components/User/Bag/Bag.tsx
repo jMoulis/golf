@@ -1,11 +1,10 @@
-import styled from '@emotion/styled';
-import { BagClubType, BagType, ClubType } from 'components/types';
-import { useRef } from 'react';
-import { BagButton } from './BagButton';
-import { AddClub } from './AddClub';
+import { BagType, ClubType } from 'components/types';
+import React from 'react';
 import { useToggle } from 'hooks/useToggle';
 import { SwipableDefault } from 'components/commons/SwipableDefault';
 import { List } from 'components/commons/List';
+import { AddClub } from './AddClub';
+import { BagButton } from './BagButton';
 import { ClubListItem } from './ClubListItem';
 
 export const Bag = ({

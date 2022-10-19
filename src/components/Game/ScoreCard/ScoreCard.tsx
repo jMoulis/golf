@@ -1,6 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
-  arrayUnion,
   doc,
   DocumentReference,
   getFirestore,
@@ -15,20 +14,20 @@ import {
   ShotType,
   GameHoleType,
   GameType,
-  UserType,
 } from 'components/types';
-import { RenderHoles } from './RenderHoles';
 import { SwipeShotForm } from 'components/commons/SwipeShotForm/SwipeShotForm';
-import { SaveMenu } from './SaveMenu';
 import { app } from 'components/../firebaseConfig/firebase';
 import { firebaseErrors } from 'components/../utils/firebaseErrors';
 import { Alerts } from 'components/commons/Alerts';
 import * as geometry from 'spherical-geometry-js';
 import { useGeolocated } from 'react-geolocated';
 import { useUser } from 'components/User/useUser';
-import { excludedDistanceshotType } from './utils';
 import { scoresByType, shotsTypeStat } from 'utils/scoreUtils';
 import { sortHoles } from 'components/Admin/Course/utils';
+import { excludedDistanceshotType } from './utils';
+import { SaveMenu } from './SaveMenu';
+import { RenderHoles } from './RenderHoles';
+import { ShotConfigType } from './ShotForm/shotTypes';
 
 const calculateDistance = (
   newCoords?: { lng: number | null; lat: number | null },
@@ -60,23 +59,24 @@ type Props = {
   gameRef: DocumentReference | null;
   onClose: () => void;
   course: CoursePayloadType | null;
+  shotTypes: ShotConfigType[];
 };
 
-export const ScoreCard = ({ game, onClose, course }: Props) => {
+export const ScoreCard = ({ game, onClose, course, shotTypes }: Props) => {
   const gameRef = useMemo(() => {
     if (!game?.id) return null;
     const db = getFirestore(app);
     return doc(db, 'games', game.id);
   }, [game?.id]);
 
-  const { coords, isGeolocationAvailable, isGeolocationEnabled } =
-    useGeolocated({
-      positionOptions: {
-        enableHighAccuracy: true,
-      },
-      watchPosition: true,
-      userDecisionTimeout: 5000,
-    });
+  const { coords } = useGeolocated({
+    positionOptions: {
+      enableHighAccuracy: true,
+    },
+    watchPosition: true,
+    userDecisionTimeout: 5000,
+  });
+
   const { user, editUser, updateUserBagClubDistance } = useUser();
   const [selectedHole, setSelectedHole] = useState<GameHoleType | null>(null);
   const shotUnsubscribeRef = useRef<Unsubscribe | null>(null);
@@ -190,7 +190,7 @@ export const ScoreCard = ({ game, onClose, course }: Props) => {
     const holes = Object.values(game.holes);
     const sortedHoles = sortHoles(holes);
 
-    const frontNine = sortedHoles.slice(0, 9);
+    const incomingFrontNine = sortedHoles.slice(0, 9);
 
     let stats = {
       type: 0,
@@ -203,9 +203,9 @@ export const ScoreCard = ({ game, onClose, course }: Props) => {
       stats = {
         ...stats,
         type: 9,
-        shotTypes: shotsTypeStat(frontNine as any),
-        scoreType: scoresByType(frontNine as any),
-        score: frontNine.reduce(
+        shotTypes: shotsTypeStat(incomingFrontNine as any, shotTypes),
+        scoreType: scoresByType(incomingFrontNine as any),
+        score: incomingFrontNine.reduce(
           (acc, hole: any) => acc + (hole.shots?.length || 0),
           0
         ),
@@ -214,7 +214,7 @@ export const ScoreCard = ({ game, onClose, course }: Props) => {
       stats = {
         ...stats,
         type: 18,
-        shotTypes: shotsTypeStat(sortedHoles as any),
+        shotTypes: shotsTypeStat(sortedHoles as any, shotTypes),
         scoreType: scoresByType(sortedHoles as any),
         score: sortedHoles.reduce(
           (acc, hole: any) => acc + (hole.shots?.length || 0),
@@ -242,6 +242,7 @@ export const ScoreCard = ({ game, onClose, course }: Props) => {
         }
       );
     }
+    return true;
   };
 
   if (!game) return null;
@@ -268,6 +269,7 @@ export const ScoreCard = ({ game, onClose, course }: Props) => {
         game={game}
         open={open}
         title="Ajouter un shot"
+        shotTypes={shotTypes}
       />
       <SaveMenu onClose={onClose} onValidate={handleValidate} />
       <Alerts

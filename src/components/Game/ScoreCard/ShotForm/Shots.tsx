@@ -1,15 +1,13 @@
 import styled from '@emotion/styled';
-import {
-  faMapLocation,
-  faSquarePlus,
-} from '@fortawesome/pro-duotone-svg-icons';
+import { faSquarePlus } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useUser } from 'components/User/useUser';
 import { DocumentReference, increment, setDoc } from 'firebase/firestore';
-import { useState } from 'react';
-import { theme } from '../../../../style/theme';
-import { ShotButton } from '../../../commons/Buttons/ShotButton';
-import { GameHoleType, GameType, ShotType, ThemeType } from '../../../types';
+import React, { useState } from 'react';
+import { theme } from 'style/theme';
+import { ShotButton } from 'components/commons/Buttons/ShotButton';
+import { GameHoleType, GameType, ShotType, ThemeType } from 'components/types';
+import { useGeolocated } from 'react-geolocated';
 import { ShotEvaluationForm } from '../ShotEvaluationForm/ShotEvaluationForm';
 import { excludedDistanceshotType } from '../utils';
 import { MapButton } from './Map/MapButton';
@@ -46,7 +44,13 @@ export const Shots = ({
   const [selectedShot, setSelectedShot] = useState<ShotType | null>(null);
   const { onAddShotScoring, onRemoveShotScoring } = useScoring();
   const { user, editUser, updateUserBagClubDistance } = useUser();
-
+  const { coords } = useGeolocated({
+    positionOptions: {
+      enableHighAccuracy: true,
+    },
+    watchPosition: true,
+    userDecisionTimeout: 5000,
+  });
   const handleAddShotScoring = async (
     evaluationValue: 'KO' | 'OK',
     evaluationType: string
@@ -163,7 +167,7 @@ export const Shots = ({
             <FontAwesomeIcon icon={faSquarePlus as any} />
           </ShotButton>
         ) : null}
-        <MapButton hole={hole} />
+        <MapButton hole={hole} coords={coords} />
       </Root>
 
       <ShotEvaluationForm

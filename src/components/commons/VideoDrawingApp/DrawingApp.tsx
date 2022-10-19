@@ -7,13 +7,12 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SwipeableDrawer } from '@mui/material';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { theme } from 'style/theme';
 import { iOS } from 'utils/global.utils';
+import { VideoType } from 'components/Training/Session/types';
 import { Flexbox } from '..';
 import { SwitchCamera, Toolbar } from './components';
-import { VideoType } from 'components/Training/Session/types';
-import { Sketch } from './Sketch/Sketch';
 
 const Image = styled.img`
   max-width: 100%;
@@ -53,10 +52,8 @@ export const DrawingApp = ({ video, onClose, open, onDelete }: Props) => {
   useEffect(() => {
     if (!open) {
       setPlayingStatus('UNSET');
-    } else {
-      if (videoRef.current) {
-        videoRef.current.play();
-      }
+    } else if (videoRef.current) {
+      videoRef.current.play();
     }
   }, [open]);
 

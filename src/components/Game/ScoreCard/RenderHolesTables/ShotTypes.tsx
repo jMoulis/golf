@@ -26,13 +26,14 @@ type Props = {
 };
 
 export const ShotTypes = ({ holes }: Props) => {
-  const { shotTypesByTypes } = useConfig();
+  const { shotTypesByTypes, shotTypes } = useConfig();
+
   const shotStats: {
     [key: string]: any;
   } = useMemo(() => {
-    const shots = shotsTypeStat(holes as GameHoleType[]);
+    const shots = shotsTypeStat(holes as GameHoleType[], shotTypes);
     return shots;
-  }, [holes]);
+  }, [holes, shotTypes]);
 
   return (
     <Root justifyContent="space-around">

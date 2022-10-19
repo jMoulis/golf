@@ -1,4 +1,5 @@
-import { createContext, useContext, useReducer } from 'react';
+/* eslint-disable no-shadow */
+import React, { createContext, useContext, useMemo, useReducer } from 'react';
 import { UserType } from '../components/types';
 
 enum ENUM_AUTH_ACTION_TYPE {
@@ -49,7 +50,8 @@ function authReducer(state: State, action: Action) {
 
 function AuthProvider({ children }: AuthProviderProps) {
   const [state, dispatch] = useReducer(authReducer, { fullUser: null });
-  const value = { state, dispatch };
+
+  const value = useMemo(() => ({ state, dispatch }), [state]);
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 

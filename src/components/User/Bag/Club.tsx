@@ -3,9 +3,8 @@ import { faPlus, faTrash } from '@fortawesome/pro-duotone-svg-icons';
 import { DeleteButton } from 'components/commons/Buttons/DeleteButton';
 import { theme } from 'style/theme';
 import styled from '@emotion/styled';
-import { List, ListItem } from 'components/commons/List';
-import { useCallback, useEffect, useState } from 'react';
-import { useFileStorage } from 'hooks/useFileStorage';
+import { ListItem } from 'components/commons/List';
+import React from 'react';
 import { Flexbox } from 'components/commons';
 import { ClubImage } from './ClubImage';
 

@@ -1,7 +1,7 @@
 /* eslint-disable no-constant-condition */
 import styled from '@emotion/styled';
 import { SwipeableDrawer } from '@mui/material';
-import { useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { theme } from '../../../style/theme';
 import { BOTTOM_NAVBAR_HEIGHT } from '../../cssConstants';
 import { UploadTaskWithID } from '../../Training/Session/types';

@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { scoresConfig } from '../../../utils/scoreUtils';
 import { Flexbox } from '../../commons';
 import { GameHoleType, HoleCourseType } from '../../types';

@@ -30,11 +30,11 @@ type Props = {
 
 export const StartForm = ({ name, onChange, value }: Props) => {
   const handleInputChange = (event: FormEvent<HTMLInputElement>) => {
-    const { name, value: inputValue } = event.currentTarget;
+    const { name: incomingName, value: inputValue } = event.currentTarget;
     if (value) {
       onChange({
         ...value,
-        [name]: Number(inputValue),
+        [incomingName]: Number(inputValue),
       });
     }
   };

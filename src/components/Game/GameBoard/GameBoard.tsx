@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+/* eslint-disable no-console */
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   doc,
   DocumentData,
@@ -8,22 +9,24 @@ import {
   onSnapshot,
   Unsubscribe,
 } from 'firebase/firestore';
+import { SwipeableDrawer } from '@mui/material';
 import { app } from '../../../firebaseConfig/firebase';
 import { ScoreCard } from '../ScoreCard/ScoreCard';
 import { CoursePayloadType, GameType } from '../../types';
 import { GameBoardHeader } from './GameBoardHeader';
 import { PageHeader } from '../../commons/Core/PageHeader';
 import { theme } from '../../../style/theme';
-import { SwipeableDrawer } from '@mui/material';
 import { iOS } from '../../../utils/global.utils';
 import { SwipeMenuHeader } from '../../commons/SwipeMenuHeader';
+import { ShotConfigType } from '../ScoreCard/ShotForm/shotTypes';
 
 type Props = {
   open: boolean;
   onClose: () => void;
   gameID: string | null;
+  shotTypes: ShotConfigType[];
 };
-export const GameBoard = ({ open, onClose, gameID }: Props) => {
+export const GameBoard = ({ open, onClose, gameID, shotTypes }: Props) => {
   const [game, setGame] = useState<GameType | null>(null);
   const [course, setCourse] = useState<CoursePayloadType | null>(null);
   const gameRef = useRef<DocumentReference<DocumentData> | null>(null);
@@ -107,6 +110,7 @@ export const GameBoard = ({ open, onClose, gameID }: Props) => {
             gameRef={gameRef.current}
             onClose={handleClose}
             course={course}
+            shotTypes={shotTypes}
           />
         </>
       ) : null}

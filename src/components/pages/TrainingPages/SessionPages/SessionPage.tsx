@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Outlet } from 'react-router-dom';
 import { theme } from '../../../../style/theme';
 import { PageHeader } from '../../../commons/Core/PageHeader';
@@ -14,6 +14,7 @@ export const SessionPage = () => {
 
   if (!user?.id) return null;
   return (
+    // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
       {!isCoach ? (
         <>

@@ -1,10 +1,10 @@
-import styled from "@emotion/styled";
-import { theme } from "../../../style/theme";
+import styled from '@emotion/styled';
+import { theme } from '../../../style/theme';
 
 export const ShotButton = styled.button<{
   color?: string;
   backgroundColor?: string;
-  styling?: any
+  styling?: any;
 }>`
   border: none;
   font-size: 30px;
@@ -16,7 +16,7 @@ export const ShotButton = styled.button<{
   align-items: center;
   color: ${({ color }) => color};
   border-radius: 10px;
-  background-color: ${({ backgroundColor }) => backgroundColor || "#fff"};
+  background-color: ${({ backgroundColor }) => backgroundColor || '#fff'};
   box-shadow: ${theme.shadows.flatButton};
   ${({ styling }) => styling};
 `;

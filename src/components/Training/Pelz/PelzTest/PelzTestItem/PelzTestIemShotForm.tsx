@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { SwipeableDrawer } from '@mui/material';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { iOS } from '../../../../../utils/global.utils';
 import { Flexbox } from '../../../../commons';
 import { ShotButton } from '../../../../commons/Buttons/ShotButton';
