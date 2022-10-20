@@ -59,7 +59,7 @@ export const useConfig = () => {
     [config.shots?.shotTypes]
   );
   return {
-    shotTypes: config.shots.shotTypes || [],
+    shotTypes: config.shots?.shotTypes || [],
     shotTypesByTypes,
   };
 };

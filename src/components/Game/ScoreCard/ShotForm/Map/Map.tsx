@@ -57,9 +57,9 @@ export const Map = ({ hole, geoCoords }: Props) => {
       container: wrapperRef.current,
       style: 'mapbox://styles/julienmoulis/cl9e189aj00a614pazb77wavt',
       center: coords,
-      zoom: 18,
-      pitch: 60,
-      bearing: 0,
+      zoom: 20,
+      pitch: 65,
+      bearing: -180,
     };
     map.current = new mapboxgl.Map(mapProps);
 
@@ -71,10 +71,10 @@ export const Map = ({ hole, geoCoords }: Props) => {
     let linestring: any[] = [];
 
     map.current.on('load', () => {
-      map.current.setMyLocationTrackingMode('TRACKING_FOLLOW');
-      map.current.setMyBearingTrackingMode('COMPASS');
+      // map.current.setMyLocationTrackingMode('TRACKING_FOLLOW');
+      // map.current.setMyBearingTrackingMode('COMPASS');
       if (bounds.length) {
-        map.current.fitBounds(bounds, { bearing: 0, zoom: 18 });
+        map.current.fitBounds(bounds, { bearing: -180, zoom: 20 });
       }
       if (hole.shots?.length) {
         const prevFeatures = buildFeatures(hole);
@@ -102,7 +102,7 @@ export const Map = ({ hole, geoCoords }: Props) => {
           trackUserLocation: true,
           // Draw an arrow next to the location dot to indicate which direction the device is heading.
           showUserHeading: true,
-          fitBoundsOptions: { maxZoom: 20 },
+          fitBoundsOptions: { maxZoom: 30 },
         })
       );
       map.current.on(

@@ -9,6 +9,7 @@ import styled from '@emotion/styled';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { theme } from 'style/theme';
 import { Flexbox } from 'components/commons';
+import { HoleCourseType } from 'components/types';
 
 const ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_API;
 
@@ -38,9 +39,10 @@ mapboxgl.workerClass = MapboxWorker;
 
 type Props = {
   onSelect: (props: any) => void;
+  hole?: HoleCourseType;
 };
 
-export const GeoFormMap = ({ onSelect }: Props) => {
+export const GeoFormMap = ({ onSelect, hole }: Props) => {
   const wrapperRef = useRef<any | null>(null);
   const [selectedBounds, setSelectedBounds] = useState<number[][]>([]);
 
@@ -48,11 +50,16 @@ export const GeoFormMap = ({ onSelect }: Props) => {
 
   useEffect(() => {
     if (map.current) return;
-
+    const bounds = (hole?.bounds || []).map((bound) => [
+      bound.longitude,
+      bound.latitude,
+    ]);
+    const center = bounds?.[0];
+    console.log(center);
     const mapProps: any = {
       container: wrapperRef.current,
       style: 'mapbox://styles/mapbox/satellite-v9',
-      center: [6.940484961366561, 43.532668333752554],
+      center: center || [6.940484961366561, 43.532668333752554],
       zoom: 18,
       bearing: 0,
     };
@@ -75,6 +82,9 @@ export const GeoFormMap = ({ onSelect }: Props) => {
       })
     );
     map.current.on('load', () => {
+      if (bounds.length) {
+        map.current.fitBounds(bounds, { bearing: -180, zoom: 20 });
+      }
       map.current.addSource('geojson', {
         type: 'geojson',
         data: geojson,

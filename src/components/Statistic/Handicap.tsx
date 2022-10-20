@@ -5,9 +5,11 @@ import React, { useMemo } from 'react';
 
 const Card = styled.div`
   display: flex;
+  flex: 1;
   flex-direction: column;
+  align-items: center;
   /* width: 50px; */
-  height: 50px;
+  /* height: 50px; */
   background-color: rgba(255, 255, 255, 0.5);
   padding: 10px;
   margin: 10px;
@@ -18,8 +20,11 @@ const Title = styled.span`
   font-size: 13px;
 `;
 
-const HCP = styled.span`
+const HCPLabel = styled.span`
   font-size: 13px;
+`;
+const HCP = styled.span`
+  font-size: 17px;
 `;
 
 type Props = {
@@ -89,22 +94,22 @@ export const Handicap = ({ userStats }: Props) => {
     return {
       '9': nines,
       '18': eighteens,
-      all: average,
+      global: average,
     };
   }, [userStats]);
 
   return (
     <div>
       <Title>Average handicap</Title>
-      <Flexbox>
+      <Flexbox justifyContent="space-around">
         {Object.keys(handicapIndexes).map((key, index) => {
           const handicapIndex = (handicapIndexes as any)[key];
           return (
             <Card key={index}>
-              <Flexbox>
-                <HCP>{key} trous</HCP>
-              </Flexbox>
               <HCP>{handicapIndex}</HCP>
+              <HCPLabel>
+                {key} {key !== 'global' ? 'trous' : null}
+              </HCPLabel>
             </Card>
           );
         })}

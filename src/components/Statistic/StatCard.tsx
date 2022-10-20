@@ -42,6 +42,7 @@ export const StatCard = ({ userStats }: Props) => {
   const { shotTypes } = useConfig();
 
   const defaultAllStat = useMemo(() => {
+    if (!shotTypes?.length) return null;
     return {
       gameCount: 1,
       score: 0,
@@ -113,7 +114,7 @@ export const StatCard = ({ userStats }: Props) => {
 
   const shotTypesOrder = useMemo(() => {
     return shotTypes
-      .sort((a, b) => a.order - b.order)
+      ?.sort((a, b) => a.order - b.order)
       .filter((shot) => shot.toStat)
       .map((shot) => shot.type);
   }, [shotTypes]);

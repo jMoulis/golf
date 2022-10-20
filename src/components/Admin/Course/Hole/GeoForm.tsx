@@ -76,7 +76,7 @@ export const GeoForm = ({ hole, onChange }: Props) => {
             onClick={onClose}
           />
         </Header>
-        <GeoFormMap onSelect={handleChange} />
+        <GeoFormMap onSelect={handleChange} hole={hole} />
       </Drawer>
     </Root>
   );
