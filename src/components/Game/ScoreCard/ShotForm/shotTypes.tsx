@@ -30,6 +30,7 @@ export const useConfig = () => {
       shotTypes: [],
     },
   });
+
   useEffect(() => {
     const db = getFirestore(app);
     const q = query(collection(db, 'config'));
@@ -58,6 +59,7 @@ export const useConfig = () => {
       ),
     [config.shots?.shotTypes]
   );
+
   return {
     shotTypes: config.shots?.shotTypes || [],
     shotTypesByTypes,

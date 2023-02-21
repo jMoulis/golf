@@ -44,6 +44,7 @@ export const GameBoard = ({ open, onClose, gameID, shotTypes }: Props) => {
       });
     }
   };
+
   const fetchGame = useCallback(async (id: string) => {
     const db = getFirestore(app);
     gameRef.current = doc(db, 'games', id);

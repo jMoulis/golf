@@ -88,7 +88,6 @@ export const UserForm = ({ user, onClose }: Props) => {
           editUser({ ...updatedUser, updatedAt });
         }
       });
-      // getDownloadURL(snapshot.ref);
     });
   };
 
