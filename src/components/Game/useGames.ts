@@ -8,6 +8,7 @@ import {
   orderBy,
   query,
   setDoc,
+  Timestamp,
   Unsubscribe,
   where,
 } from 'firebase/firestore';
@@ -55,10 +56,14 @@ export const useGames = () => {
         (payload) => {
           const incomingGames = payload.docs.map((incomingDoc) => {
             const game = incomingDoc.data() as GamePayloadType;
+            let date: Date = new Date();
+            if (game.date instanceof Timestamp) {
+              date = game.date?.toDate();
+            }
             return {
               id: incomingDoc.id,
-              ...game,
-              date: game.date?.toDate(),
+              ...(game as any),
+              date,
             };
           });
           setGames(incomingGames);
